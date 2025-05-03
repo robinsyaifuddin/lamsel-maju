@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -13,6 +12,7 @@ import {
   Mail,
   ChevronDown
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for UMKM
 const allUMKM = [
@@ -86,6 +86,7 @@ const UMKM = () => {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [selectedLocation, setSelectedLocation] = useState('Semua Lokasi');
   const [filteredUMKM, setFilteredUMKM] = useState(allUMKM);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     const filtered = allUMKM.filter(umkm => {
@@ -139,6 +140,10 @@ const UMKM = () => {
     setSelectedCategory('Semua');
     setSelectedLocation('Semua Lokasi');
     setFilteredUMKM(allUMKM);
+  };
+
+  const handleViewDetail = (id: number) => {
+    navigate(`/umkm/detail?id=${id}`);
   };
 
   return (
@@ -255,7 +260,10 @@ const UMKM = () => {
                 <p className="mt-2 text-sm text-gray-600 border-t pt-2">
                   {umkm.description}
                 </p>
-                <Button className="w-full mt-2 bg-lamsel-green hover:bg-lamsel-green/80">
+                <Button 
+                  className="w-full mt-2 bg-lamsel-green hover:bg-lamsel-green/80"
+                  onClick={() => handleViewDetail(umkm.id)}
+                >
                   Lihat Detail
                 </Button>
               </CardContent>

@@ -10,6 +10,7 @@ import Destinasi from "./pages/Destinasi";
 import DestinationDetail from "./pages/DestinationDetail";
 import Agenda from "./pages/Agenda";
 import UMKM from "./pages/UMKM";
+import UMKMDetail from "./pages/UMKMDetail";
 import Kecamatan from "./pages/Kecamatan";
 import Kontak from "./pages/Kontak";
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/destinasi/detail" element={<DestinationDetail />} />
           <Route path="/agenda" element={<Agenda />} />
           <Route path="/umkm" element={<UMKM />} />
+          <Route path="/umkm/detail" element={<UMKMDetail />} />
           <Route path="/kecamatan" element={<Kecamatan />} />
           <Route path="/kontak" element={<Kontak />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

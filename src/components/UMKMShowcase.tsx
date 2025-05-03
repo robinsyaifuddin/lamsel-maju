@@ -39,7 +39,7 @@ export const UMKMShowcase = () => {
   };
 
   const handleViewProduct = (id: number) => {
-    navigate(`/umkm?id=${id}`);
+    navigate(`/umkm/detail?id=${id}`);
   };
 
   return (
