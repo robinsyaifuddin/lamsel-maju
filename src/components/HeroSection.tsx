@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
   Map, 
@@ -12,6 +13,11 @@ import { DatePicker } from "@/components/DatePicker";
 
 export const HeroSection = () => {
   const [location, setLocation] = useState('');
+  const navigate = useNavigate();
+  
+  const handleSearch = () => {
+    navigate('/destinasi');
+  };
   
   return (
     <div className="relative h-screen max-h-[800px] min-h-[600px] w-full overflow-hidden">
@@ -83,6 +89,7 @@ export const HeroSection = () => {
               <Button
                 size="lg"
                 className="m-4 bg-lamsel-blue hover:bg-lamsel-blue/80 px-8 py-6 text-lg"
+                onClick={handleSearch}
               >
                 <Search className="mr-2" size={20} />
                 Cari

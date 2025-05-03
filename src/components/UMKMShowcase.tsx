@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for UMKM showcase
 const umkmList = [
@@ -31,6 +32,16 @@ const umkmList = [
 ];
 
 export const UMKMShowcase = () => {
+  const navigate = useNavigate();
+
+  const handleViewAllUMKM = () => {
+    navigate('/umkm');
+  };
+
+  const handleViewProduct = (id: number) => {
+    navigate(`/umkm?id=${id}`);
+  };
+
   return (
     <div className="bg-gray-50 py-16">
       <div className="container mx-auto px-4">
@@ -44,6 +55,7 @@ export const UMKMShowcase = () => {
           <Button 
             variant="outline" 
             className="group flex items-center border-lamsel-green text-lamsel-green hover:bg-lamsel-green hover:text-white"
+            onClick={handleViewAllUMKM}
           >
             Lihat Semua UMKM
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -69,7 +81,10 @@ export const UMKMShowcase = () => {
                 </div>
               </div>
               <CardContent className="p-4">
-                <Button className="w-full bg-lamsel-green hover:bg-lamsel-green/80">
+                <Button 
+                  className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
+                  onClick={() => handleViewProduct(umkm.id)}
+                >
                   Lihat Produk
                 </Button>
               </CardContent>

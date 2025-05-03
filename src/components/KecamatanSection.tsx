@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for districts
 const districts = [
@@ -51,6 +52,16 @@ const districts = [
 ];
 
 export const KecamatanSection = () => {
+  const navigate = useNavigate();
+
+  const handleViewAllKecamatan = () => {
+    navigate('/kecamatan');
+  };
+
+  const handleViewKecamatanDetail = (id: number) => {
+    navigate(`/kecamatan?id=${id}`);
+  };
+
   return (
     <div className="bg-gray-50 py-16">
       <div className="container mx-auto px-4">
@@ -64,6 +75,7 @@ export const KecamatanSection = () => {
           <Button 
             variant="outline" 
             className="group flex items-center border-lamsel-red text-lamsel-red hover:bg-lamsel-red hover:text-white"
+            onClick={handleViewAllKecamatan}
           >
             Lihat Semua Kecamatan
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -99,6 +111,7 @@ export const KecamatanSection = () => {
                   <Button 
                     variant="ghost" 
                     className="mt-4 w-full text-lamsel-red hover:bg-lamsel-red/10"
+                    onClick={() => handleViewKecamatanDetail(district.id)}
                   >
                     Lihat Detail
                   </Button>

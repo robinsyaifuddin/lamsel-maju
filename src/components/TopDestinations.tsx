@@ -3,6 +3,7 @@ import React from 'react';
 import { DestinationCard } from './DestinationCard';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for top destinations
 const topDestinations = [
@@ -45,6 +46,12 @@ const topDestinations = [
 ];
 
 export const TopDestinations = () => {
+  const navigate = useNavigate();
+
+  const handleViewAll = () => {
+    navigate('/destinasi');
+  };
+
   return (
     <div className="container mx-auto py-16 px-4">
       <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -57,6 +64,7 @@ export const TopDestinations = () => {
         <Button 
           variant="outline" 
           className="group flex items-center border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+          onClick={handleViewAll}
         >
           Lihat Semua
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

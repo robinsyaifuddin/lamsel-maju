@@ -1,8 +1,19 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 export const PromoSection = () => {
+  const navigate = useNavigate();
+
+  const handlePromoClick = () => {
+    navigate('/destinasi');
+  };
+
+  const handlePackageClick = () => {
+    navigate('/agenda');
+  };
+
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -19,7 +30,10 @@ export const PromoSection = () => {
                 <p className="mt-3 max-w-xs">
                   Dapatkan diskon spesial untuk kunjungan ke destinasi wisata pilihan di Lampung Selatan
                 </p>
-                <Button className="mt-5 bg-white text-lamsel-blue hover:bg-white/90">
+                <Button 
+                  className="mt-5 bg-white text-lamsel-blue hover:bg-white/90"
+                  onClick={handlePromoClick}
+                >
                   Selengkapnya
                 </Button>
               </div>
@@ -49,7 +63,10 @@ export const PromoSection = () => {
                 <p className="mt-3 max-w-xs">
                   Jelajahi keindahan wisata Lampung Selatan dengan paket liburan yang terjangkau
                 </p>
-                <Button className="mt-5 bg-white text-lamsel-orange hover:bg-white/90">
+                <Button 
+                  className="mt-5 bg-white text-lamsel-orange hover:bg-white/90"
+                  onClick={handlePackageClick}
+                >
                   Pesan Sekarang
                 </Button>
               </div>

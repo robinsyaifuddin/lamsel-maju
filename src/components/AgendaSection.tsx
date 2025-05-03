@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for upcoming travel agendas
 const upcomingAgendas = [
@@ -40,6 +41,16 @@ const upcomingAgendas = [
 ];
 
 export const AgendaSection = () => {
+  const navigate = useNavigate();
+
+  const handleViewAllAgenda = () => {
+    navigate('/agenda');
+  };
+
+  const handleJoinAgenda = (id: number) => {
+    navigate(`/agenda?id=${id}`);
+  };
+
   return (
     <div className="container mx-auto py-16 px-4">
       <div className="mb-10 text-center">
@@ -83,7 +94,10 @@ export const AgendaSection = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80">
+              <Button 
+                className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80"
+                onClick={() => handleJoinAgenda(agenda.id)}
+              >
                 Bergabung
               </Button>
             </CardFooter>
@@ -95,6 +109,7 @@ export const AgendaSection = () => {
         <Button 
           variant="outline" 
           className="border-lamsel-purple text-lamsel-purple hover:bg-lamsel-purple hover:text-white"
+          onClick={handleViewAllAgenda}
         >
           Lihat Semua Agenda
         </Button>
