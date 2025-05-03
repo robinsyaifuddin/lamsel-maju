@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -66,7 +65,7 @@ const allDestinations = [
   {
     id: 4,
     name: "Pulau Sebesi",
-    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=2900",
+    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=2940",
     location: "Rajabasa, Lampung Selatan",
     rating: 4.9,
     category: "Pulau",
@@ -244,7 +243,7 @@ const DestinationDetail = () => {
               <div className="rounded-lg bg-gray-50 p-4">
                 <h4 className="mb-2 font-semibold">Jam Operasional</h4>
                 <div className="flex items-center text-gray-700">
-                  <Clock className="mr-2 h-4 w-4 text-lamsel-blue" />
+                  <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
                   {destination.operatingHours}
                 </div>
               </div>

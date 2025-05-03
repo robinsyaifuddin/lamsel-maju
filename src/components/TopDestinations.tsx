@@ -53,7 +53,7 @@ export const TopDestinations = () => {
   };
   
   const handleViewDestination = (id: number) => {
-    navigate(`/destinasi?id=${id}`);
+    navigate(`/destinasi/detail?id=${id}`);
   };
 
   return (

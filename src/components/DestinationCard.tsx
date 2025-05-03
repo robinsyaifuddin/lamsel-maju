@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface DestinationCardProps {
   id: number;
@@ -26,6 +27,16 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
   description,
   onViewDetails
 }) => {
+  const navigate = useNavigate();
+  
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails();
+    } else {
+      navigate(`/destinasi/detail?id=${id}`);
+    }
+  };
+
   return (
     <Card className="destination-card overflow-hidden">
       <div className="relative h-60 overflow-hidden">
@@ -57,7 +68,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
         <Button 
           variant="outline" 
           className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
-          onClick={onViewDetails}
+          onClick={handleViewDetails}
         >
           Lihat Detail
         </Button>

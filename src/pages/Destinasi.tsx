@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { DestinationCard } from '@/components/DestinationCard';
@@ -92,6 +93,7 @@ const Destinasi = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [filteredDestinations, setFilteredDestinations] = useState(allDestinations);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     const filtered = allDestinations.filter(destination => {
@@ -123,6 +125,10 @@ const Destinasi = () => {
     setSearchTerm('');
     setSelectedCategory('Semua');
     setFilteredDestinations(allDestinations);
+  };
+
+  const handleViewDetails = (id: number) => {
+    navigate(`/destinasi/detail?id=${id}`);
   };
 
   return (
@@ -203,6 +209,7 @@ const Destinasi = () => {
                 rating={destination.rating}
                 category={destination.category}
                 description={destination.description}
+                onViewDetails={() => handleViewDetails(destination.id)}
               />
             ))}
           </div>
