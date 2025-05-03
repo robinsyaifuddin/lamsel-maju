@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -5,6 +6,9 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Star, MapPin, Calendar, ArrowLeft, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { MapLocation } from '@/components/MapLocation';
+import { ReviewSection } from '@/components/ReviewSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Import same destination data used in other components
 const allDestinations = [
@@ -157,7 +161,9 @@ const allDestinations = [
 const DestinationDetail = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [destination, setDestination] = useState<(typeof allDestinations)[0] | null>(null);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
   
   useEffect(() => {
     const id = searchParams.get('id');
@@ -165,6 +171,8 @@ const DestinationDetail = () => {
       const found = allDestinations.find(dest => dest.id === parseInt(id));
       if (found) {
         setDestination(found);
+        // Set page title for better SEO
+        document.title = `${found.name} - Lampung Selatan Wisata`;
       } else {
         navigate('/destinasi');
       }
@@ -185,19 +193,31 @@ const DestinationDetail = () => {
     );
   }
 
+  const handleExpandImage = () => {
+    setIsImageExpanded(!isImageExpanded);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      {/* Hero Section */}
-      <div className="relative h-[50vh] w-full">
+      {/* Hero Image Section */}
+      <div className={`relative ${isImageExpanded ? 'h-[85vh]' : 'h-[40vh] md:h-[50vh]'} w-full transition-all duration-500`}>
         <img 
           src={destination.image} 
           alt={destination.name}
           className="h-full w-full object-cover"
+          onClick={handleExpandImage}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full p-6 sm:p-10">
+        <button 
+          onClick={handleExpandImage}
+          className="absolute bottom-4 right-4 rounded-full bg-white/20 p-2 text-sm text-white backdrop-blur-md transition hover:bg-white/30"
+        >
+          {isImageExpanded ? 'Tutup Gambar' : 'Perbesar Gambar'}
+        </button>
+        
+        <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 md:p-8">
           <div className="container mx-auto">
             <Button 
               variant="outline" 
@@ -207,14 +227,16 @@ const DestinationDetail = () => {
               <ArrowLeft className="mr-2 h-4 w-4" />
               Kembali
             </Button>
-            <Badge className="mb-4 bg-lamsel-blue">{destination.category}</Badge>
-            <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">{destination.name}</h1>
-            <div className="mt-2 flex items-center">
-              <MapPin className="mr-2 h-5 w-5 text-white" />
-              <span className="text-white">{destination.location}</span>
-              <div className="ml-4 flex items-center">
-                <Star className="mr-1 h-5 w-5 fill-yellow-400 text-yellow-400" />
-                <span className="text-white">{destination.rating.toFixed(1)}</span>
+            <Badge className="mb-2 bg-lamsel-blue">{destination.category}</Badge>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">{destination.name}</h1>
+            <div className="mt-2 flex flex-wrap items-center gap-4">
+              <div className="flex items-center">
+                <MapPin className="mr-1 h-4 w-4 text-white" />
+                <span className="text-sm text-white md:text-base">{destination.location}</span>
+              </div>
+              <div className="flex items-center">
+                <Star className="mr-1 h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <span className="text-sm text-white md:text-base">{destination.rating.toFixed(1)}</span>
               </div>
             </div>
           </div>
@@ -222,51 +244,86 @@ const DestinationDetail = () => {
       </div>
       
       {/* Content */}
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-4 py-8 md:py-10">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <h2 className="mb-4 text-2xl font-bold">Tentang Destinasi</h2>
-            <p className="mb-6 text-gray-700 leading-relaxed">
-              {destination.fullDescription}
-            </p>
-            
-            <h3 className="mb-3 text-xl font-semibold">Fasilitas</h3>
-            <div className="mb-6 flex flex-wrap gap-2">
-              {destination.facilities.map((facility, index) => (
-                <Badge key={index} variant="outline" className="bg-gray-100 text-gray-700">
-                  {facility}
-                </Badge>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Jam Operasional</h4>
-                <div className="flex items-center text-gray-700">
-                  <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                  {destination.operatingHours}
-                </div>
+          {/* Main Content */}
+          <div className="order-2 lg:order-1 lg:col-span-2">
+            {/* About Section */}
+            <section className="mb-10">
+              <h2 className="mb-4 text-2xl font-bold md:text-3xl">Tentang Destinasi</h2>
+              <p className="mb-6 leading-relaxed text-gray-700">
+                {destination.fullDescription}
+              </p>
+              
+              {/* Facilities */}
+              <h3 className="mb-3 text-xl font-semibold">Fasilitas</h3>
+              <div className="mb-6 flex flex-wrap gap-2">
+                {destination.facilities.map((facility, index) => (
+                  <Badge key={index} variant="outline" className="bg-gray-100 text-gray-700">
+                    {facility}
+                  </Badge>
+                ))}
               </div>
               
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Biaya Masuk</h4>
-                <div className="flex items-center text-gray-700">
-                  <span className="mr-2 text-lg font-bold text-lamsel-blue">Rp</span>
-                  {destination.entryFee}
+              {/* Info Cards */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                <div className="rounded-lg bg-gray-50 p-4 transition-all hover:bg-gray-100">
+                  <h4 className="mb-2 font-semibold">Jam Operasional</h4>
+                  <div className="flex items-center text-gray-700">
+                    <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
+                    {destination.operatingHours}
+                  </div>
+                </div>
+                
+                <div className="rounded-lg bg-gray-50 p-4 transition-all hover:bg-gray-100">
+                  <h4 className="mb-2 font-semibold">Biaya Masuk</h4>
+                  <div className="flex items-center text-gray-700">
+                    <span className="mr-2 text-lg font-bold text-lamsel-blue">Rp</span>
+                    {destination.entryFee.replace('Rp ', '')}
+                  </div>
+                </div>
+                
+                <div className="rounded-lg bg-gray-50 p-4 transition-all hover:bg-gray-100">
+                  <h4 className="mb-2 font-semibold">Waktu Terbaik</h4>
+                  <div className="flex items-center text-gray-700">
+                    <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
+                    {destination.bestTime}
+                  </div>
                 </div>
               </div>
-              
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Waktu Terbaik Mengunjungi</h4>
-                <div className="flex items-center text-gray-700">
-                  <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                  {destination.bestTime}
-                </div>
+            </section>
+            
+            {/* Location Section */}
+            <section className="mb-10">
+              <h2 className="mb-6 text-2xl font-bold md:text-3xl">Lokasi</h2>
+              <MapLocation 
+                longitude={destination.coordinates.lng}
+                latitude={destination.coordinates.lat}
+                locationName={destination.name}
+              />
+              <div className="mt-4 flex flex-col space-y-2 text-gray-700">
+                <p className="flex items-start">
+                  <MapPin className="mr-2 mt-1 h-4 w-4 shrink-0 text-lamsel-blue" />
+                  <span>{destination.location}, Lampung Selatan, Lampung, Indonesia</span>
+                </p>
+                <p className="text-sm">
+                  Koordinat GPS: {destination.coordinates.lat.toFixed(6)}, {destination.coordinates.lng.toFixed(6)}
+                </p>
               </div>
-            </div>
+            </section>
+            
+            {/* Reviews Section */}
+            <section className="mb-10">
+              <ReviewSection 
+                destinationId={destination.id} 
+                destinationName={destination.name}
+                initialRating={destination.rating}
+              />
+            </section>
           </div>
           
-          <div>
+          {/* Sidebar */}
+          <div className="order-1 lg:order-2">
             <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
               <h3 className="mb-4 text-xl font-bold">Rencanakan Kunjungan</h3>
               
@@ -300,6 +357,17 @@ const DestinationDetail = () => {
                 <Button variant="outline" className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white">
                   Bergabung dengan Tur
                 </Button>
+              </div>
+
+              <div className="mt-6 rounded-lg bg-blue-50 p-4">
+                <h4 className="mb-2 font-semibold">Tips Perjalanan</h4>
+                <ul className="ml-5 list-disc text-sm text-gray-700">
+                  <li className="mb-1">Sediakan uang tunai untuk masuk dan parkir</li>
+                  <li className="mb-1">Bawa bekal air minum dan makanan</li>
+                  <li className="mb-1">Gunakan pakaian yang nyaman</li>
+                  <li className="mb-1">Perhatikan jam operasional lokasi</li>
+                  <li>Jaga kebersihan area wisata</li>
+                </ul>
               </div>
             </div>
           </div>
