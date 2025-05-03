@@ -13,6 +13,7 @@ interface DestinationCardProps {
   rating: number;
   category: string;
   description: string;
+  onViewDetails?: () => void;
 }
 
 export const DestinationCard: React.FC<DestinationCardProps> = ({
@@ -22,7 +23,8 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
   location,
   rating,
   category,
-  description
+  description,
+  onViewDetails
 }) => {
   return (
     <Card className="destination-card overflow-hidden">
@@ -52,7 +54,11 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
         </p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white">
+        <Button 
+          variant="outline" 
+          className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+          onClick={onViewDetails}
+        >
           Lihat Detail
         </Button>
       </CardFooter>

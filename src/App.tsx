@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Destinasi from "./pages/Destinasi";
+import DestinationDetail from "./pages/DestinationDetail";
 import Agenda from "./pages/Agenda";
 import UMKM from "./pages/UMKM";
 import Kecamatan from "./pages/Kecamatan";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/destinasi" element={<Destinasi />} />
+          <Route path="/destinasi/detail" element={<DestinationDetail />} />
           <Route path="/agenda" element={<Agenda />} />
           <Route path="/umkm" element={<UMKM />} />
           <Route path="/kecamatan" element={<Kecamatan />} />

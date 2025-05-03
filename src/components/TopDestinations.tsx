@@ -51,6 +51,10 @@ export const TopDestinations = () => {
   const handleViewAll = () => {
     navigate('/destinasi');
   };
+  
+  const handleViewDestination = (id: number) => {
+    navigate(`/destinasi?id=${id}`);
+  };
 
   return (
     <div className="container mx-auto py-16 px-4">
@@ -82,6 +86,7 @@ export const TopDestinations = () => {
             rating={destination.rating}
             category={destination.category}
             description={destination.description}
+            onViewDetails={() => handleViewDestination(destination.id)}
           />
         ))}
       </div>
