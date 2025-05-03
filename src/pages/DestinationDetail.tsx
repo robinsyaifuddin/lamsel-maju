@@ -1,10 +1,16 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Calendar, ArrowLeft, Users } from 'lucide-react';
+import { Star, MapPin, Calendar, ArrowLeft, Users, Send } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import DestinationMap from '@/components/DestinationMap';
 
 // Import same destination data used in other components
 const allDestinations = [
@@ -24,7 +30,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.7524,
       lng: 105.6881
-    }
+    },
+    address: "Jl. Way Belerang No. 21, Kalianda, Lampung Selatan, Lampung 35513"
   },
   {
     id: 2,
@@ -42,7 +49,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.7848,
       lng: 105.5984
-    }
+    },
+    address: "Kawasan Gunung Rajabasa, Desa Kunjir, Kecamatan Rajabasa, Lampung Selatan, Lampung 35552"
   },
   {
     id: 3,
@@ -60,7 +68,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.6723,
       lng: 105.6384
-    }
+    },
+    address: "Desa Way Kalam, Kecamatan Penengahan, Lampung Selatan, Lampung 35594"
   },
   {
     id: 4,
@@ -78,7 +87,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.9323,
       lng: 105.4763
-    }
+    },
+    address: "Pulau Sebesi, Kecamatan Rajabasa, Lampung Selatan, Lampung 35559"
   },
   {
     id: 5,
@@ -96,7 +106,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.8623,
       lng: 105.7523
-    }
+    },
+    address: "Jl. Lintas Sumatera, Bakauheni, Lampung Selatan, Lampung 35592"
   },
   {
     id: 6,
@@ -114,7 +125,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.6204,
       lng: 105.7763
-    }
+    },
+    address: "Jl. Raya Way Kambas, Labuhan Ratu, Lampung Selatan, Lampung 35513"
   },
   {
     id: 7,
@@ -132,7 +144,8 @@ const allDestinations = [
     coordinates: {
       lat: -5.8023,
       lng: 105.5784
-    }
+    },
+    address: "Desa Mengkudu, Kecamatan Rajabasa, Lampung Selatan, Lampung 35576"
   },
   {
     id: 8,
@@ -150,7 +163,39 @@ const allDestinations = [
     coordinates: {
       lat: -5.5463,
       lng: 105.5123
-    }
+    },
+    address: "Desa Jati Indah, Kecamatan Jati Agung, Lampung Selatan, Lampung 35365"
+  }
+];
+
+// Sample reviews data
+const sampleReviews = [
+  {
+    id: 1,
+    destinationId: 1,
+    name: "Budi Santoso",
+    avatar: "BS",
+    rating: 5,
+    date: "12 April 2023",
+    comment: "Pantainya sangat indah dan bersih. Air lautnya jernih dan cocok untuk berenang. Fasilitas juga memadai."
+  },
+  {
+    id: 2,
+    destinationId: 1,
+    name: "Siti Rahayu",
+    avatar: "SR",
+    rating: 4,
+    date: "25 Mei 2023",
+    comment: "Tempatnya bagus, tapi agak ramai di akhir pekan. Sebaiknya datang di hari kerja untuk menikmati suasana yang lebih tenang."
+  },
+  {
+    id: 3,
+    destinationId: 2,
+    name: "Ahmad Rizki",
+    avatar: "AR",
+    rating: 5,
+    date: "8 Juni 2023",
+    comment: "Pemandangan dari puncak gunung sangat spektakuler! Jalur pendakian cukup menantang tapi sangat worth it."
   }
 ];
 
@@ -158,6 +203,12 @@ const DestinationDetail = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [destination, setDestination] = useState<(typeof allDestinations)[0] | null>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [newReview, setNewReview] = useState("");
+  const [userRating, setUserRating] = useState(5);
+  const [userName, setUserName] = useState("");
+  const [activeTab, setActiveTab] = useState("overview");
+  const { toast } = useToast();
   
   useEffect(() => {
     const id = searchParams.get('id');
@@ -165,6 +216,12 @@ const DestinationDetail = () => {
       const found = allDestinations.find(dest => dest.id === parseInt(id));
       if (found) {
         setDestination(found);
+        
+        // Load reviews for this destination
+        const destinationReviews = sampleReviews.filter(
+          review => review.destinationId === parseInt(id)
+        );
+        setReviews(destinationReviews);
       } else {
         navigate('/destinasi');
       }
@@ -172,6 +229,59 @@ const DestinationDetail = () => {
       navigate('/destinasi');
     }
   }, [searchParams, navigate]);
+
+  const handleSubmitReview = () => {
+    if (newReview.trim() === "") {
+      toast({
+        title: "Ulasan kosong",
+        description: "Silahkan tulis ulasan Anda",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (userName.trim() === "") {
+      toast({
+        title: "Nama kosong",
+        description: "Silahkan isi nama Anda",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const avatarInitials = userName
+      .split(" ")
+      .map(name => name[0])
+      .join("")
+      .toUpperCase();
+
+    // Create new review
+    const newReviewItem = {
+      id: reviews.length + 1,
+      destinationId: destination?.id || 0,
+      name: userName,
+      avatar: avatarInitials || "U",
+      rating: userRating,
+      date: new Date().toLocaleDateString('id-ID', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+      }),
+      comment: newReview
+    };
+
+    // Add review to the list
+    setReviews([newReviewItem, ...reviews]);
+    
+    // Reset form
+    setNewReview("");
+    setUserRating(5);
+
+    toast({
+      title: "Ulasan terkirim",
+      description: "Terima kasih atas ulasan Anda",
+    });
+  };
 
   if (!destination) {
     return (
@@ -197,7 +307,7 @@ const DestinationDetail = () => {
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full p-6 sm:p-10">
+        <div className="absolute bottom-0 left-0 w-full p-4 sm:p-8 lg:p-10">
           <div className="container mx-auto">
             <Button 
               variant="outline" 
@@ -208,102 +318,326 @@ const DestinationDetail = () => {
               Kembali
             </Button>
             <Badge className="mb-4 bg-lamsel-blue">{destination.category}</Badge>
-            <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">{destination.name}</h1>
-            <div className="mt-2 flex items-center">
-              <MapPin className="mr-2 h-5 w-5 text-white" />
-              <span className="text-white">{destination.location}</span>
-              <div className="ml-4 flex items-center">
-                <Star className="mr-1 h-5 w-5 fill-yellow-400 text-yellow-400" />
-                <span className="text-white">{destination.rating.toFixed(1)}</span>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">{destination.name}</h1>
+            <div className="mt-2 flex items-center flex-wrap gap-2">
+              <div className="flex items-center">
+                <MapPin className="mr-1 h-4 w-4 text-white" />
+                <span className="text-sm md:text-base text-white">{destination.location}</span>
+              </div>
+              <div className="flex items-center">
+                <Star className="mr-1 h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <span className="text-sm md:text-base text-white">{destination.rating.toFixed(1)}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Content */}
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <h2 className="mb-4 text-2xl font-bold">Tentang Destinasi</h2>
-            <p className="mb-6 text-gray-700 leading-relaxed">
-              {destination.fullDescription}
-            </p>
-            
-            <h3 className="mb-3 text-xl font-semibold">Fasilitas</h3>
-            <div className="mb-6 flex flex-wrap gap-2">
-              {destination.facilities.map((facility, index) => (
-                <Badge key={index} variant="outline" className="bg-gray-100 text-gray-700">
-                  {facility}
-                </Badge>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Jam Operasional</h4>
-                <div className="flex items-center text-gray-700">
-                  <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                  {destination.operatingHours}
-                </div>
-              </div>
-              
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Biaya Masuk</h4>
-                <div className="flex items-center text-gray-700">
-                  <span className="mr-2 text-lg font-bold text-lamsel-blue">Rp</span>
-                  {destination.entryFee}
-                </div>
-              </div>
-              
-              <div className="rounded-lg bg-gray-50 p-4">
-                <h4 className="mb-2 font-semibold">Waktu Terbaik Mengunjungi</h4>
-                <div className="flex items-center text-gray-700">
-                  <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                  {destination.bestTime}
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Content with Tabs */}
+      <div className="container mx-auto px-4 py-6 md:py-10">
+        <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab} value={activeTab}>
+          <TabsList className="w-full grid grid-cols-3 mb-6">
+            <TabsTrigger value="overview">Informasi</TabsTrigger>
+            <TabsTrigger value="map">Lokasi & Peta</TabsTrigger>
+            <TabsTrigger value="reviews">Ulasan</TabsTrigger>
+          </TabsList>
           
-          <div>
-            <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-xl font-bold">Rencanakan Kunjungan</h3>
-              
-              <div className="mb-4">
-                <label className="mb-2 block text-sm font-medium">Tanggal Kunjungan</label>
-                <input 
-                  type="date" 
-                  className="w-full rounded-md border border-gray-300 p-2 focus:border-lamsel-blue focus:outline-none focus:ring-1 focus:ring-lamsel-blue"
-                />
-              </div>
-              
-              <div className="mb-4">
-                <label className="mb-2 block text-sm font-medium">Jumlah Pengunjung</label>
-                <div className="flex items-center rounded-md border border-gray-300 p-2">
-                  <Users className="mr-2 h-4 w-4 text-gray-500" />
-                  <select className="w-full bg-transparent focus:outline-none">
-                    <option value="1">1 Orang</option>
-                    <option value="2">2 Orang</option>
-                    <option value="3">3 Orang</option>
-                    <option value="4">4 Orang</option>
-                    <option value="5+">5+ Orang</option>
-                  </select>
+          <TabsContent value="overview" className="mt-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <h2 className="mb-4 text-2xl font-bold">Tentang Destinasi</h2>
+                <p className="mb-6 text-gray-700 leading-relaxed">
+                  {destination.fullDescription}
+                </p>
+                
+                <h3 className="mb-3 text-xl font-semibold">Fasilitas</h3>
+                <div className="mb-6 flex flex-wrap gap-2">
+                  {destination.facilities.map((facility, index) => (
+                    <Badge key={index} variant="outline" className="bg-gray-100 text-gray-700">
+                      {facility}
+                    </Badge>
+                  ))}
+                </div>
+                
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <h4 className="mb-2 font-semibold">Jam Operasional</h4>
+                    <div className="flex items-center text-gray-700">
+                      <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
+                      {destination.operatingHours}
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <h4 className="mb-2 font-semibold">Biaya Masuk</h4>
+                    <div className="flex items-center text-gray-700">
+                      <span className="mr-2 text-lg font-bold text-lamsel-blue">Rp</span>
+                      {destination.entryFee.replace('Rp ', '')}
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-lg bg-gray-50 p-4">
+                    <h4 className="mb-2 font-semibold">Waktu Terbaik</h4>
+                    <div className="flex items-center text-gray-700">
+                      <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
+                      {destination.bestTime}
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              <Button className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80">
-                Pesan Tiket
-              </Button>
-              
-              <div className="mt-4">
-                <Button variant="outline" className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white">
-                  Bergabung dengan Tur
-                </Button>
+              <div className="mt-8 lg:mt-0">
+                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
+                  <h3 className="mb-4 text-xl font-bold">Rencanakan Kunjungan</h3>
+                  
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Tanggal Kunjungan</label>
+                    <input 
+                      type="date" 
+                      className="w-full rounded-md border border-gray-300 p-2 focus:border-lamsel-blue focus:outline-none focus:ring-1 focus:ring-lamsel-blue"
+                    />
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Jumlah Pengunjung</label>
+                    <div className="flex items-center rounded-md border border-gray-300 p-2">
+                      <Users className="mr-2 h-4 w-4 text-gray-500" />
+                      <select className="w-full bg-transparent focus:outline-none">
+                        <option value="1">1 Orang</option>
+                        <option value="2">2 Orang</option>
+                        <option value="3">3 Orang</option>
+                        <option value="4">4 Orang</option>
+                        <option value="5+">5+ Orang</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <Button className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80">
+                    Pesan Tiket
+                  </Button>
+                  
+                  <div className="mt-4">
+                    <Button variant="outline" className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white">
+                      Bergabung dengan Tur
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="map" className="mt-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <h2 className="mb-4 text-2xl font-bold">Lokasi</h2>
+                
+                <div className="mb-6">
+                  <div className="mb-2 flex items-start">
+                    <MapPin className="mt-1 mr-2 h-5 w-5 flex-shrink-0 text-lamsel-blue" />
+                    <p className="text-gray-700">
+                      {destination.address}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="h-[400px] w-full rounded-lg overflow-hidden border shadow mb-8">
+                  <DestinationMap lat={destination.coordinates.lat} lng={destination.coordinates.lng} name={destination.name} />
+                </div>
+                
+                <h3 className="mb-3 text-xl font-semibold">Petunjuk Arah</h3>
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <p className="text-gray-700">
+                    Untuk mencapai {destination.name}, pengunjung dapat menggunakan transportasi pribadi atau umum. 
+                    Dari pusat Kota Kalianda, jaraknya sekitar {Math.floor(Math.random() * 20) + 5} km dan dapat 
+                    ditempuh dalam waktu kurang lebih {Math.floor(Math.random() * 30) + 20} menit menggunakan 
+                    kendaraan bermotor.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-8 lg:mt-0">
+                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
+                  <h3 className="mb-4 text-xl font-bold">Informasi Tambahan</h3>
+                  
+                  <div className="mb-4">
+                    <h4 className="mb-2 font-semibold">Transportasi Umum</h4>
+                    <p className="text-gray-700 text-sm">
+                      Angkutan umum tersedia dari terminal Kalianda menuju ke lokasi destinasi. 
+                      Alternatif lain adalah menggunakan layanan ojek online atau taksi lokal.
+                    </p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <h4 className="mb-2 font-semibold">Parkir</h4>
+                    <p className="text-gray-700 text-sm">
+                      Tersedia area parkir yang luas untuk kendaraan roda dua dan roda empat 
+                      dengan biaya parkir Rp 5.000 untuk motor dan Rp 10.000 untuk mobil.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="mb-2 font-semibold">Tips Perjalanan</h4>
+                    <ul className="list-disc pl-5 text-sm text-gray-700">
+                      <li>Bawa perlengkapan yang sesuai dengan aktivitas yang akan dilakukan</li>
+                      <li>Siapkan uang tunai secukupnya karena beberapa tempat mungkin tidak menerima pembayaran digital</li>
+                      <li>Jaga barang bawaan dan selalu perhatikan lingkungan sekitar</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="reviews" className="mt-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <h2 className="mb-4 text-2xl font-bold">Ulasan Pengunjung</h2>
+                
+                {/* Review Form */}
+                <div className="mb-8 rounded-lg border bg-white p-6 shadow-sm">
+                  <h3 className="mb-4 text-lg font-semibold">Bagikan Pengalaman Anda</h3>
+                  
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Nama</label>
+                    <input 
+                      type="text" 
+                      placeholder="Nama Anda"
+                      className="w-full rounded-md border border-gray-300 p-2 focus:border-lamsel-blue focus:outline-none focus:ring-1 focus:ring-lamsel-blue"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Penilaian</label>
+                    <div className="flex items-center space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setUserRating(star)}
+                          className="focus:outline-none"
+                        >
+                          <Star
+                            className={`h-6 w-6 ${
+                              star <= userRating
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">Ulasan</label>
+                    <Textarea 
+                      placeholder="Bagikan pengalaman Anda di sini..."
+                      className="min-h-[100px]"
+                      value={newReview}
+                      onChange={(e) => setNewReview(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <Button 
+                    className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80"
+                    onClick={handleSubmitReview}
+                  >
+                    <Send className="mr-2 h-4 w-4" />
+                    Kirim Ulasan
+                  </Button>
+                </div>
+                
+                {/* Reviews List */}
+                <div className="space-y-4">
+                  {reviews.length > 0 ? (
+                    reviews.map((review) => (
+                      <div key={review.id} className="rounded-lg border bg-white p-4 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div className="flex items-center">
+                            <Avatar className="mr-2 h-10 w-10">
+                              <AvatarImage src={`https://ui-avatars.com/api/?name=${review.avatar}`} />
+                              <AvatarFallback>{review.avatar}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <h4 className="font-medium">{review.name}</h4>
+                              <p className="text-xs text-gray-500">{review.date}</p>
+                            </div>
+                          </div>
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star 
+                                key={i}
+                                className={`h-4 w-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-gray-700">{review.comment}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="rounded-lg border bg-gray-50 p-8 text-center">
+                      <p className="text-gray-500">Belum ada ulasan untuk destinasi ini</p>
+                      <p className="mt-2 text-sm text-gray-400">Jadilah yang pertama memberikan ulasan</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="mt-8 lg:mt-0">
+                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
+                  <h3 className="mb-4 text-xl font-bold">Penilaian Rata-rata</h3>
+                  
+                  <div className="mb-6 flex items-center justify-center">
+                    <div className="flex items-center justify-center rounded-full bg-lamsel-blue h-20 w-20 text-white">
+                      <span className="text-3xl font-bold">{destination.rating.toFixed(1)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i}
+                          className={`h-6 w-6 ${
+                            i < Math.round(destination.rating)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-500">
+                      Berdasarkan {reviews.length} ulasan
+                    </p>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+                      onClick={() => {
+                        window.scrollTo({
+                          top: document.querySelector('form')?.offsetTop || 0,
+                          behavior: 'smooth'
+                        });
+                      }}
+                    >
+                      Tulis Ulasan
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
       
       <Footer />
