@@ -1,0 +1,71 @@
+
+import React from 'react';
+import { Button } from "@/components/ui/button";
+
+export const PromoSection = () => {
+  return (
+    <div className="container mx-auto py-10 px-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Promo Card 1 */}
+        <div className="card-3d overflow-hidden rounded-2xl bg-gradient-to-r from-lamsel-blue to-blue-700 text-white">
+          <div className="card-3d-content p-8 md:p-10">
+            <div className="flex justify-between">
+              <div>
+                <h3 className="text-2xl font-bold md:text-3xl">Diskon Spesial</h3>
+                <div className="mt-2 flex items-baseline gap-1">
+                  <span className="text-5xl font-bold md:text-7xl">30%</span>
+                  <span className="text-xl">OFF</span>
+                </div>
+                <p className="mt-3 max-w-xs">
+                  Dapatkan diskon spesial untuk kunjungan ke destinasi wisata pilihan di Lampung Selatan
+                </p>
+                <Button className="mt-5 bg-white text-lamsel-blue hover:bg-white/90">
+                  Selengkapnya
+                </Button>
+              </div>
+              <div className="relative hidden md:block">
+                <div className="absolute -right-10 top-0">
+                  <img 
+                    src="https://images.unsplash.com/photo-1500673922987-e212871fec22?q=80&w=3270&auto=format&fit=crop" 
+                    alt="Nature" 
+                    className="h-48 w-48 object-cover rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Promo Card 2 */}
+        <div className="card-3d overflow-hidden rounded-2xl bg-gradient-to-r from-lamsel-orange to-orange-700 text-white">
+          <div className="card-3d-content p-8 md:p-10">
+            <div className="flex justify-between">
+              <div>
+                <h3 className="text-2xl font-bold md:text-3xl">Paket Liburan</h3>
+                <div className="mt-2">
+                  <span className="text-xl">Mulai dari</span>
+                  <div className="text-4xl font-bold md:text-5xl">Rp 500.000</div>
+                </div>
+                <p className="mt-3 max-w-xs">
+                  Jelajahi keindahan wisata Lampung Selatan dengan paket liburan yang terjangkau
+                </p>
+                <Button className="mt-5 bg-white text-lamsel-orange hover:bg-white/90">
+                  Pesan Sekarang
+                </Button>
+              </div>
+              <div className="relative hidden md:block">
+                <div className="absolute -right-10 top-0">
+                  <img 
+                    src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=2900&auto=format&fit=crop" 
+                    alt="Beach" 
+                    className="h-48 w-48 object-cover rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

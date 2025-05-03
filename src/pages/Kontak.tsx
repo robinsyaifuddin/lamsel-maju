@@ -1,0 +1,294 @@
+
+import React, { useState } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Clock,
+  CheckCircle
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+const Kontak = () => {
+  const { toast } = useToast();
+  
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+      
+      toast({
+        title: "Pesan Terkirim",
+        description: "Terima kasih telah menghubungi kami. Kami akan segera merespon.",
+      });
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      
+      {/* Page Header */}
+      <div className="pt-20 bg-lamsel-dark text-white">
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-4xl font-bold mb-4">Kontak Kami</h1>
+          <p className="max-w-2xl">
+            Kami siap menjawab pertanyaan Anda tentang pariwisata dan UMKM di Lampung Selatan. Jangan ragu untuk menghubungi kami.
+          </p>
+        </div>
+      </div>
+      
+      {/* Contact Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          {/* Contact Form */}
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">Kirim Pesan</h2>
+              <p className="mt-2 text-gray-600">
+                Ada pertanyaan, saran, atau masukan? Sampaikan kepada kami melalui formulir di bawah ini.
+              </p>
+            </div>
+            
+            {isSubmitted ? (
+              <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-center">
+                <div className="flex justify-center">
+                  <CheckCircle className="h-16 w-16 text-green-500" />
+                </div>
+                <h3 className="mt-4 text-xl font-semibold">Pesan Terkirim!</h3>
+                <p className="mt-2 text-gray-600">
+                  Terima kasih telah menghubungi kami. Tim kami akan segera merespon pesan Anda.
+                </p>
+                <Button 
+                  className="mt-4 bg-lamsel-blue hover:bg-lamsel-blue/80"
+                  onClick={() => setIsSubmitted(false)}
+                >
+                  Kirim Pesan Lain
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="mb-1 block text-sm font-medium">
+                    Nama Lengkap
+                  </label>
+                  <Input 
+                    id="name"
+                    name="name"
+                    placeholder="Masukkan nama lengkap"
+                    value={formState.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="mb-1 block text-sm font-medium">
+                    Email
+                  </label>
+                  <Input 
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Masukkan alamat email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="subject" className="mb-1 block text-sm font-medium">
+                    Subjek
+                  </label>
+                  <Input 
+                    id="subject"
+                    name="subject"
+                    placeholder="Subjek pesan"
+                    value={formState.subject}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="mb-1 block text-sm font-medium">
+                    Pesan
+                  </label>
+                  <Textarea 
+                    id="message"
+                    name="message"
+                    placeholder="Tulis pesan Anda di sini..."
+                    rows={5}
+                    value={formState.message}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                </Button>
+              </form>
+            )}
+          </div>
+          
+          {/* Contact Information */}
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">Informasi Kontak</h2>
+              <p className="mt-2 text-gray-600">
+                Anda juga dapat menghubungi kami melalui informasi di bawah ini.
+              </p>
+            </div>
+            
+            <div className="card-3d space-y-6">
+              <div className="card-3d-content rounded-lg border p-6 shadow-sm">
+                <div className="flex items-start">
+                  <MapPin className="mr-4 h-6 w-6 text-lamsel-blue" />
+                  <div>
+                    <h3 className="font-semibold">Alamat</h3>
+                    <p className="mt-1 text-gray-600">
+                      Jl. Raya Lampung Selatan No. 123, Kalianda, Lampung Selatan, Indonesia
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="card-3d-content rounded-lg border p-6 shadow-sm">
+                <div className="flex items-start">
+                  <Phone className="mr-4 h-6 w-6 text-lamsel-blue" />
+                  <div>
+                    <h3 className="font-semibold">Telepon</h3>
+                    <p className="mt-1 text-gray-600">
+                      (0000) 000-0000
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="card-3d-content rounded-lg border p-6 shadow-sm">
+                <div className="flex items-start">
+                  <Mail className="mr-4 h-6 w-6 text-lamsel-blue" />
+                  <div>
+                    <h3 className="font-semibold">Email</h3>
+                    <p className="mt-1 text-gray-600">
+                      info@lamselmaju.go.id
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="card-3d-content rounded-lg border p-6 shadow-sm">
+                <div className="flex items-start">
+                  <Clock className="mr-4 h-6 w-6 text-lamsel-blue" />
+                  <div>
+                    <h3 className="font-semibold">Jam Operasional</h3>
+                    <p className="mt-1 text-gray-600">
+                      Senin - Jumat: 08.00 - 16.00 WIB
+                      <br />
+                      Sabtu - Minggu: Tutup
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8">
+              <h3 className="font-semibold">Lokasi Kami</h3>
+              <div className="mt-2 h-60 rounded-lg bg-gray-200">
+                {/* This would be replaced with an actual map */}
+                <div className="flex h-full items-center justify-center">
+                  <p className="text-gray-500">Peta Lokasi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* FAQ Section */}
+      <div className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl font-bold">Pertanyaan Umum</h2>
+            <p className="mt-2 text-gray-600">
+              Jawaban untuk pertanyaan yang sering diajukan
+            </p>
+          </div>
+          
+          <div className="mx-auto max-w-3xl space-y-4">
+            <div className="rounded-lg border p-5">
+              <h3 className="text-lg font-semibold">Bagaimana cara mendaftar ke agenda travel?</h3>
+              <p className="mt-2 text-gray-600">
+                Anda dapat mendaftar ke agenda travel melalui website ini dengan mengklik tombol "Bergabung" pada halaman Agenda Travel, atau menghubungi kami melalui telepon atau email.
+              </p>
+            </div>
+            
+            <div className="rounded-lg border p-5">
+              <h3 className="text-lg font-semibold">Bagaimana cara mendaftarkan UMKM saya?</h3>
+              <p className="mt-2 text-gray-600">
+                Untuk mendaftarkan UMKM Anda, silakan menghubungi kami melalui formulir kontak di atas atau datang langsung ke kantor Dinas Koperasi dan UMKM Lampung Selatan.
+              </p>
+            </div>
+            
+            <div className="rounded-lg border p-5">
+              <h3 className="text-lg font-semibold">Apakah ada panduan wisata di Lampung Selatan?</h3>
+              <p className="mt-2 text-gray-600">
+                Ya, kami menyediakan layanan panduan wisata. Anda dapat memesan panduan wisata melalui halaman Agenda Travel atau menghubungi kami langsung.
+              </p>
+            </div>
+            
+            <div className="rounded-lg border p-5">
+              <h3 className="text-lg font-semibold">Bagaimana transportasi di Lampung Selatan?</h3>
+              <p className="mt-2 text-gray-600">
+                Transportasi di Lampung Selatan tersedia dalam bentuk angkutan umum, taksi, dan rental kendaraan. Kami juga dapat membantu Anda mengatur transportasi selama kunjungan Anda.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Kontak;
