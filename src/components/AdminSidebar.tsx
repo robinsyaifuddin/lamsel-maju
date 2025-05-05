@@ -24,6 +24,12 @@ interface SidebarLinkProps {
   active?: boolean;
 }
 
+interface AdminSidebarProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+  isUMKMAdmin?: boolean;
+}
+
 const SidebarLink = ({ icon: Icon, href, label, active }: SidebarLinkProps) => {
   return (
     <Link to={href}>
@@ -42,13 +48,14 @@ const SidebarLink = ({ icon: Icon, href, label, active }: SidebarLinkProps) => {
   );
 };
 
-const AdminSidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: () => void }) => {
+const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminLoggedIn');
     sessionStorage.removeItem('adminUsername');
+    sessionStorage.removeItem('adminType');
     toast.success('Logout berhasil!');
     navigate('/admin/login');
   };
@@ -85,7 +92,9 @@ const AdminSidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideba
           <div className="mb-6 text-center p-2 bg-gray-50 rounded-lg">
             <User className="mx-auto text-lamsel-blue mb-2" size={32} />
             <p className="text-sm font-medium">{adminUsername}</p>
-            <p className="text-xs text-muted-foreground">Administrator</p>
+            <p className="text-xs text-muted-foreground">
+              {isUMKMAdmin ? 'Admin UMKM' : 'Administrator'}
+            </p>
           </div>
         )}
 
@@ -113,16 +122,23 @@ const AdminSidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideba
                   <Map size={20} />
                 </Link>
               </Button>
-              <Button
-                variant={location.pathname === '/admin/agenda' ? 'default' : 'ghost'}
-                size="icon"
-                asChild
-                className="my-1"
-              >
-                <Link to="/admin/agenda">
-                  <Calendar size={20} />
-                </Link>
-              </Button>
+              
+              {/* Show/hide menu items based on admin type */}
+              {!isUMKMAdmin && (
+                <>
+                  <Button
+                    variant={location.pathname === '/admin/agenda' ? 'default' : 'ghost'}
+                    size="icon"
+                    asChild
+                    className="my-1"
+                  >
+                    <Link to="/admin/agenda">
+                      <Calendar size={20} />
+                    </Link>
+                  </Button>
+                </>
+              )}
+              
               <Button
                 variant={location.pathname === '/admin/umkm' ? 'default' : 'ghost'}
                 size="icon"
@@ -133,36 +149,42 @@ const AdminSidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideba
                   <Package size={20} />
                 </Link>
               </Button>
-              <Button
-                variant={location.pathname === '/admin/kecamatan' ? 'default' : 'ghost'}
-                size="icon"
-                asChild
-                className="my-1"
-              >
-                <Link to="/admin/kecamatan">
-                  <Image size={20} />
-                </Link>
-              </Button>
-              <Button
-                variant={location.pathname === '/admin/kontak' ? 'default' : 'ghost'}
-                size="icon"
-                asChild
-                className="my-1"
-              >
-                <Link to="/admin/kontak">
-                  <MessageSquare size={20} />
-                </Link>
-              </Button>
-              <Button
-                variant={location.pathname === '/admin/statistik' ? 'default' : 'ghost'}
-                size="icon"
-                asChild
-                className="my-1"
-              >
-                <Link to="/admin/statistik">
-                  <BarChart3 size={20} />
-                </Link>
-              </Button>
+              
+              {!isUMKMAdmin && (
+                <>
+                  <Button
+                    variant={location.pathname === '/admin/kecamatan' ? 'default' : 'ghost'}
+                    size="icon"
+                    asChild
+                    className="my-1"
+                  >
+                    <Link to="/admin/kecamatan">
+                      <Image size={20} />
+                    </Link>
+                  </Button>
+                  <Button
+                    variant={location.pathname === '/admin/kontak' ? 'default' : 'ghost'}
+                    size="icon"
+                    asChild
+                    className="my-1"
+                  >
+                    <Link to="/admin/kontak">
+                      <MessageSquare size={20} />
+                    </Link>
+                  </Button>
+                  <Button
+                    variant={location.pathname === '/admin/statistik' ? 'default' : 'ghost'}
+                    size="icon"
+                    asChild
+                    className="my-1"
+                  >
+                    <Link to="/admin/statistik">
+                      <BarChart3 size={20} />
+                    </Link>
+                  </Button>
+                </>
+              )}
+              
               <Button
                 variant={location.pathname === '/admin/pengaturan' ? 'default' : 'ghost'}
                 size="icon"
@@ -200,36 +222,47 @@ const AdminSidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideba
                 label="Destinasi Wisata"
                 active={location.pathname === '/admin/destinasi'}
               />
-              <SidebarLink
-                icon={Calendar}
-                href="/admin/agenda"
-                label="Agenda Travel"
-                active={location.pathname === '/admin/agenda'}
-              />
+              
+              {/* Show/hide menu items based on admin type */}
+              {!isUMKMAdmin && (
+                <SidebarLink
+                  icon={Calendar}
+                  href="/admin/agenda"
+                  label="Agenda Travel"
+                  active={location.pathname === '/admin/agenda'}
+                />
+              )}
+              
               <SidebarLink
                 icon={Package}
                 href="/admin/umkm"
                 label="UMKM"
                 active={location.pathname === '/admin/umkm'}
               />
-              <SidebarLink
-                icon={Image}
-                href="/admin/kecamatan"
-                label="Kecamatan"
-                active={location.pathname === '/admin/kecamatan'}
-              />
-              <SidebarLink
-                icon={MessageSquare}
-                href="/admin/kontak"
-                label="Pesan Kontak"
-                active={location.pathname === '/admin/kontak'}
-              />
-              <SidebarLink
-                icon={BarChart3}
-                href="/admin/statistik"
-                label="Statistik"
-                active={location.pathname === '/admin/statistik'}
-              />
+              
+              {!isUMKMAdmin && (
+                <>
+                  <SidebarLink
+                    icon={Image}
+                    href="/admin/kecamatan"
+                    label="Kecamatan"
+                    active={location.pathname === '/admin/kecamatan'}
+                  />
+                  <SidebarLink
+                    icon={MessageSquare}
+                    href="/admin/kontak"
+                    label="Pesan Kontak"
+                    active={location.pathname === '/admin/kontak'}
+                  />
+                  <SidebarLink
+                    icon={BarChart3}
+                    href="/admin/statistik"
+                    label="Statistik"
+                    active={location.pathname === '/admin/statistik'}
+                  />
+                </>
+              )}
+              
               <SidebarLink
                 icon={Settings}
                 href="/admin/pengaturan"
