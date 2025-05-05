@@ -4,11 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { 
@@ -20,14 +18,6 @@ import {
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -83,27 +73,11 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="shadow-sm hover:shadow-md transition-all hover:-translate-y-[2px]">
-                  Destinasi Wisata
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-white shadow-lg rounded-lg border p-4 w-[300px]">
-                  <div className="grid gap-3">
-                    <Link to="/destinasi" className="block p-2 hover:bg-blue-50 rounded-md transition-colors">
-                      <div className="font-medium">Destinasi Populer</div>
-                      <p className="text-sm text-muted-foreground">
-                        Temukan tempat wisata terpopuler di Lampung Selatan
-                      </p>
-                    </Link>
-                    <Link to="/destinasi/detail?id=1" className="block p-2 hover:bg-blue-50 rounded-md transition-colors">
-                      <div className="font-medium">Pantai Tanjung Putus</div>
-                      <p className="text-sm text-muted-foreground">Indahnya pantai dengan pasir putih</p>
-                    </Link>
-                    <Link to="/destinasi/detail?id=2" className="block p-2 hover:bg-blue-50 rounded-md transition-colors">
-                      <div className="font-medium">Air Terjun Way Lalaan</div>
-                      <p className="text-sm text-muted-foreground">Air terjun tersembunyi di Kalianda</p>
-                    </Link>
-                  </div>
-                </NavigationMenuContent>
+                <Link to="/destinasi">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Destinasi Wisata
+                  </NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
@@ -151,31 +125,17 @@ const Navbar = () => {
               <Search className="text-lamsel-dark" size={20} />
             </Button>
             
-            {/* User Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="rounded-full border-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[2px]"
-                >
-                  <User className="mr-2" size={16} />
-                  Login
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profil</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>Favorit Saya</DropdownMenuItem>
-                <DropdownMenuItem>Pengaturan</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Keluar</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Admin Login Button */}
+            <Link to="/admin/login">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="rounded-full border-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[2px] button-3d"
+              >
+                <User className="mr-2" size={16} />
+                Admin Login
+              </Button>
+            </Link>
           </div>
           
           <Button 
@@ -226,40 +186,13 @@ const Navbar = () => {
                 <span className="text-base font-medium">Beranda</span>
               </Link>
               
-              <div className="relative">
-                <details className="group [&[open]>summary]:rounded-b-none">
-                  <summary className="flex cursor-pointer items-center justify-between px-4 py-3 rounded-md hover:bg-blue-50 list-none">
-                    <span className="text-base font-medium">Destinasi Wisata</span>
-                    <ChevronDown 
-                      size={18} 
-                      className="transition-transform group-open:rotate-180" 
-                    />
-                  </summary>
-                  <div className="bg-blue-50/50 rounded-b-md px-4 py-2 space-y-1">
-                    <Link 
-                      to="/destinasi" 
-                      className="block py-2 text-sm hover:text-lamsel-blue"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Semua Destinasi
-                    </Link>
-                    <Link 
-                      to="/destinasi/detail?id=1" 
-                      className="block py-2 text-sm hover:text-lamsel-blue"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Pantai Tanjung Putus
-                    </Link>
-                    <Link 
-                      to="/destinasi/detail?id=2" 
-                      className="block py-2 text-sm hover:text-lamsel-blue"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Air Terjun Way Lalaan
-                    </Link>
-                  </div>
-                </details>
-              </div>
+              <Link 
+                to="/destinasi" 
+                className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="text-base font-medium">Destinasi Wisata</span>
+              </Link>
               
               <Link 
                 to="/agenda" 
@@ -295,10 +228,12 @@ const Navbar = () => {
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t">
-              <Button className="w-full">
-                <User className="mr-2" size={16} />
-                Login
-              </Button>
+              <Link to="/admin/login">
+                <Button className="w-full">
+                  <User className="mr-2" size={16} />
+                  Admin Login
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
