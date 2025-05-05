@@ -18,6 +18,23 @@
     <meta name="twitter:image" content="/lovable-uploads/52981017-1492-4aa2-8101-27cb3682b072.png" />
     
     <link rel="icon" href="/lovable-uploads/52981017-1492-4aa2-8101-27cb3682b072.png" type="image/png">
+    
+    <style>
+      /* Permanently hide the Lovable badge */
+      #lovable-badge, 
+      a[id="lovable-badge"],
+      [id="lovable-badge"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        z-index: -9999 !important;
+        pointer-events: none !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -25,5 +42,40 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Run this script to ensure badge is always hidden
+      document.addEventListener('DOMContentLoaded', function() {
+        // Hide on initial load
+        hideBadge();
+        
+        // Set up observer to catch any dynamic insertions
+        const observer = new MutationObserver(function() {
+          hideBadge();
+        });
+        
+        // Start observing the document body for changes
+        observer.observe(document.body, { 
+          childList: true, 
+          subtree: true 
+        });
+        
+        function hideBadge() {
+          const badge = document.getElementById('lovable-badge');
+          if (badge) {
+            badge.style.display = 'none';
+            badge.style.visibility = 'hidden';
+            badge.remove();
+          }
+          
+          // Also find by attribute selector to be thorough
+          document.querySelectorAll('[id="lovable-badge"]').forEach(function(el) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.remove();
+          });
+        }
+      });
+    </script>
   </body>
 </html>
