@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Menu, Search, User, X, ChevronDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -59,6 +61,7 @@ const Navbar = () => {
     window.scrollTo(0, 0);
     setMobileMenuOpen(false);
   };
+
   return <header className="fixed top-0 left-0 right-0 z-50 shadow-lg bg-white border-b border-gray-100 shadow-[0_4px_15px_rgba(0,0,0,0.05)]">
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
@@ -145,9 +148,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Improved with better animations and layout */}
+      {/* Mobile Menu - Updated to slide from right to left */}
       {mobileMenuOpen && <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
-          <div className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-lg animate-slide-in">
+          <div className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-lg animate-in duration-300 slide-in-from-right">
             <div className="flex justify-between items-center p-4 border-b">
               <div className="flex items-center space-x-2">
                 <div className="rounded-full bg-lamsel-blue p-2">
