@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -517,7 +518,7 @@ Terima kasih.`;
                   >
                     Bergabung dengan Tur
                   </Button>
-                </div>
+                </CardContent>
               </Card>
             ))}
           </div>
