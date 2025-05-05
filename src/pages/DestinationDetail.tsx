@@ -1,644 +1,569 @@
-
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Calendar, ArrowLeft, Users, Send } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import DestinationMap from '@/components/DestinationMap';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/components/ui/use-toast';
+import { 
+  MapPin, 
+  Clock, 
+  Calendar,
+  Users,
+  Star,
+  ArrowLeft,
+  Heart,
+  Share2,
+  Info,
+  MessageSquare
+} from 'lucide-react';
+import { AgendaSection } from '@/components/AgendaSection';
 
-// Import same destination data used in other components
-const allDestinations = [
+// Sample data for destinations
+const destinations = [
   {
     id: 1,
-    name: "Pantai Way Belerang",
-    image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?q=80&w=3270",
-    location: "Kalianda, Lampung Selatan",
-    rating: 4.8,
+    name: "Pantai Tanjung Putus",
+    description: "Pantai Tanjung Putus adalah salah satu destinasi wisata pantai yang terletak di Desa Waymuli, Kecamatan Rajabasa, Kabupaten Lampung Selatan. Pantai ini menawarkan pemandangan yang indah dengan pasir putih dan air laut yang jernih. Pengunjung dapat menikmati berbagai aktivitas seperti berenang, snorkeling, atau sekadar bersantai menikmati keindahan alam.",
+    longDescription: "Pantai Tanjung Putus adalah salah satu destinasi wisata pantai yang terletak di Desa Waymuli, Kecamatan Rajabasa, Kabupaten Lampung Selatan. Pantai ini menawarkan pemandangan yang indah dengan pasir putih dan air laut yang jernih. Pengunjung dapat menikmati berbagai aktivitas seperti berenang, snorkeling, atau sekadar bersantai menikmati keindahan alam.\n\nPantai Tanjung Putus mendapatkan namanya karena bentuk pantai yang seperti tanjung yang terputus dari daratan utama ketika air laut pasang. Saat air laut surut, pengunjung dapat berjalan menyeberangi gundukan pasir untuk mencapai 'pulau kecil' di ujung tanjung. Fenomena alam ini menjadi daya tarik utama bagi wisatawan yang berkunjung.\n\nSelain keindahan pantainya, Tanjung Putus juga menawarkan pemandangan matahari terbenam yang spektakuler. Banyak fotografer dan pecinta alam yang sengaja datang di sore hari untuk mengabadikan momen matahari terbenam di pantai ini. Fasilitas yang tersedia di Pantai Tanjung Putus meliputi area parkir, toilet umum, warung makan, dan penginapan sederhana bagi yang ingin menginap.",
+    images: [
+      "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=3270",
+      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?q=80&w=3270",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=3270",
+      "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?q=80&w=3272"
+    ],
+    location: "Desa Waymuli, Kecamatan Rajabasa, Lampung Selatan",
     category: "Pantai",
-    description: "Nikmati indahnya pantai dengan pasir putih dan air laut yang jernih, sempurna untuk berenang dan bersantai.",
-    fullDescription: "Pantai Way Belerang adalah salah satu destinasi wisata bahari terbaik di Lampung Selatan. Terkenal dengan pasir putihnya yang lembut dan air laut yang jernih, pantai ini menawarkan pemandangan alam yang menakjubkan dengan latar belakang pegunungan. Pengunjung dapat menikmati berbagai aktivitas seperti berenang, snorkeling, atau sekadar bersantai menikmati pemandangan matahari terbenam yang memukau. Tersedia juga fasilitas lengkap seperti tempat parkir, toilet, warung makan, dan penginapan di sekitar pantai.",
-    facilities: ["Parkir", "Toilet", "Warung Makan", "Penginapan", "Rental Peralatan Snorkeling"],
-    operatingHours: "08:00 - 18:00 WIB",
-    entryFee: "Rp 15.000 per orang",
-    bestTime: "Pagi hingga sore hari",
-    coordinates: {
-      lat: -5.7524,
-      lng: 105.6881
-    },
-    address: "Jl. Way Belerang No. 21, Kalianda, Lampung Selatan, Lampung 35513"
-  },
-  {
-    id: 2,
-    name: "Gunung Rajabasa",
-    image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=2940",
-    location: "Rajabasa, Lampung Selatan",
-    rating: 4.6,
-    category: "Gunung",
-    description: "Gunung berapi aktif dengan pemandangan indah dan jalur pendakian yang menantang untuk pendaki.",
-    fullDescription: "Gunung Rajabasa adalah gunung berapi aktif yang menjadi ikon Lampung Selatan dengan ketinggian mencapai 1.281 mdpl. Gunung ini menawarkan tantangan pendakian yang menarik dengan jalur yang bervariasi, cocok untuk pendaki pemula hingga berpengalaman. Dari puncak gunung, pengunjung dapat menikmati pemandangan spektakuler Selat Sunda dan Pulau Krakatau. Kawasan gunung ini juga dihuni oleh beragam flora dan fauna langka, menjadikannya tujuan favorit para pecinta alam dan fotografi.",
-    facilities: ["Pos Pendakian", "Area Camping", "Pusat Informasi", "Toilet", "Warung"],
-    operatingHours: "24 jam (pendakian disarankan pagi hari)",
-    entryFee: "Rp 10.000 per orang",
-    bestTime: "Musim kemarau (April - Oktober)",
-    coordinates: {
-      lat: -5.7848,
-      lng: 105.5984
-    },
-    address: "Kawasan Gunung Rajabasa, Desa Kunjir, Kecamatan Rajabasa, Lampung Selatan, Lampung 35552"
-  },
-  {
-    id: 3,
-    name: "Air Terjun Way Kalam",
-    image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=3270",
-    location: "Penengahan, Lampung Selatan",
-    rating: 4.7,
-    category: "Air Terjun",
-    description: "Air terjun tersembunyi dengan air yang menyegarkan, dikelilingi oleh hutan yang rimbun.",
-    fullDescription: "Air Terjun Way Kalam adalah surga tersembunyi di tengah hutan rimbun Lampung Selatan. Air terjun setinggi sekitar 15 meter ini menawarkan kesegaran dengan airnya yang jernih dan sejuk, mengalir dari sumber mata air pegunungan. Lokasinya yang tersembunyi di antara pepohonan hijau menciptakan suasana yang tenang dan damai, sempurna untuk melepas penat dari hiruk pikuk kota. Pengunjung perlu melakukan trekking ringan melalui jalur hutan selama sekitar 30 menit untuk mencapai lokasi air terjun.",
-    facilities: ["Jalur Trekking", "Area Istirahat", "Warung Sederhana", "Spot Foto"],
-    operatingHours: "08:00 - 17:00 WIB",
-    entryFee: "Rp 10.000 per orang",
-    bestTime: "Pagi hari",
-    coordinates: {
-      lat: -5.6723,
-      lng: 105.6384
-    },
-    address: "Desa Way Kalam, Kecamatan Penengahan, Lampung Selatan, Lampung 35594"
-  },
-  {
-    id: 4,
-    name: "Pulau Sebesi",
-    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=2940",
-    location: "Rajabasa, Lampung Selatan",
-    rating: 4.9,
-    category: "Pulau",
-    description: "Pulau cantik dengan terumbu karang dan kehidupan laut yang indah, sempurna untuk snorkeling dan diving.",
-    fullDescription: "Pulau Sebesi adalah surga tersembunyi di perairan Lampung Selatan yang terletak tidak jauh dari Gunung Krakatau. Pulau ini menawarkan pesona alam yang memukau dengan pantai pasir putih, air laut jernih, dan terumbu karang yang masih terjaga. Pulau Sebesi merupakan destinasi sempurna untuk snorkeling dan diving, dengan keanekaragaman hayati laut yang menakjubkan. Selain keindahan bawah laut, pengunjung juga dapat menikmati kebudayaan masyarakat lokal yang masih menjaga tradisi dan keramahtamahan.",
-    facilities: ["Penginapan", "Warung Makan", "Rental Peralatan Snorkeling dan Diving", "Pemandu Wisata", "Transportasi Laut"],
-    operatingHours: "Kunjungan setiap hari",
-    entryFee: "Rp 25.000 per orang (belum termasuk transportasi laut)",
-    bestTime: "Maret - Oktober (saat laut tenang)",
-    coordinates: {
-      lat: -5.9323,
-      lng: 105.4763
-    },
-    address: "Pulau Sebesi, Kecamatan Rajabasa, Lampung Selatan, Lampung 35559"
-  },
-  {
-    id: 5,
-    name: "Menara Siger",
-    image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=3270",
-    location: "Bakauheni, Lampung Selatan",
     rating: 4.5,
-    category: "Sejarah",
-    description: "Ikon Lampung yang terletak di ujung Pulau Sumatera, menawarkan pemandangan indah Selat Sunda.",
-    fullDescription: "Menara Siger adalah landmark ikonik Lampung yang terletak di ujung selatan Pulau Sumatera, tepatnya di kawasan Bakauheni, Lampung Selatan. Dibangun menyerupai Siger, mahkota tradisional wanita Lampung, menara ini menjadi simbol kebanggaan dan identitas budaya masyarakat Lampung. Dari menara setinggi 30 meter ini, pengunjung dapat menikmati pemandangan menakjubkan Selat Sunda dan aktivitas penyeberangan ferry. Menara Siger juga dilengkapi dengan museum yang menampilkan berbagai artefak dan informasi tentang sejarah serta kebudayaan Lampung.",
-    facilities: ["Museum", "Taman", "Kafe", "Toilet", "Area Parkir Luas", "Toko Souvenir"],
-    operatingHours: "08:00 - 18:00 WIB",
-    entryFee: "Rp 20.000 per orang",
-    bestTime: "Pagi atau menjelang sore (untuk menikmati sunset)",
-    coordinates: {
-      lat: -5.8623,
-      lng: 105.7523
-    },
-    address: "Jl. Lintas Sumatera, Bakauheni, Lampung Selatan, Lampung 35592"
-  },
-  {
-    id: 6,
-    name: "Taman Nasional Way Kambas",
-    image: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?q=80&w=2960",
-    location: "Kalianda, Lampung Selatan",
-    rating: 4.7,
-    category: "Taman",
-    description: "Taman nasional yang terkenal sebagai tempat konservasi gajah sumatera, badak, dan satwa liar lainnya.",
-    fullDescription: "Taman Nasional Way Kambas adalah salah satu taman nasional tertua di Indonesia yang terkenal sebagai pusat konservasi satwa liar, terutama gajah Sumatera, badak Sumatera, dan harimau Sumatera yang terancam punah. Taman seluas 130.000 hektar ini menawarkan pengalaman wisata edukasi melalui Pusat Latihan Gajah (PLG) dimana pengunjung dapat melihat langsung proses pelatihan dan perawatan gajah. Taman ini juga memiliki ekosistem yang beragam, termasuk hutan hujan tropis, rawa, dan padang rumput, menjadikannya habitat bagi ratusan spesies flora dan fauna.",
-    facilities: ["Pusat Latihan Gajah", "Pusat Konservasi Badak Sumatera", "Jalur Ekowisata", "Penginapan", "Pusat Informasi"],
-    operatingHours: "08:00 - 16:00 WIB",
-    entryFee: "Rp 30.000 per orang (domestik), Rp 150.000 per orang (internasional)",
-    bestTime: "Sepanjang tahun (hindari musim hujan lebat)",
-    coordinates: {
-      lat: -5.6204,
-      lng: 105.7763
-    },
-    address: "Jl. Raya Way Kambas, Labuhan Ratu, Lampung Selatan, Lampung 35513"
-  },
-  {
-    id: 7,
-    name: "Pantai Mengkudu",
-    image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=2940",
-    location: "Rajabasa, Lampung Selatan",
-    rating: 4.4,
-    category: "Pantai",
-    description: "Pantai yang menawarkan pemandangan sunset yang menakjubkan dengan tebing-tebing karang yang indah.",
-    fullDescription: "Pantai Mengkudu adalah destinasi wisata bahari yang mempesona di Lampung Selatan dengan karakteristik unik berupa formasi batu karang besar yang menyerupai buah mengkudu. Pantai ini menawarkan pemandangan sunset yang spektakuler dengan latar belakang Gunung Rajabasa dan Pulau Krakatau di kejauhan. Air lautnya yang jernih cocok untuk berenang dan snorkeling, sementara hamparan pasir putihnya yang luas sempurna untuk bersantai. Pantai Mengkudu masih terjaga keasriannya, menawarkan pengalaman wisata yang tenang dan menyegarkan.",
-    facilities: ["Area Parkir", "Gazebo", "Warung Makan Sederhana", "Toilet"],
-    operatingHours: "06:00 - 18:00 WIB",
-    entryFee: "Rp 10.000 per orang",
-    bestTime: "Sore hari menjelang sunset",
-    coordinates: {
-      lat: -5.8023,
-      lng: 105.5784
-    },
-    address: "Desa Mengkudu, Kecamatan Rajabasa, Lampung Selatan, Lampung 35576"
-  },
-  {
-    id: 8,
-    name: "Bukit Kabut",
-    image: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?q=80&w=3270",
-    location: "Jati Agung, Lampung Selatan",
-    rating: 4.3,
-    category: "Bukit",
-    description: "Bukit dengan pemandangan kabut pagi yang magis, menjadi tempat favorit fotografi dan camping.",
-    fullDescription: "Bukit Kabut adalah destinasi wisata alam yang memesona di Lampung Selatan, mendapatkan namanya dari fenomena kabut tebal yang menyelimuti area bukit di pagi hari. Terletak di ketinggian sekitar 700 mdpl, bukit ini menawarkan panorama matahari terbit yang spektakuler dan pemandangan lautan kabut yang menghampar luas, menciptakan lanskap yang seolah dunia mimpi. Bukit Kabut menjadi surga bagi fotografer dan pecinta alam, dengan spot-spot foto yang instagramable. Area ini juga populer untuk kegiatan camping dan trekking ringan.",
-    facilities: ["Jalur Trekking", "Area Camping", "Spot Foto", "Warung Sederhana"],
-    operatingHours: "05:00 - 18:00 WIB (untuk melihat kabut pagi, pengunjung disarankan tiba sebelum matahari terbit)",
-    entryFee: "Rp 10.000 per orang",
-    bestTime: "Pagi hari (05:00 - 08:00 WIB)",
-    coordinates: {
-      lat: -5.5463,
-      lng: 105.5123
-    },
-    address: "Desa Jati Indah, Kecamatan Jati Agung, Lampung Selatan, Lampung 35365"
-  }
-];
-
-// Sample reviews data
-const sampleReviews = [
-  {
-    id: 1,
-    destinationId: 1,
-    name: "Budi Santoso",
-    avatar: "BS",
-    rating: 5,
-    date: "12 April 2023",
-    comment: "Pantainya sangat indah dan bersih. Air lautnya jernih dan cocok untuk berenang. Fasilitas juga memadai."
+    reviews: 120,
+    openHours: "06:00 - 18:00",
+    entryFee: "Rp 10.000 / orang",
+    bestTimeToVisit: "Pagi hingga sore hari",
+    facilities: ["Parkir", "Toilet", "Warung Makan", "Penginapan", "Spot Foto"],
+    activities: ["Berenang", "Snorkeling", "Fotografi", "Camping", "Memancing"],
+    nearbyAttractions: [
+      {
+        id: 2,
+        name: "Air Terjun Way Lalaan",
+        image: "https://images.unsplash.com/photo-1564519592964-e609973fd632?q=80&w=3087",
+        distance: "15 km"
+      },
+      {
+        id: 3,
+        name: "Gunung Rajabasa",
+        image: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=3270",
+        distance: "8 km"
+      },
+      {
+        id: 4,
+        name: "Pulau Sebesi",
+        image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?q=80&w=3173",
+        distance: "20 km (via perahu)"
+      }
+    ],
+    relatedTours: [
+      {
+        id: 101,
+        name: "Paket Wisata Pantai Lampung Selatan",
+        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=3270",
+        duration: "2 hari 1 malam",
+        price: "Rp 850.000",
+        rating: 4.7,
+        reviews: 45
+      },
+      {
+        id: 102,
+        name: "Eksplorasi Pantai Tanjung Putus",
+        image: "https://images.unsplash.com/photo-1596627116790-af6f96d60f2c?q=80&w=3270",
+        duration: "1 hari",
+        price: "Rp 350.000",
+        rating: 4.5,
+        reviews: 32
+      },
+      {
+        id: 103,
+        name: "Snorkeling di Tanjung Putus",
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=3270",
+        duration: "5 jam",
+        price: "Rp 250.000",
+        rating: 4.8,
+        reviews: 28
+      }
+    ]
   },
   {
     id: 2,
-    destinationId: 1,
-    name: "Siti Rahayu",
-    avatar: "SR",
-    rating: 4,
-    date: "25 Mei 2023",
-    comment: "Tempatnya bagus, tapi agak ramai di akhir pekan. Sebaiknya datang di hari kerja untuk menikmati suasana yang lebih tenang."
+    name: "Air Terjun Way Lalaan",
+    description: "Air Terjun Way Lalaan adalah salah satu air terjun terindah di Lampung Selatan yang terletak di kaki Gunung Rajabasa. Air terjun ini memiliki ketinggian sekitar 30 meter dengan aliran air yang jernih dan sejuk.",
+    longDescription: "Air Terjun Way Lalaan adalah salah satu air terjun terindah di Lampung Selatan yang terletak di kaki Gunung Rajabasa. Air terjun ini memiliki ketinggian sekitar 30 meter dengan aliran air yang jernih dan sejuk. Dikelilingi oleh hutan tropis yang rimbun, Way Lalaan menawarkan suasana alam yang asri dan menyegarkan.\n\nUntuk mencapai Air Terjun Way Lalaan, pengunjung perlu melakukan trekking ringan sejauh sekitar 1 kilometer dari area parkir. Jalur trekking cukup mudah dilalui dan telah dilengkapi dengan tangga dan pegangan di beberapa bagian yang curam. Selama perjalanan, pengunjung akan disuguhi dengan pemandangan hutan yang indah dan suara gemericik air sungai.\n\nSetibanya di lokasi air terjun, pengunjung dapat berenang di kolam alami yang terbentuk di bawah air terjun atau sekadar bersantai menikmati keindahan alam sekitar. Air yang jernih dan sejuk menjadi daya tarik utama bagi wisatawan yang ingin menyegarkan diri dari hiruk pikuk kehidupan kota.",
+    images: [
+      "https://images.unsplash.com/photo-1564519592964-e609973fd632?q=80&w=3087",
+      "https://images.unsplash.com/photo-1513125370-3460ebe3401b?q=80&w=3087",
+      "https://images.unsplash.com/photo-1469796466635-455ede028ac4?q=80&w=3270",
+      "https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=3270"
+    ],
+    location: "Kaki Gunung Rajabasa, Kecamatan Rajabasa, Lampung Selatan",
+    category: "Air Terjun",
+    rating: 4.3,
+    reviews: 85,
+    openHours: "07:00 - 17:00",
+    entryFee: "Rp 15.000 / orang",
+    bestTimeToVisit: "Pagi hingga siang hari",
+    facilities: ["Parkir", "Toilet", "Warung Makan", "Jalur Trekking", "Gazebo"],
+    activities: ["Berenang", "Trekking", "Fotografi", "Piknik"],
+    nearbyAttractions: [
+      {
+        id: 1,
+        name: "Pantai Tanjung Putus",
+        image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=3270",
+        distance: "15 km"
+      },
+      {
+        id: 3,
+        name: "Gunung Rajabasa",
+        image: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=3270",
+        distance: "5 km"
+      },
+      {
+        id: 5,
+        name: "Pemandian Air Panas",
+        image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=3270",
+        distance: "7 km"
+      }
+    ],
+    relatedTours: [
+      {
+        id: 201,
+        name: "Eksplorasi Air Terjun Way Lalaan",
+        image: "https://images.unsplash.com/photo-1513125370-3460ebe3401b?q=80&w=3087",
+        duration: "1 hari",
+        price: "Rp 300.000",
+        rating: 4.6,
+        reviews: 38
+      },
+      {
+        id: 202,
+        name: "Trekking Gunung Rajabasa & Air Terjun",
+        image: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=3270",
+        duration: "2 hari 1 malam",
+        price: "Rp 750.000",
+        rating: 4.7,
+        reviews: 25
+      },
+      {
+        id: 203,
+        name: "Wisata Alam Lampung Selatan",
+        image: "https://images.unsplash.com/photo-1469796466635-455ede028ac4?q=80&w=3270",
+        duration: "3 hari 2 malam",
+        price: "Rp 1.200.000",
+        rating: 4.8,
+        reviews: 42
+      }
+    ]
   },
-  {
-    id: 3,
-    destinationId: 2,
-    name: "Ahmad Rizki",
-    avatar: "AR",
-    rating: 5,
-    date: "8 Juni 2023",
-    comment: "Pemandangan dari puncak gunung sangat spektakuler! Jalur pendakian cukup menantang tapi sangat worth it."
-  }
+  // Add more destinations as needed
 ];
 
 const DestinationDetail = () => {
   const [searchParams] = useSearchParams();
+  const id = parseInt(searchParams.get('id') || '1');
+  const [destination, setDestination] = useState<any>(null);
+  const [activeImage, setActiveImage] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
-  const [destination, setDestination] = useState<(typeof allDestinations)[0] | null>(null);
-  const [reviews, setReviews] = useState<any[]>([]);
-  const [newReview, setNewReview] = useState("");
-  const [userRating, setUserRating] = useState(5);
-  const [userName, setUserName] = useState("");
-  const [activeTab, setActiveTab] = useState("overview");
   const { toast } = useToast();
   
   useEffect(() => {
-    const id = searchParams.get('id');
-    if (id) {
-      const found = allDestinations.find(dest => dest.id === parseInt(id));
-      if (found) {
-        setDestination(found);
-        
-        // Load reviews for this destination
-        const destinationReviews = sampleReviews.filter(
-          review => review.destinationId === parseInt(id)
-        );
-        setReviews(destinationReviews);
-      } else {
-        navigate('/destinasi');
-      }
-    } else {
-      navigate('/destinasi');
+    // Find the destination based on the ID from URL
+    const foundDestination = destinations.find(dest => dest.id === id);
+    if (foundDestination) {
+      setDestination(foundDestination);
+      setActiveImage(foundDestination.images[0]);
     }
-  }, [searchParams, navigate]);
-
-  const handleSubmitReview = () => {
-    if (newReview.trim() === "") {
-      toast({
-        title: "Ulasan kosong",
-        description: "Silahkan tulis ulasan Anda",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (userName.trim() === "") {
-      toast({
-        title: "Nama kosong",
-        description: "Silahkan isi nama Anda",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const avatarInitials = userName
-      .split(" ")
-      .map(name => name[0])
-      .join("")
-      .toUpperCase();
-
-    // Create new review
-    const newReviewItem = {
-      id: reviews.length + 1,
-      destinationId: destination?.id || 0,
-      name: userName,
-      avatar: avatarInitials || "U",
-      rating: userRating,
-      date: new Date().toLocaleDateString('id-ID', { 
-        day: 'numeric', 
-        month: 'long', 
-        year: 'numeric' 
-      }),
-      comment: newReview
-    };
-
-    // Add review to the list
-    setReviews([newReviewItem, ...reviews]);
     
-    // Reset form
-    setNewReview("");
-    setUserRating(5);
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, [id]);
 
+  const handleBackToList = () => {
+    navigate('/destinasi');
+  };
+  
+  const handleImageClick = (image: string) => {
+    setActiveImage(image);
+  };
+  
+  const handleLikeDestination = () => {
+    setIsLiked(!isLiked);
     toast({
-      title: "Ulasan terkirim",
-      description: "Terima kasih atas ulasan Anda",
+      title: isLiked ? "Dihapus dari favorit" : "Ditambahkan ke favorit",
+      description: isLiked ? "Destinasi dihapus dari daftar favorit Anda" : "Destinasi ditambahkan ke daftar favorit Anda",
     });
+  };
+  
+  const handleShareDestination = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: destination?.name || '',
+        text: `Lihat destinasi wisata ${destination?.name || ''} di Lampung Selatan`,
+        url: window.location.href,
+      })
+      .catch((error) => {
+        toast({
+          title: "Gagal membagikan",
+          description: "Terjadi kesalahan saat mencoba membagikan",
+          variant: "destructive",
+        });
+      });
+    } else {
+      // Fallback
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Tautan disalin!",
+        description: "Tautan telah disalin ke clipboard",
+      });
+    }
+  };
+
+  const handleConsultation = () => {
+    if (!destination) return;
+    
+    // Format the WhatsApp message
+    const message = `*Konsultasi Wisata - ${destination.name}*
+    
+Saya tertarik dengan destinasi wisata ${destination.name}.
+Saya ingin mendapatkan informasi lebih lanjut tentang paket wisata, harga, dan ketersediaan.
+
+Informasi Destinasi:
+Nama: ${destination.name}
+Lokasi: ${destination.location}
+Kategori: ${destination.category}
+
+Terima kasih.`;
+
+    // Encode the message for WhatsApp URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Create WhatsApp URL with the provided phone number
+    const whatsappUrl = `https://wa.me/6287437525303?text=${encodedMessage}`;
+    
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: "Menghubungi penyedia wisata",
+      description: "Anda akan diarahkan ke WhatsApp untuk konsultasi",
+    });
+  };
+
+  const handleJoinTour = (tourId: number) => {
+    navigate(`/agenda/join?id=${tourId}`);
   };
 
   if (!destination) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
-        <div className="container mx-auto px-4 py-20 text-center">
-          <p>Loading...</p>
+        <div className="container mx-auto px-4 py-20">
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="text-2xl font-bold">Destinasi tidak ditemukan</h1>
+            <Button 
+              className="mt-4 bg-lamsel-blue hover:bg-lamsel-blue/80"
+              onClick={handleBackToList}
+            >
+              Kembali ke Daftar Destinasi
+            </Button>
+          </div>
         </div>
         <Footer />
       </div>
     );
   }
 
+  const renderStars = (rating: number) => {
+    return Array(5).fill(0).map((_, i) => (
+      <Star 
+        key={i} 
+        className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`} 
+      />
+    ));
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      {/* Hero Section */}
-      <div className="relative h-[50vh] w-full">
-        <img 
-          src={destination.image} 
-          alt={destination.name}
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 sm:p-8 lg:p-10">
-          <div className="container mx-auto">
-            <Button 
-              variant="outline" 
-              className="mb-4 border-white text-white hover:bg-white/20"
-              onClick={() => navigate('/destinasi')}
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Kembali
-            </Button>
-            <Badge className="mb-4 bg-lamsel-blue">{destination.category}</Badge>
-            <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">{destination.name}</h1>
-            <div className="mt-2 flex items-center flex-wrap gap-2">
-              <div className="flex items-center">
-                <MapPin className="mr-1 h-4 w-4 text-white" />
-                <span className="text-sm md:text-base text-white">{destination.location}</span>
+      {/* Back button and header */}
+      <div className="pt-16 bg-lamsel-blue/10">
+        <div className="container mx-auto p-4">
+          <Button 
+            variant="outline" 
+            onClick={handleBackToList}
+            className="mb-4 flex items-center border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+          >
+            <ArrowLeft className="mr-1 h-4 w-4" />
+            Kembali ke Daftar Destinasi
+          </Button>
+        </div>
+      </div>
+      
+      {/* Destination Hero Section */}
+      <section className="bg-lamsel-blue/10">
+        <div className="container mx-auto px-4 pb-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Image Gallery */}
+            <div className="w-full lg:w-3/5">
+              <div className="rounded-lg overflow-hidden shadow-xl">
+                <img 
+                  src={activeImage} 
+                  alt={destination.name}
+                  className="w-full h-[300px] md:h-[400px] object-cover"
+                />
               </div>
-              <div className="flex items-center">
-                <Star className="mr-1 h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm md:text-base text-white">{destination.rating.toFixed(1)}</span>
+              <div className="grid grid-cols-4 gap-2 mt-2">
+                {destination.images.map((image: string, index: number) => (
+                  <div 
+                    key={index}
+                    className={`rounded-md overflow-hidden cursor-pointer border-2 ${activeImage === image ? 'border-lamsel-blue' : 'border-transparent'}`}
+                    onClick={() => handleImageClick(image)}
+                  >
+                    <img 
+                      src={image} 
+                      alt={`${destination.name} ${index + 1}`}
+                      className="w-full h-20 object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Destination Info */}
+            <div className="w-full lg:w-2/5">
+              <div className="flex justify-between items-start">
+                <div>
+                  <Badge className="mb-2 bg-lamsel-blue">{destination.category}</Badge>
+                  <h1 className="text-3xl font-bold">{destination.name}</h1>
+                  <div className="flex items-center mt-2">
+                    {renderStars(destination.rating)}
+                    <span className="ml-2 text-sm text-gray-600">
+                      ({destination.reviews} ulasan)
+                    </span>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Button 
+                    variant="outline"
+                    size="icon"
+                    onClick={handleShareDestination}
+                    className="border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+                  >
+                    <Share2 className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleLikeDestination}
+                    className={`${isLiked ? 'bg-red-100 text-red-500 border-red-200' : 'border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white'}`}
+                  >
+                    <Heart className={`h-5 w-5 ${isLiked ? 'fill-red-500' : ''}`} />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center">
+                  <MapPin className="mr-2 h-5 w-5 text-lamsel-blue" />
+                  <span>{destination.location}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="mr-2 h-5 w-5 text-lamsel-blue" />
+                  <span>Jam Buka: {destination.openHours}</span>
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="mr-2 h-5 w-5 text-lamsel-blue" />
+                  <span>Waktu Terbaik: {destination.bestTimeToVisit}</span>
+                </div>
+                <div className="flex items-center">
+                  <Info className="mr-2 h-5 w-5 text-lamsel-blue" />
+                  <span>Tiket Masuk: {destination.entryFee}</span>
+                </div>
+              </div>
+              
+              <div className="mt-4">
+                <h3 className="font-semibold mb-2">Deskripsi Singkat</h3>
+                <p className="text-gray-700">{destination.description}</p>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex flex-col md:flex-row gap-4 mt-6">
+                <Button 
+                  className="flex-1 bg-lamsel-blue hover:bg-lamsel-blue/80 gap-2"
+                  onClick={handleConsultation}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  Konsultasi
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1 border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
+                  onClick={() => navigate('/agenda')}
+                >
+                  <Users className="mr-2 h-5 w-5" />
+                  Lihat Tur
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
       
-      {/* Content with Tabs */}
-      <div className="container mx-auto px-4 py-6 md:py-10">
-        <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab} value={activeTab}>
-          <TabsList className="w-full grid grid-cols-3 mb-6">
-            <TabsTrigger value="overview">Informasi</TabsTrigger>
-            <TabsTrigger value="map">Lokasi & Peta</TabsTrigger>
-            <TabsTrigger value="reviews">Ulasan</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="overview" className="mt-2">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="lg:col-span-2">
-                <h2 className="mb-4 text-2xl font-bold">Tentang Destinasi</h2>
-                <p className="mb-6 text-gray-700 leading-relaxed">
-                  {destination.fullDescription}
-                </p>
-                
-                <h3 className="mb-3 text-xl font-semibold">Fasilitas</h3>
-                <div className="mb-6 flex flex-wrap gap-2">
-                  {destination.facilities.map((facility, index) => (
-                    <Badge key={index} variant="outline" className="bg-gray-100 text-gray-700">
-                      {facility}
-                    </Badge>
+      {/* Tab Content */}
+      <section className="py-10">
+        <div className="container mx-auto px-4">
+          <Tabs defaultValue="about" className="w-full">
+            <TabsList className="w-full mb-8 bg-gray-100 p-1">
+              <TabsTrigger value="about" className="flex-1">Tentang</TabsTrigger>
+              <TabsTrigger value="facilities" className="flex-1">Fasilitas & Aktivitas</TabsTrigger>
+              <TabsTrigger value="location" className="flex-1">Lokasi</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="about" className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Tentang {destination.name}</h2>
+                <p className="text-gray-700 whitespace-pre-line">{destination.longDescription}</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="facilities" className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Fasilitas</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {destination.facilities.map((facility: string, index: number) => (
+                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-md">
+                      <div className="w-2 h-2 bg-lamsel-blue rounded-full mr-2"></div>
+                      <span>{facility}</span>
+                    </div>
                   ))}
-                </div>
-                
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                  <div className="rounded-lg bg-gray-50 p-4">
-                    <h4 className="mb-2 font-semibold">Jam Operasional</h4>
-                    <div className="flex items-center text-gray-700">
-                      <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                      {destination.operatingHours}
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-lg bg-gray-50 p-4">
-                    <h4 className="mb-2 font-semibold">Biaya Masuk</h4>
-                    <div className="flex items-center text-gray-700">
-                      <span className="mr-2 text-lg font-bold text-lamsel-blue">Rp</span>
-                      {destination.entryFee.replace('Rp ', '')}
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-lg bg-gray-50 p-4">
-                    <h4 className="mb-2 font-semibold">Waktu Terbaik</h4>
-                    <div className="flex items-center text-gray-700">
-                      <Calendar className="mr-2 h-4 w-4 text-lamsel-blue" />
-                      {destination.bestTime}
-                    </div>
-                  </div>
                 </div>
               </div>
               
-              <div className="mt-8 lg:mt-0">
-                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
-                  <h3 className="mb-4 text-xl font-bold">Rencanakan Kunjungan</h3>
-                  
-                  <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">Tanggal Kunjungan</label>
-                    <input 
-                      type="date" 
-                      className="w-full rounded-md border border-gray-300 p-2 focus:border-lamsel-blue focus:outline-none focus:ring-1 focus:ring-lamsel-blue"
-                    />
-                  </div>
-                  
-                  <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">Jumlah Pengunjung</label>
-                    <div className="flex items-center rounded-md border border-gray-300 p-2">
-                      <Users className="mr-2 h-4 w-4 text-gray-500" />
-                      <select className="w-full bg-transparent focus:outline-none">
-                        <option value="1">1 Orang</option>
-                        <option value="2">2 Orang</option>
-                        <option value="3">3 Orang</option>
-                        <option value="4">4 Orang</option>
-                        <option value="5+">5+ Orang</option>
-                      </select>
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Aktivitas</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {destination.activities.map((activity: string, index: number) => (
+                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-md">
+                      <div className="w-2 h-2 bg-lamsel-blue rounded-full mr-2"></div>
+                      <span>{activity}</span>
                     </div>
-                  </div>
-                  
-                  <Button className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80">
-                    Pesan Tiket
-                  </Button>
-                  
-                  <div className="mt-4">
-                    <Button variant="outline" className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white">
-                      Bergabung dengan Tur
-                    </Button>
-                  </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="map" className="mt-2">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="lg:col-span-2">
-                <h2 className="mb-4 text-2xl font-bold">Lokasi</h2>
-                
-                <div className="mb-6">
-                  <div className="mb-2 flex items-start">
-                    <MapPin className="mt-1 mr-2 h-5 w-5 flex-shrink-0 text-lamsel-blue" />
-                    <p className="text-gray-700">
-                      {destination.address}
-                    </p>
-                  </div>
+            </TabsContent>
+            
+            <TabsContent value="location">
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Lokasi</h2>
+                <div className="bg-gray-200 rounded-lg h-[400px] flex items-center justify-center">
+                  <p className="text-gray-600">Peta lokasi {destination.name}</p>
+                  {/* Here you would integrate with Google Maps or another map provider */}
                 </div>
-                
-                <div className="h-[400px] w-full rounded-lg overflow-hidden border shadow mb-8">
-                  <DestinationMap lat={destination.coordinates.lat} lng={destination.coordinates.lng} name={destination.name} />
-                </div>
-                
-                <h3 className="mb-3 text-xl font-semibold">Petunjuk Arah</h3>
-                <div className="rounded-lg bg-gray-50 p-4">
+                <div className="mt-4">
+                  <h3 className="text-xl font-semibold mb-2">Alamat</h3>
+                  <p className="text-gray-700">{destination.location}</p>
+                  
+                  <h3 className="text-xl font-semibold mt-4 mb-2">Cara Mencapai Lokasi</h3>
                   <p className="text-gray-700">
-                    Untuk mencapai {destination.name}, pengunjung dapat menggunakan transportasi pribadi atau umum. 
-                    Dari pusat Kota Kalianda, jaraknya sekitar {Math.floor(Math.random() * 20) + 5} km dan dapat 
-                    ditempuh dalam waktu kurang lebih {Math.floor(Math.random() * 30) + 20} menit menggunakan 
-                    kendaraan bermotor.
+                    Untuk mencapai {destination.name}, Anda dapat menggunakan kendaraan pribadi atau transportasi umum. Dari pusat kota Kalianda, perjalanan memakan waktu sekitar 30 menit dengan kendaraan bermotor.
                   </p>
                 </div>
               </div>
-              
-              <div className="mt-8 lg:mt-0">
-                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
-                  <h3 className="mb-4 text-xl font-bold">Informasi Tambahan</h3>
-                  
-                  <div className="mb-4">
-                    <h4 className="mb-2 font-semibold">Transportasi Umum</h4>
-                    <p className="text-gray-700 text-sm">
-                      Angkutan umum tersedia dari terminal Kalianda menuju ke lokasi destinasi. 
-                      Alternatif lain adalah menggunakan layanan ojek online atau taksi lokal.
-                    </p>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <h4 className="mb-2 font-semibold">Parkir</h4>
-                    <p className="text-gray-700 text-sm">
-                      Tersedia area parkir yang luas untuk kendaraan roda dua dan roda empat 
-                      dengan biaya parkir Rp 5.000 untuk motor dan Rp 10.000 untuk mobil.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h4 className="mb-2 font-semibold">Tips Perjalanan</h4>
-                    <ul className="list-disc pl-5 text-sm text-gray-700">
-                      <li>Bawa perlengkapan yang sesuai dengan aktivitas yang akan dilakukan</li>
-                      <li>Siapkan uang tunai secukupnya karena beberapa tempat mungkin tidak menerima pembayaran digital</li>
-                      <li>Jaga barang bawaan dan selalu perhatikan lingkungan sekitar</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+      
+      {/* Related Tours Section */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8">Tur yang Tersedia</h2>
           
-          <TabsContent value="reviews" className="mt-2">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="lg:col-span-2">
-                <h2 className="mb-4 text-2xl font-bold">Ulasan Pengunjung</h2>
-                
-                {/* Review Form */}
-                <div className="mb-8 rounded-lg border bg-white p-6 shadow-sm">
-                  <h3 className="mb-4 text-lg font-semibold">Bagikan Pengalaman Anda</h3>
-                  
-                  <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">Nama</label>
-                    <input 
-                      type="text" 
-                      placeholder="Nama Anda"
-                      className="w-full rounded-md border border-gray-300 p-2 focus:border-lamsel-blue focus:outline-none focus:ring-1 focus:ring-lamsel-blue"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      required
-                    />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {destination.relatedTours.map(tour => (
+              <Card key={tour.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative h-48">
+                  <img 
+                    src={tour.image} 
+                    alt={tour.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-bold text-lg mb-2">{tour.name}</h3>
+                  <div className="flex items-center mb-2">
+                    {renderStars(tour.rating)}
+                    <span className="ml-2 text-sm text-gray-600">
+                      ({tour.reviews} ulasan)
+                    </span>
                   </div>
-                  
-                  <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">Penilaian</label>
-                    <div className="flex items-center space-x-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() => setUserRating(star)}
-                          className="focus:outline-none"
-                        >
-                          <Star
-                            className={`h-6 w-6 ${
-                              star <= userRating
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        </button>
-                      ))}
-                    </div>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-sm text-gray-600">{tour.duration}</span>
+                    <span className="font-bold text-lamsel-blue">{tour.price}</span>
                   </div>
-                  
-                  <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">Ulasan</label>
-                    <Textarea 
-                      placeholder="Bagikan pengalaman Anda di sini..."
-                      className="min-h-[100px]"
-                      value={newReview}
-                      onChange={(e) => setNewReview(e.target.value)}
-                      required
-                    />
-                  </div>
-                  
                   <Button 
+                    onClick={() => handleJoinTour(tour.id)}
                     className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80"
-                    onClick={handleSubmitReview}
                   >
-                    <Send className="mr-2 h-4 w-4" />
-                    Kirim Ulasan
+                    Bergabung dengan Tur
                   </Button>
                 </div>
-                
-                {/* Reviews List */}
-                <div className="space-y-4">
-                  {reviews.length > 0 ? (
-                    reviews.map((review) => (
-                      <div key={review.id} className="rounded-lg border bg-white p-4 shadow-sm">
-                        <div className="mb-3 flex items-center justify-between">
-                          <div className="flex items-center">
-                            <Avatar className="mr-2 h-10 w-10">
-                              <AvatarImage src={`https://ui-avatars.com/api/?name=${review.avatar}`} />
-                              <AvatarFallback>{review.avatar}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <h4 className="font-medium">{review.name}</h4>
-                              <p className="text-xs text-gray-500">{review.date}</p>
-                            </div>
-                          </div>
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i}
-                                className={`h-4 w-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-gray-700">{review.comment}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="rounded-lg border bg-gray-50 p-8 text-center">
-                      <p className="text-gray-500">Belum ada ulasan untuk destinasi ini</p>
-                      <p className="mt-2 text-sm text-gray-400">Jadilah yang pertama memberikan ulasan</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="mt-8 lg:mt-0">
-                <div className="sticky top-24 rounded-lg border bg-white p-6 shadow-sm">
-                  <h3 className="mb-4 text-xl font-bold">Penilaian Rata-rata</h3>
-                  
-                  <div className="mb-6 flex items-center justify-center">
-                    <div className="flex items-center justify-center rounded-full bg-lamsel-blue h-20 w-20 text-white">
-                      <span className="text-3xl font-bold">{destination.rating.toFixed(1)}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i}
-                          className={`h-6 w-6 ${
-                            i < Math.round(destination.rating)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 text-center">
-                    <p className="text-sm text-gray-500">
-                      Berdasarkan {reviews.length} ulasan
-                    </p>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white"
-                      onClick={() => {
-                        window.scrollTo({
-                          top: document.querySelector('form')?.offsetTop || 0,
-                          behavior: 'smooth'
-                        });
-                      }}
-                    >
-                      Tulis Ulasan
-                    </Button>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Related Destinations */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8">Destinasi Terdekat</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {destination.nearbyAttractions.map((attraction: any) => (
+              <Card key={attraction.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/destinasi/detail?id=${attraction.id}`)}>
+                <div className="relative h-48">
+                  <img 
+                    src={attraction.image} 
+                    alt={attraction.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white">
+                    <h3 className="font-bold">{attraction.name}</h3>
+                    <p className="text-sm">Jarak: {attraction.distance}</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Call to Action */}
+      <section className="py-12 bg-lamsel-blue/10">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-2xl font-bold mb-4">Jelajahi Lebih Banyak Destinasi di Lampung Selatan</h2>
+          <p className="max-w-2xl mx-auto mb-6 text-gray-700">
+            Temukan keindahan alam, budaya, dan kuliner khas Lampung Selatan yang menakjubkan
+          </p>
+          <Button 
+            className="bg-lamsel-blue hover:bg-lamsel-blue/80"
+            onClick={() => navigate('/destinasi')}
+          >
+            Lihat Semua Destinasi
+          </Button>
+        </div>
+      </section>
       
       <Footer />
     </div>

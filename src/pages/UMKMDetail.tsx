@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -20,7 +19,8 @@ import {
   Share2,
   Heart,
   ShoppingBag,
-  ChevronLeft
+  ChevronLeft,
+  MessageSquare
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -295,6 +295,38 @@ const UMKMDetail = () => {
     });
   };
 
+  const handleOrderNow = () => {
+    if (!umkm) return;
+    
+    // Format the WhatsApp message
+    const message = `*Pesan Produk UMKM - ${umkm.name}*
+    
+Saya tertarik dengan produk dari ${umkm.name}.
+Saya ingin mendapatkan informasi lebih lanjut tentang produk Anda.
+
+Informasi UMKM:
+Nama: ${umkm.name}
+Kategori: ${umkm.category}
+Lokasi: ${umkm.location}
+
+Terima kasih.`;
+
+    // Encode the message for WhatsApp URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Create WhatsApp URL (default phone from the first UMKM if not found)
+    const phone = umkm.phone.replace(/[^0-9]/g, '');
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+    
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: "Menghubungi penjual",
+      description: "Anda akan diarahkan ke WhatsApp untuk menghubungi UMKM",
+    });
+  };
+
   if (!umkm) {
     return (
       <div className="min-h-screen bg-white">
@@ -357,6 +389,15 @@ const UMKMDetail = () => {
                 <Badge className="absolute top-4 right-4 bg-lamsel-green text-white">
                   {umkm.category}
                 </Badge>
+              </div>
+              <div className="mt-4">
+                <Button 
+                  onClick={handleOrderNow}
+                  className="w-full bg-lamsel-green hover:bg-lamsel-green/80 text-white flex items-center justify-center gap-2"
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  Pesan Sekarang
+                </Button>
               </div>
             </div>
             
@@ -482,10 +523,19 @@ const UMKMDetail = () => {
                       <Button 
                         className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
                         disabled={!product.inStock}
-                        onClick={() => handleAddToCart(product.id)}
+                        onClick={() => product.inStock ? handleOrderNow() : null}
                       >
-                        <ShoppingBag className="mr-2 h-4 w-4" />
-                        {product.inStock ? 'Tambah ke Keranjang' : 'Stok Habis'}
+                        {product.inStock ? (
+                          <>
+                            <MessageSquare className="mr-2 h-4 w-4" />
+                            Pesan Produk
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingBag className="mr-2 h-4 w-4" />
+                            Stok Habis
+                          </>
+                        )}
                       </Button>
                     </CardContent>
                   </Card>

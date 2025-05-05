@@ -1,15 +1,15 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Destinasi from "./pages/Destinasi";
 import DestinationDetail from "./pages/DestinationDetail";
 import Agenda from "./pages/Agenda";
+import AgendaJoin from "./pages/AgendaJoin";
 import UMKM from "./pages/UMKM";
 import UMKMDetail from "./pages/UMKMDetail";
 import Kecamatan from "./pages/Kecamatan";
@@ -55,6 +55,7 @@ const App = () => (
           <Route path="/destinasi" element={<Destinasi />} />
           <Route path="/destinasi/detail" element={<DestinationDetail />} />
           <Route path="/agenda" element={<Agenda />} />
+          <Route path="/agenda/join" element={<AgendaJoin />} />
           <Route path="/umkm" element={<UMKM />} />
           <Route path="/umkm/detail" element={<UMKMDetail />} />
           <Route path="/kecamatan" element={<Kecamatan />} />

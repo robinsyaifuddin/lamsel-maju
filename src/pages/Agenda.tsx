@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -21,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DatePicker } from '@/components/DatePicker';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data for events
 const events = [
@@ -99,6 +99,7 @@ const Agenda = () => {
   const [filteredEvents, setFilteredEvents] = useState(events);
   const [showPopup, setShowPopup] = useState(false);
   const [activeEvent, setActiveEvent] = useState<any>(null);
+  const navigate = useNavigate();
 
   const handleCategoryFilter = (category: string) => {
     setSelectedCategory(category);
@@ -114,6 +115,10 @@ const Agenda = () => {
   const handleShowDetails = (event: any) => {
     setActiveEvent(event);
     setShowPopup(true);
+  };
+
+  const handleJoinAgenda = (id: number) => {
+    navigate(`/agenda/join?id=${id}`);
   };
 
   return (
@@ -209,6 +214,7 @@ const Agenda = () => {
               <CardFooter className="flex gap-2">
                 <Button 
                   className="flex-1 bg-lamsel-purple hover:bg-lamsel-purple/80"
+                  onClick={() => handleJoinAgenda(event.id)}
                 >
                   Bergabung
                 </Button>
@@ -287,7 +293,13 @@ const Agenda = () => {
                 <p className="text-gray-600">{activeEvent.description}</p>
               </div>
               <div className="flex gap-4">
-                <Button className="flex-1 bg-lamsel-purple hover:bg-lamsel-purple/80">
+                <Button 
+                  className="flex-1 bg-lamsel-purple hover:bg-lamsel-purple/80"
+                  onClick={() => {
+                    setShowPopup(false);
+                    handleJoinAgenda(activeEvent.id);
+                  }}
+                >
                   Bergabung
                 </Button>
                 <Button 
