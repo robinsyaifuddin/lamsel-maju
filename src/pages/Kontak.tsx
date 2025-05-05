@@ -1,44 +1,37 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock,
-  CheckCircle
-} from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
 const Kontak = () => {
-  const { toast } = useToast();
-  
+  const {
+    toast
+  } = useToast();
   const [formState, setFormState] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
-  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const {
+      name,
+      value
+    } = e.target;
     setFormState(prev => ({
       ...prev,
       [name]: value
     }));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
@@ -49,16 +42,13 @@ const Kontak = () => {
         subject: '',
         message: ''
       });
-      
       toast({
         title: "Pesan Terkirim",
-        description: "Terima kasih telah menghubungi kami. Kami akan segera merespon.",
+        description: "Terima kasih telah menghubungi kami. Kami akan segera merespon."
       });
     }, 1500);
   };
-
-  return (
-    <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white">
       <Navbar />
       
       {/* Page Header */}
@@ -83,8 +73,7 @@ const Kontak = () => {
               </p>
             </div>
             
-            {isSubmitted ? (
-              <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-center">
+            {isSubmitted ? <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-center">
                 <div className="flex justify-center">
                   <CheckCircle className="h-16 w-16 text-green-500" />
                 </div>
@@ -92,82 +81,42 @@ const Kontak = () => {
                 <p className="mt-2 text-gray-600">
                   Terima kasih telah menghubungi kami. Tim kami akan segera merespon pesan Anda.
                 </p>
-                <Button 
-                  className="mt-4 bg-lamsel-blue hover:bg-lamsel-blue/80"
-                  onClick={() => setIsSubmitted(false)}
-                >
+                <Button className="mt-4 bg-lamsel-blue hover:bg-lamsel-blue/80" onClick={() => setIsSubmitted(false)}>
                   Kirim Pesan Lain
                 </Button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              </div> : <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="mb-1 block text-sm font-medium">
                     Nama Lengkap
                   </label>
-                  <Input 
-                    id="name"
-                    name="name"
-                    placeholder="Masukkan nama lengkap"
-                    value={formState.name}
-                    onChange={handleChange}
-                    required
-                  />
+                  <Input id="name" name="name" placeholder="Masukkan nama lengkap" value={formState.name} onChange={handleChange} required />
                 </div>
                 
                 <div>
                   <label htmlFor="email" className="mb-1 block text-sm font-medium">
                     Email
                   </label>
-                  <Input 
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Masukkan alamat email"
-                    value={formState.email}
-                    onChange={handleChange}
-                    required
-                  />
+                  <Input id="email" name="email" type="email" placeholder="Masukkan alamat email" value={formState.email} onChange={handleChange} required />
                 </div>
                 
                 <div>
                   <label htmlFor="subject" className="mb-1 block text-sm font-medium">
                     Subjek
                   </label>
-                  <Input 
-                    id="subject"
-                    name="subject"
-                    placeholder="Subjek pesan"
-                    value={formState.subject}
-                    onChange={handleChange}
-                    required
-                  />
+                  <Input id="subject" name="subject" placeholder="Subjek pesan" value={formState.subject} onChange={handleChange} required />
                 </div>
                 
                 <div>
                   <label htmlFor="message" className="mb-1 block text-sm font-medium">
                     Pesan
                   </label>
-                  <Textarea 
-                    id="message"
-                    name="message"
-                    placeholder="Tulis pesan Anda di sini..."
-                    rows={5}
-                    value={formState.message}
-                    onChange={handleChange}
-                    required
-                  />
+                  <Textarea id="message" name="message" placeholder="Tulis pesan Anda di sini..." rows={5} value={formState.message} onChange={handleChange} required />
                 </div>
                 
-                <Button 
-                  type="submit" 
-                  className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80"
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" className="w-full bg-lamsel-blue hover:bg-lamsel-blue/80" disabled={isSubmitting}>
                   {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
                 </Button>
-              </form>
-            )}
+              </form>}
           </div>
           
           {/* Contact Information */}
@@ -232,13 +181,8 @@ const Kontak = () => {
             </div>
             
             <div className="mt-8">
-              <h3 className="font-semibold">Lokasi Kami</h3>
-              <div className="mt-2 h-60 rounded-lg bg-gray-200">
-                {/* This would be replaced with an actual map */}
-                <div className="flex h-full items-center justify-center">
-                  <p className="text-gray-500">Peta Lokasi</p>
-                </div>
-              </div>
+              
+              
             </div>
           </div>
         </div>
@@ -287,8 +231,6 @@ const Kontak = () => {
       </div>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Kontak;
