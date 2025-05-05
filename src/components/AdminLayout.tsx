@@ -22,6 +22,8 @@ const AdminLayout = () => {
   useEffect(() => {
     // Check if admin is logged in
     const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+    const adminType = sessionStorage.getItem('adminType');
+    
     if (!isLoggedIn) {
       toast.error('Anda harus login terlebih dahulu!');
       navigate('/admin/login');
@@ -35,15 +37,18 @@ const AdminLayout = () => {
   const handleLogout = () => {
     sessionStorage.removeItem('adminLoggedIn');
     sessionStorage.removeItem('adminUsername');
+    sessionStorage.removeItem('adminType');
     toast.success('Logout berhasil!');
     navigate('/admin/login');
   };
 
   const adminUsername = sessionStorage.getItem('adminUsername') || 'Admin';
+  const adminType = sessionStorage.getItem('adminType');
+  const isUMKMAdmin = adminType === 'umkm';
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} isUMKMAdmin={isUMKMAdmin} />
       
       {/* Main content */}
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
@@ -89,7 +94,14 @@ const AdminLayout = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  Akun Saya
+                  {adminType && (
+                    <span className={`ml-2 text-xs px-2 py-0.5 rounded ${adminType === 'central' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
+                      {adminType === 'central' ? 'Admin Pusat' : 'Admin UMKM'}
+                    </span>
+                  )}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profil</DropdownMenuItem>
                 <DropdownMenuItem>Pengaturan</DropdownMenuItem>
