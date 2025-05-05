@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -23,8 +24,52 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+// Define TypeScript interfaces for our data structures
+interface SocialMedia {
+  instagram?: string;
+  facebook?: string;
+  website?: string;
+  [key: string]: string | undefined;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  inStock: boolean;
+}
+
+interface Review {
+  id: number;
+  userName: string;
+  rating: number;
+  date: string;
+  comment: string;
+  userImage: string;
+}
+
+interface UMKM {
+  id: number;
+  name: string;
+  image: string;
+  category: string;
+  location: string;
+  address: string;
+  phone: string;
+  email: string;
+  description: string;
+  establishedYear: number;
+  ownerName: string;
+  totalEmployees: number;
+  socialMedia: SocialMedia;
+  products: Product[];
+  reviews: Review[];
+}
+
 // Sample data for UMKM details
-const umkmData = [
+const umkmData: UMKM[] = [
   {
     id: 1,
     name: "Kopi Lamsel",
@@ -165,7 +210,7 @@ const umkmData = [
 const UMKMDetail = () => {
   const [searchParams] = useSearchParams();
   const id = parseInt(searchParams.get('id') || '1');
-  const [umkm, setUmkm] = useState<any>(null);
+  const [umkm, setUmkm] = useState<UMKM | null>(null);
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(5);
   const [userName, setUserName] = useState('');
@@ -221,8 +266,8 @@ const UMKMDetail = () => {
   const handleShareUMKM = () => {
     if (navigator.share) {
       navigator.share({
-        title: umkm?.name,
-        text: `Lihat UMKM ${umkm?.name} di Lampung Selatan`,
+        title: umkm?.name || '',
+        text: `Lihat UMKM ${umkm?.name || ''} di Lampung Selatan`,
         url: window.location.href,
       })
       .catch((error) => {
@@ -322,7 +367,7 @@ const UMKMDetail = () => {
                   <h1 className="text-3xl md:text-4xl font-bold">{umkm.name}</h1>
                   <div className="flex items-center mt-2">
                     {renderStars(
-                      umkm.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / umkm.reviews.length
+                      umkm.reviews.reduce((acc: number, r: Review) => acc + r.rating, 0) / umkm.reviews.length
                     )}
                     <span className="ml-2 text-sm text-gray-600">
                       ({umkm.reviews.length} ulasan)
@@ -389,7 +434,7 @@ const UMKMDetail = () => {
               <div className="flex flex-wrap gap-2 pt-4">
                 {umkm.socialMedia && Object.entries(umkm.socialMedia).map(([key, value]) => (
                   <Badge key={key} variant="outline" className="text-sm">
-                    {key}: {value}
+                    {key}: {value || ''}
                   </Badge>
                 ))}
               </div>
@@ -412,7 +457,7 @@ const UMKMDetail = () => {
             <TabsContent value="products" className="mt-4">
               <h2 className="text-2xl font-bold mb-6">Produk dari {umkm.name}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {umkm.products.map((product: any) => (
+                {umkm.products.map((product: Product) => (
                   <Card key={product.id} className="overflow-hidden transition-all duration-300 hover:shadow-lg">
                     <div className="relative h-48 overflow-hidden">
                       <img 
@@ -507,7 +552,7 @@ const UMKMDetail = () => {
                 
                 {/* Review List */}
                 <div className="space-y-4">
-                  {umkm.reviews.map((review: any) => (
+                  {umkm.reviews.map((review: Review) => (
                     <Card key={review.id} className="overflow-hidden transition-all duration-200 hover:shadow-md">
                       <CardContent className="p-6">
                         <div className="flex items-start">
@@ -599,7 +644,7 @@ const UMKMDetail = () => {
                       {umkm.socialMedia && Object.entries(umkm.socialMedia).map(([key, value]) => (
                         <div key={key} className="flex items-center">
                           <span className="capitalize font-medium w-24">{key}:</span>
-                          <span>{value}</span>
+                          <span>{value || ''}</span>
                         </div>
                       ))}
                     </div>
