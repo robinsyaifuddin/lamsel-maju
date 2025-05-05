@@ -131,10 +131,46 @@
 
 .card-3d-content {
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card-3d:hover .card-3d-content {
   transform: translateZ(20px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced 3D button effect */
+.button-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button-3d:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-3d:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation menu 3D effect */
+.nav-menu-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+
+.nav-menu-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-menu-item:hover {
+  transform: translateZ(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom scrollbar */
