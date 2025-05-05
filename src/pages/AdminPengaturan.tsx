@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,7 +32,8 @@ import {
   Save,
   RotateCw,
   CheckCircle2,
-  XCircle
+  XCircle,
+  Map as MapIcon  // Rename Map to MapIcon to avoid conflict with JavaScript's Map
 } from 'lucide-react';
 
 const AdminPengaturan = () => {
@@ -415,7 +415,7 @@ const AdminPengaturan = () => {
               {/* Maps API Integration */}
               <div className="p-4 border rounded-md space-y-4">
                 <div className="flex items-center gap-2">
-                  <Map className="text-amber-600" />
+                  <MapIcon className="text-amber-600" />
                   <h3 className="text-lg font-medium">Maps API</h3>
                 </div>
                 <div className="space-y-2">

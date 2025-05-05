@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -53,6 +52,7 @@ const AdminStatistik = () => {
   const totalVisitors = visitorData.reduce((sum, item) => sum + item.visitors, 0);
   const totalLastYear = visitorData.reduce((sum, item) => sum + item.lastYear, 0);
   const visitorGrowth = ((totalVisitors - totalLastYear) / totalLastYear * 100).toFixed(1);
+  const visitorGrowthValue = parseFloat(visitorGrowth);  // Convert string to number for safe comparison
 
   // Format numbers with comma separator
   const formatNumber = (num: number) => {
@@ -96,7 +96,7 @@ const AdminStatistik = () => {
                 <p className="text-sm font-medium text-muted-foreground">Total Pengunjung</p>
                 <h3 className="text-2xl font-bold mt-1">{formatNumber(totalVisitors)}</h3>
                 <div className="flex items-center mt-1 text-sm">
-                  {visitorGrowth > 0 ? (
+                  {visitorGrowthValue > 0 ? (
                     <div className="flex items-center text-green-600">
                       <ArrowUp className="mr-1" size={14} />
                       <span>{visitorGrowth}%</span>
@@ -104,7 +104,7 @@ const AdminStatistik = () => {
                   ) : (
                     <div className="flex items-center text-red-600">
                       <ArrowDown className="mr-1" size={14} />
-                      <span>{Math.abs(parseFloat(visitorGrowth))}%</span>
+                      <span>{Math.abs(visitorGrowthValue)}%</span>
                     </div>
                   )}
                   <span className="text-muted-foreground ml-1">vs tahun lalu</span>
