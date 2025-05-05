@@ -61,11 +61,15 @@ const AdminLayout = () => {
               </Button>
             )}
             <div className="flex items-center md:w-96">
-              <Input
-                placeholder="Cari..."
-                className="rounded-full border-gray-200"
-                prefix={<Search size={18} className="text-gray-400" />}
-              />
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <Search size={18} className="text-gray-400" />
+                </div>
+                <Input
+                  placeholder="Cari..."
+                  className="rounded-full border-gray-200 pl-10"
+                />
+              </div>
             </div>
           </div>
           

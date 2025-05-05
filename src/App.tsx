@@ -18,6 +18,10 @@ import Kontak from "./pages/Kontak";
 import AdminLogin from "./pages/AdminLogin";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminDestinasi from "./pages/AdminDestinasi";
+import AdminAgenda from "./pages/AdminAgenda";
+import AdminUMKM from "./pages/AdminUMKM";
+import AdminKontak from "./pages/AdminKontak";
 
 const queryClient = new QueryClient();
 
@@ -42,11 +46,11 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="destinasi" element={<div className="p-4 text-xl">Halaman Kelola Destinasi</div>} />
-            <Route path="agenda" element={<div className="p-4 text-xl">Halaman Kelola Agenda</div>} />
-            <Route path="umkm" element={<div className="p-4 text-xl">Halaman Kelola UMKM</div>} />
+            <Route path="destinasi" element={<AdminDestinasi />} />
+            <Route path="agenda" element={<AdminAgenda />} />
+            <Route path="umkm" element={<AdminUMKM />} />
             <Route path="kecamatan" element={<div className="p-4 text-xl">Halaman Kelola Kecamatan</div>} />
-            <Route path="kontak" element={<div className="p-4 text-xl">Halaman Kelola Kontak</div>} />
+            <Route path="kontak" element={<AdminKontak />} />
             <Route path="statistik" element={<div className="p-4 text-xl">Halaman Statistik</div>} />
             <Route path="pengaturan" element={<div className="p-4 text-xl">Halaman Pengaturan</div>} />
           </Route>
