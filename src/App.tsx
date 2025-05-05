@@ -17,13 +17,17 @@ import Kontak from "./pages/Kontak";
 
 // Admin Pages
 import AdminLogin from "./pages/AdminLogin";
-import AdminRegister from "./pages/AdminRegister"; // Add import for the new registration page
+import AdminRegister from "./pages/AdminRegister";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminDestinasi from "./pages/AdminDestinasi";
 import AdminAgenda from "./pages/AdminAgenda";
 import AdminUMKM from "./pages/AdminUMKM";
 import AdminKontak from "./pages/AdminKontak";
+import AdminKecamatan from "./pages/AdminKecamatan";
+import AdminStatistik from "./pages/AdminStatistik";
+import AdminPengaturan from "./pages/AdminPengaturan";
+import AdminProfil from "./pages/AdminProfil";
 
 const queryClient = new QueryClient();
 
@@ -58,16 +62,17 @@ const App = () => (
           
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/register" element={<AdminRegister />} /> {/* Add new route for registration */}
+          <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="destinasi" element={<AdminDestinasi />} />
             <Route path="agenda" element={<AdminAgenda />} />
             <Route path="umkm" element={<AdminUMKM />} />
-            <Route path="kecamatan" element={<div className="p-4 text-xl">Halaman Kelola Kecamatan</div>} />
+            <Route path="kecamatan" element={<AdminKecamatan />} />
             <Route path="kontak" element={<AdminKontak />} />
-            <Route path="statistik" element={<div className="p-4 text-xl">Halaman Statistik</div>} />
-            <Route path="pengaturan" element={<div className="p-4 text-xl">Halaman Pengaturan</div>} />
+            <Route path="statistik" element={<AdminStatistik />} />
+            <Route path="pengaturan" element={<AdminPengaturan />} />
+            <Route path="profil" element={<AdminProfil />} />
           </Route>
           
           {/* Catch-all 404 Route */}
