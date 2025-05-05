@@ -94,6 +94,12 @@
     @apply bg-background text-foreground;
   }
 
+  /* Smooth scrolling for the entire site */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Adjust based on your header height */
+  }
+
   .hero-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
@@ -189,4 +195,37 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0284c7;
+}
+
+/* Page transition effect */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Smooth anchor link scrolling */
+a[href^="#"] {
+  scroll-behavior: smooth;
+}
+
+/* Animation for smooth page loading */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
 }

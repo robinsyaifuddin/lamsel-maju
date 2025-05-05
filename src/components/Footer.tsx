@@ -15,13 +15,21 @@ import {
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  
+  // Function to handle navigation and scroll to top
+  const handleNavigation = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <footer className="bg-lamsel-dark text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-6">
+            <Link to="/" className="flex items-center space-x-2 mb-6" onClick={handleNavigation}>
               <div className="rounded-full bg-lamsel-blue p-2">
                 <span className="text-xl font-bold text-white">LM</span>
               </div>
@@ -52,32 +60,32 @@ const Footer = () => {
             <h3 className="mb-6 text-lg font-bold">Navigasi</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   Beranda
                 </Link>
               </li>
               <li>
-                <Link to="/destinasi" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/destinasi" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   Destinasi Wisata
                 </Link>
               </li>
               <li>
-                <Link to="/agenda" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/agenda" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   Agenda Travel
                 </Link>
               </li>
               <li>
-                <Link to="/umkm" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/umkm" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   UMKM
                 </Link>
               </li>
               <li>
-                <Link to="/kecamatan" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/kecamatan" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   Kecamatan
                 </Link>
               </li>
               <li>
-                <Link to="/kontak" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/kontak" className="text-gray-300 hover:text-white transition-colors" onClick={handleNavigation}>
                   Kontak
                 </Link>
               </li>

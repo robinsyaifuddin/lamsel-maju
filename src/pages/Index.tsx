@@ -1,42 +1,26 @@
 
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import { HeroSection } from '@/components/HeroSection';
-import { PromoSection } from '@/components/PromoSection';
-import { TopDestinations } from '@/components/TopDestinations';
-import { UMKMShowcase } from '@/components/UMKMShowcase';
-import { AgendaSection } from '@/components/AgendaSection';
-import { KecamatanSection } from '@/components/KecamatanSection';
-import { TestimonialSection } from '@/components/TestimonialSection';
 import Footer from '@/components/Footer';
+import { HeroSection } from '@/components/HeroSection';
+import { TopDestinations } from '@/components/TopDestinations';
+import { AgendaSection } from '@/components/AgendaSection';
+import { UMKMShowcase } from '@/components/UMKMShowcase';
+import { PromoSection } from '@/components/PromoSection';
+import { KecamatanSection } from '@/components/KecamatanSection';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      
-      {/* Hero Section */}
-      <HeroSection />
-      
-      {/* Promo Section */}
-      <PromoSection />
-      
-      {/* Top Destinations */}
-      <TopDestinations />
-      
-      {/* UMKM Showcase */}
-      <UMKMShowcase />
-      
-      {/* Travel Agenda */}
-      <AgendaSection />
-      
-      {/* Kecamatan Information */}
-      <KecamatanSection />
-      
-      {/* Testimonials */}
-      <TestimonialSection />
-      
-      {/* Footer */}
+      <main className="flex-1">
+        <HeroSection />
+        <TopDestinations />
+        <PromoSection />
+        <AgendaSection />
+        <UMKMShowcase />
+        <KecamatanSection />
+      </main>
       <Footer />
     </div>
   );

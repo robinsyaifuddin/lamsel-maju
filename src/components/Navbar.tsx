@@ -44,6 +44,14 @@ const Navbar = () => {
   const handleSearchSelect = (url: string) => {
     setIsSearchOpen(false);
     navigate(url);
+    window.scrollTo(0, 0); // Scroll to top when navigating
+  };
+  
+  // Function to handle navigation and scroll to top
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+    setMobileMenuOpen(false);
   };
   
   return (
@@ -51,7 +59,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2 card-3d">
+            <Link to="/" className="flex items-center space-x-2 card-3d" onClick={() => window.scrollTo(0, 0)}>
               <div className="rounded-full bg-lamsel-blue p-2 card-3d-content transition-all duration-300 shadow-md">
                 <span className="text-xl font-bold text-white">LM</span>
               </div>
@@ -65,7 +73,7 @@ const Navbar = () => {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList className="space-x-2">
               <NavigationMenuItem>
-                <Link to="/">
+                <Link to="/" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Beranda
                   </NavigationMenuLink>
@@ -73,7 +81,7 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/destinasi">
+                <Link to="/destinasi" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Destinasi Wisata
                   </NavigationMenuLink>
@@ -81,7 +89,7 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/agenda">
+                <Link to="/agenda" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Agenda Travel
                   </NavigationMenuLink>
@@ -89,7 +97,7 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/umkm">
+                <Link to="/umkm" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     UMKM
                   </NavigationMenuLink>
@@ -97,7 +105,7 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kecamatan">
+                <Link to="/kecamatan" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Kecamatan
                   </NavigationMenuLink>
@@ -105,7 +113,7 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kontak">
+                <Link to="/kontak" onClick={() => window.scrollTo(0, 0)}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Kontak
                   </NavigationMenuLink>
@@ -126,7 +134,7 @@ const Navbar = () => {
             </Button>
             
             {/* Admin Login Button */}
-            <Link to="/admin/login">
+            <Link to="/admin/login" onClick={() => window.scrollTo(0, 0)}>
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -181,7 +189,7 @@ const Navbar = () => {
               <Link 
                 to="/" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/')}
               >
                 <span className="text-base font-medium">Beranda</span>
               </Link>
@@ -189,7 +197,7 @@ const Navbar = () => {
               <Link 
                 to="/destinasi" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/destinasi')}
               >
                 <span className="text-base font-medium">Destinasi Wisata</span>
               </Link>
@@ -197,7 +205,7 @@ const Navbar = () => {
               <Link 
                 to="/agenda" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/agenda')}
               >
                 <span className="text-base font-medium">Agenda Travel</span>
               </Link>
@@ -205,7 +213,7 @@ const Navbar = () => {
               <Link 
                 to="/umkm" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/umkm')}
               >
                 <span className="text-base font-medium">UMKM</span>
               </Link>
@@ -213,7 +221,7 @@ const Navbar = () => {
               <Link 
                 to="/kecamatan" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/kecamatan')}
               >
                 <span className="text-base font-medium">Kecamatan</span>
               </Link>
@@ -221,14 +229,14 @@ const Navbar = () => {
               <Link 
                 to="/kontak" 
                 className="flex items-center px-4 py-3 rounded-md hover:bg-blue-50"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => handleNavigation('/kontak')}
               >
                 <span className="text-base font-medium">Kontak</span>
               </Link>
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t">
-              <Link to="/admin/login">
+              <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
                 <Button className="w-full">
                   <User className="mr-2" size={16} />
                   Admin Login
