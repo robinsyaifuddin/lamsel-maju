@@ -45,7 +45,9 @@ import {
   Star,
   Info,
   Save,
-  X
+  X,
+  Mail,
+  MessageSquare
 } from 'lucide-react';
 import { toast } from "sonner";
 
