@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +41,7 @@ import {
   Building,
   Phone,
   AlertCircle,
-  WhatsApp
+  MessageSquare
 } from 'lucide-react';
 import { toast } from "sonner";
 
@@ -509,7 +508,7 @@ const AdminAgenda = () => {
                     <div className="space-y-2">
                       <Label htmlFor="contactWhatsApp" className="font-medium">Nomor WhatsApp</Label>
                       <div className="flex items-center space-x-2">
-                        <WhatsApp size={16} className="text-green-500" />
+                        <Phone size={16} className="text-green-500" />
                         <Input 
                           id="contactWhatsApp" 
                           value={formData.contactWhatsApp} 
@@ -526,7 +525,7 @@ const AdminAgenda = () => {
 
                     <div className="md:col-span-2 p-4 bg-green-50 rounded-lg border border-green-100">
                       <div className="flex items-start gap-3">
-                        <WhatsApp size={20} className="text-green-600 mt-0.5" />
+                        <Phone size={20} className="text-green-600 mt-0.5" />
                         <div>
                           <p className="text-sm font-medium text-green-700">Integrasi WhatsApp</p>
                           <p className="text-sm text-green-600 mt-1">
@@ -620,7 +619,7 @@ const AdminAgenda = () => {
                                 className="h-8 w-8 text-green-500"
                                 onClick={() => handleOpenWhatsApp(agenda.contactWhatsApp)}
                               >
-                                <WhatsApp className="h-4 w-4" />
+                                <Phone className="h-4 w-4" />
                               </Button>
                               <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500">
                                 <Eye className="h-4 w-4" />
