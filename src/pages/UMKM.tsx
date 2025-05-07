@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ScrollAnimations from '@/components/ScrollAnimations';
 
 // Sample data for UMKM
 const allUMKM = [
@@ -153,15 +154,15 @@ const UMKM = () => {
       {/* Page Header */}
       <div className="pt-20 bg-lamsel-green text-white">
         <div className="container mx-auto px-4 py-16">
-          <h1 className="text-4xl font-bold mb-4">UMKM Lampung Selatan</h1>
-          <p className="max-w-2xl">
+          <h1 className="text-4xl font-bold mb-4 animate-fade-in">UMKM Lampung Selatan</h1>
+          <p className="max-w-2xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Jelajahi dan dukung usaha mikro, kecil, dan menengah di Lampung Selatan. Temukan produk lokal berkualitas dari berbagai kategori.
           </p>
         </div>
       </div>
       
       {/* Search and Filter Section */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 animate-slide-in-bottom">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -178,14 +179,14 @@ const UMKM = () => {
           </div>
           <Button 
             onClick={handleSearch}
-            className="bg-lamsel-green hover:bg-lamsel-green/80"
+            className="bg-lamsel-green hover:bg-lamsel-green/80 button-3d"
           >
             Cari
           </Button>
           <Button 
             variant="outline" 
             onClick={handleReset}
-            className="border-lamsel-green text-lamsel-green hover:bg-lamsel-green hover:text-white"
+            className="border-lamsel-green text-lamsel-green hover:bg-lamsel-green hover:text-white button-3d"
           >
             Reset
           </Button>
@@ -227,14 +228,14 @@ const UMKM = () => {
       
       {/* UMKM Grid */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredUMKM.map(umkm => (
-            <Card key={umkm.id} className="overflow-hidden transition-all duration-300 hover:shadow-lg">
-              <div className="relative h-60">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animated-section">
+          {filteredUMKM.map((umkm, index) => (
+            <Card key={umkm.id} className="overflow-hidden transition-all duration-300 hover:shadow-lg card-hover stagger-item">
+              <div className="relative h-60 overflow-hidden">
                 <img 
                   src={umkm.image} 
                   alt={umkm.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 p-4 text-white">
@@ -261,7 +262,7 @@ const UMKM = () => {
                   {umkm.description}
                 </p>
                 <Button 
-                  className="w-full mt-2 bg-lamsel-green hover:bg-lamsel-green/80"
+                  className="w-full mt-2 bg-lamsel-green hover:bg-lamsel-green/80 button-3d"
                   onClick={() => handleViewDetail(umkm.id)}
                 >
                   Lihat Detail
@@ -273,14 +274,14 @@ const UMKM = () => {
         
         {/* Empty state */}
         {filteredUMKM.length === 0 && (
-          <div className="text-center py-16">
+          <div className="text-center py-16 animate-fade-in">
             <h3 className="text-2xl font-semibold mb-2">Tidak Ada UMKM Ditemukan</h3>
             <p className="text-gray-500">
               Mohon coba dengan kata kunci atau filter yang berbeda
             </p>
             <Button 
               onClick={handleReset}
-              className="mt-4 bg-lamsel-green hover:bg-lamsel-green/80"
+              className="mt-4 bg-lamsel-green hover:bg-lamsel-green/80 button-3d"
             >
               Reset Pencarian
             </Button>
@@ -289,6 +290,7 @@ const UMKM = () => {
       </div>
       
       <Footer />
+      <ScrollAnimations />
     </div>
   );
 };
