@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,28 +29,106 @@ import {
   CheckCircle, 
   XCircle
 } from 'lucide-react';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 
-// Dummy data for demonstration
+// Extended destination data model with complete information
 const destinasiData = [
-  { id: 1, name: 'Pantai Anggariska', category: 'Wisata Alam', location: 'Kec. Bakauheni', status: 'Aktif', visitors: 1250, image: '/placeholder.svg' },
-  { id: 2, name: 'Air Terjun Way Kalam', category: 'Wisata Alam', location: 'Kec. Penengahan', status: 'Aktif', visitors: 870, image: '/placeholder.svg' },
+  { 
+    id: 1, 
+    name: 'Pantai Anggariska', 
+    category: 'Wisata Alam', 
+    location: 'Kec. Bakauheni', 
+    status: 'Aktif', 
+    visitors: 1250, 
+    image: '/placeholder.svg',
+    description: 'Pantai dengan pemandangan yang indah dan pasir putih',
+    longDescription: 'Pantai Anggariska adalah salah satu destinasi wisata pantai yang terletak di Kecamatan Bakauheni, Kabupaten Lampung Selatan. Pantai ini menawarkan pemandangan yang indah dengan pasir putih dan air laut yang jernih.',
+    openHours: '06:00 - 18:00',
+    entryFee: 'Rp 10.000 / orang',
+    bestTimeToVisit: 'Pagi hingga sore hari',
+    facilities: ['Parkir', 'Toilet', 'Warung Makan'],
+    activities: ['Berenang', 'Snorkeling', 'Fotografi'],
+    mapCoordinates: '-5.8715, 105.7663',
+    contactInfo: '08123456789'
+  },
+  { 
+    id: 2, 
+    name: 'Air Terjun Way Kalam', 
+    category: 'Wisata Alam', 
+    location: 'Kec. Penengahan', 
+    status: 'Aktif', 
+    visitors: 870, 
+    image: '/placeholder.svg',
+    description: 'Air terjun dengan air yang jernih dan pemandangan yang asri',
+    longDescription: 'Air Terjun Way Kalam adalah salah satu destinasi wisata air terjun yang terletak di Kecamatan Penengahan, Kabupaten Lampung Selatan. Air terjun ini memiliki ketinggian sekitar 15 meter dengan aliran air yang jernih dan sejuk.',
+    openHours: '07:00 - 17:00',
+    entryFee: 'Rp 15.000 / orang',
+    bestTimeToVisit: 'Pagi hari',
+    facilities: ['Parkir', 'Toilet', 'Pendopo'],
+    activities: ['Berenang', 'Hiking', 'Fotografi'],
+    mapCoordinates: '-5.7851, 105.6543',
+    contactInfo: '08765432100'
+  },
   { id: 3, name: 'Menara Siger', category: 'Landmark', location: 'Kec. Bakauheni', status: 'Aktif', visitors: 2435, image: '/placeholder.svg' },
   { id: 4, name: 'Pulau Mengkudu', category: 'Wisata Alam', location: 'Kec. Rajabasa', status: 'Tidak Aktif', visitors: 0, image: '/placeholder.svg' },
   { id: 5, name: 'Museum Ketransmigrasian', category: 'Wisata Edukasi', location: 'Kec. Candipuro', status: 'Aktif', visitors: 534, image: '/placeholder.svg' },
+];
+
+// Available facilities and activities for selection
+const availableFacilities = [
+  { id: 'parkir', label: 'Parkir' },
+  { id: 'toilet', label: 'Toilet' },
+  { id: 'warung', label: 'Warung Makan' },
+  { id: 'penginapan', label: 'Penginapan' },
+  { id: 'gazebo', label: 'Gazebo' },
+  { id: 'musholla', label: 'Musholla' },
+  { id: 'spot-foto', label: 'Spot Foto' },
+  { id: 'pendopo', label: 'Pendopo' },
+  { id: 'camping-ground', label: 'Camping Ground' },
+  { id: 'wifi', label: 'WiFi' },
+];
+
+const availableActivities = [
+  { id: 'berenang', label: 'Berenang' },
+  { id: 'snorkeling', label: 'Snorkeling' },
+  { id: 'diving', label: 'Diving' },
+  { id: 'hiking', label: 'Hiking' },
+  { id: 'camping', label: 'Camping' },
+  { id: 'fotografi', label: 'Fotografi' },
+  { id: 'memancing', label: 'Memancing' },
+  { id: 'berkemah', label: 'Berkemah' },
+  { id: 'piknik', label: 'Piknik' },
+  { id: 'outbound', label: 'Outbound' },
 ];
 
 const AdminDestinasi = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    location: '',
-    description: '',
-    image: '/placeholder.svg',
-    status: 'Aktif'
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+  
+  // Create form using react-hook-form
+  const form = useForm({
+    defaultValues: {
+      name: '',
+      category: '',
+      location: '',
+      description: '',
+      longDescription: '',
+      openHours: '',
+      entryFee: '',
+      bestTimeToVisit: '',
+      mapCoordinates: '',
+      contactInfo: '',
+      image: '/placeholder.svg',
+      status: 'Aktif'
+    }
   });
 
   const filteredData = destinasiData.filter(item => 
@@ -62,14 +139,22 @@ const AdminDestinasi = () => {
 
   const handleAddNew = () => {
     setEditingId(null);
-    setFormData({
+    form.reset({
       name: '',
       category: '',
       location: '',
       description: '',
+      longDescription: '',
+      openHours: '',
+      entryFee: '',
+      bestTimeToVisit: '',
+      mapCoordinates: '',
+      contactInfo: '',
       image: '/placeholder.svg',
       status: 'Aktif'
     });
+    setSelectedFacilities([]);
+    setSelectedActivities([]);
     setShowForm(true);
   };
 
@@ -77,14 +162,22 @@ const AdminDestinasi = () => {
     const destinasi = destinasiData.find(item => item.id === id);
     if (destinasi) {
       setEditingId(id);
-      setFormData({
+      form.reset({
         name: destinasi.name,
         category: destinasi.category,
         location: destinasi.location,
-        description: 'Deskripsi destinasi wisata',
+        description: destinasi.description || '',
+        longDescription: destinasi.longDescription || '',
+        openHours: destinasi.openHours || '',
+        entryFee: destinasi.entryFee || '',
+        bestTimeToVisit: destinasi.bestTimeToVisit || '',
+        mapCoordinates: destinasi.mapCoordinates || '',
+        contactInfo: destinasi.contactInfo || '',
         image: destinasi.image,
         status: destinasi.status
       });
+      setSelectedFacilities(destinasi.facilities || []);
+      setSelectedActivities(destinasi.activities || []);
       setShowForm(true);
     }
   };
@@ -94,18 +187,47 @@ const AdminDestinasi = () => {
     // In a real application, you would make an API call to delete the item
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (values: any) => {
+    // Combine form values with selected facilities and activities
+    const updatedDestinasi = {
+      ...values,
+      facilities: selectedFacilities,
+      activities: selectedActivities,
+    };
+    
     if (editingId) {
-      toast.success(`Destinasi "${formData.name}" berhasil diperbarui`);
+      toast.success(`Destinasi "${values.name}" berhasil diperbarui`);
+      console.log('Updated destination:', updatedDestinasi);
     } else {
-      toast.success(`Destinasi baru "${formData.name}" berhasil ditambahkan`);
+      toast.success(`Destinasi baru "${values.name}" berhasil ditambahkan`);
+      console.log('New destination:', updatedDestinasi);
     }
     setShowForm(false);
   };
 
   const handleCancel = () => {
     setShowForm(false);
+  };
+
+  const handlePreview = (id: number) => {
+    // In a real application, this would navigate to the destination preview page
+    window.open(`/destinasi/detail?id=${id}`, '_blank');
+  };
+
+  const toggleFacility = (id: string) => {
+    setSelectedFacilities(current => 
+      current.includes(id) 
+        ? current.filter(item => item !== id)
+        : [...current, id]
+    );
+  };
+
+  const toggleActivity = (id: string) => {
+    setSelectedActivities(current => 
+      current.includes(id) 
+        ? current.filter(item => item !== id)
+        : [...current, id]
+    );
   };
 
   return (
@@ -131,93 +253,275 @@ const AdminDestinasi = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Nama Destinasi</Label>
-                  <Input 
-                    id="name" 
-                    value={formData.name} 
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="Masukkan nama destinasi" 
-                    required 
-                  />
-                </div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                <Tabs defaultValue="general" className="w-full">
+                  <TabsList className="grid grid-cols-4 mb-4">
+                    <TabsTrigger value="general">Umum</TabsTrigger>
+                    <TabsTrigger value="about">Tentang</TabsTrigger>
+                    <TabsTrigger value="facilities">Fasilitas & Aktivitas</TabsTrigger>
+                    <TabsTrigger value="location">Lokasi</TabsTrigger>
+                  </TabsList>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="category">Kategori</Label>
-                  <Input 
-                    id="category" 
-                    value={formData.category} 
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    placeholder="Contoh: Wisata Alam, Wisata Budaya" 
-                    required 
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="location">Lokasi</Label>
-                  <div className="flex items-center space-x-2">
-                    <MapPin size={16} className="text-gray-400" />
-                    <Input 
-                      id="location" 
-                      value={formData.location} 
-                      onChange={(e) => setFormData({...formData, location: e.target.value})}
-                      placeholder="Contoh: Kec. Bakauheni" 
-                      required 
-                      className="flex-1" 
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
-                  <select 
-                    id="status" 
-                    value={formData.status} 
-                    onChange={(e) => setFormData({...formData, status: e.target.value})}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    required
-                  >
-                    <option value="Aktif">Aktif</option>
-                    <option value="Tidak Aktif">Tidak Aktif</option>
-                  </select>
-                </div>
-                
-                <div className="col-span-1 md:col-span-2 space-y-2">
-                  <Label htmlFor="description">Deskripsi</Label>
-                  <textarea 
-                    id="description" 
-                    value={formData.description} 
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Deskripsi lengkap destinasi wisata" 
-                    required
-                    className="flex min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  ></textarea>
-                </div>
-                
-                <div className="col-span-1 md:col-span-2 space-y-2">
-                  <Label htmlFor="image">Foto Destinasi</Label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
-                    <ImagePlus className="mx-auto h-12 w-12 text-gray-400" />
-                    <div className="mt-2">
-                      <p className="text-sm font-medium">Klik untuk upload foto</p>
-                      <p className="text-xs text-gray-500">SVG, PNG, JPG (maks. 2MB)</p>
+                  {/* General Information Tab */}
+                  <TabsContent value="general" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nama Destinasi</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Masukkan nama destinasi" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Kategori</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Contoh: Wisata Alam, Wisata Budaya" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Status</FormLabel>
+                            <FormControl>
+                              <select 
+                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                {...field}
+                              >
+                                <option value="Aktif">Aktif</option>
+                                <option value="Tidak Aktif">Tidak Aktif</option>
+                              </select>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Deskripsi Singkat</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Deskripsi singkat destinasi" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                    <input id="image" type="file" className="hidden" />
-                  </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="image">Foto Destinasi</Label>
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
+                        <ImagePlus className="mx-auto h-12 w-12 text-gray-400" />
+                        <div className="mt-2">
+                          <p className="text-sm font-medium">Klik untuk upload foto</p>
+                          <p className="text-xs text-gray-500">SVG, PNG, JPG (maks. 2MB)</p>
+                        </div>
+                        <input id="image" type="file" className="hidden" />
+                      </div>
+                    </div>
+                  </TabsContent>
+                
+                  {/* About Tab */}
+                  <TabsContent value="about" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="openHours"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Jam Buka</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Contoh: 06:00 - 18:00" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="entryFee"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Tiket Masuk</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Contoh: Rp 10.000 / orang" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="bestTimeToVisit"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Waktu Terbaik Berkunjung</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Contoh: Pagi hingga sore hari" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="contactInfo"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Informasi Kontak</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Nomor telepon pengelola" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <FormField
+                      control={form.control}
+                      name="longDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Deskripsi Lengkap</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Deskripsi lengkap destinasi wisata" 
+                              className="min-h-32"
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
+                
+                  {/* Facilities and Activities Tab */}
+                  <TabsContent value="facilities" className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4">Fasilitas</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {availableFacilities.map(facility => (
+                          <div key={facility.id} className="flex items-center space-x-2">
+                            <Checkbox 
+                              id={`facility-${facility.id}`} 
+                              checked={selectedFacilities.includes(facility.label)}
+                              onCheckedChange={() => toggleFacility(facility.label)}
+                            />
+                            <label 
+                              htmlFor={`facility-${facility.id}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {facility.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4">Aktivitas</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {availableActivities.map(activity => (
+                          <div key={activity.id} className="flex items-center space-x-2">
+                            <Checkbox 
+                              id={`activity-${activity.id}`} 
+                              checked={selectedActivities.includes(activity.label)}
+                              onCheckedChange={() => toggleActivity(activity.label)}
+                            />
+                            <label 
+                              htmlFor={`activity-${activity.id}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {activity.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                
+                  {/* Location Tab */}
+                  <TabsContent value="location" className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lokasi</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center space-x-2">
+                              <MapPin size={16} className="text-gray-400" />
+                              <Input placeholder="Contoh: Kec. Bakauheni" {...field} className="flex-1" />
+                            </div>
+                          </FormControl>
+                          <FormDescription>Masukkan nama desa dan kecamatan lokasi destinasi</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="mapCoordinates"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Koordinat Peta</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Contoh: -5.8715, 105.7663" {...field} />
+                          </FormControl>
+                          <FormDescription>Masukkan koordinat latitude dan longitude</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div className="border rounded-lg p-4">
+                      <h3 className="text-sm font-semibold mb-2">Peta Interaktif</h3>
+                      <div className="bg-gray-200 rounded h-48 flex items-center justify-center">
+                        <p className="text-sm text-gray-500">Peta akan ditampilkan di sini</p>
+                        {/* Here you would integrate an interactive map */}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">Anda dapat mengklik pada peta untuk menentukan koordinat lokasi</p>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+                
+                <div className="flex justify-end space-x-2 pt-4 border-t">
+                  <Button variant="outline" type="button" onClick={handleCancel}>
+                    Batal
+                  </Button>
+                  <Button type="submit" className="shadow-md">
+                    {editingId ? 'Perbarui Destinasi' : 'Tambah Destinasi'}
+                  </Button>
                 </div>
-              </div>
-              
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" type="button" onClick={handleCancel}>
-                  Batal
-                </Button>
-                <Button type="submit" className="shadow-md">
-                  {editingId ? 'Perbarui Destinasi' : 'Tambah Destinasi'}
-                </Button>
-              </div>
-            </form>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       ) : (
@@ -299,7 +603,12 @@ const AdminDestinasi = () => {
                               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleEdit(destinasi.id)}>
                                 <Edit className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-blue-500"
+                                onClick={() => handlePreview(destinasi.id)}
+                              >
                                 <Eye className="h-4 w-4" />
                               </Button>
                               <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => handleDelete(destinasi.id)}>
