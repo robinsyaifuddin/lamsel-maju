@@ -85,7 +85,7 @@ const Navbar = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? "shadow-lg bg-white/95 backdrop-blur-sm" 
+        ? "shadow-lg bg-white/98 backdrop-blur-md border-b border-gray-200/50" 
         : "bg-white border-b border-gray-100"
     }`}>
       <div className="container mx-auto px-4">
@@ -95,7 +95,7 @@ const Navbar = () => {
               <div className="rounded-full bg-lamsel-blue p-2 card-3d-content transition-all duration-300 shadow-md">
                 <span className="text-xl font-bold text-white">LM</span>
               </div>
-              <span className="text-xl font-semibold text-lamsel-dark hidden sm:inline">Lamsel Maju</span>
+              <span className="text-xl font-semibold text-gray-900 hidden sm:inline">Lamsel Maju</span>
             </Link>
           </div>
           
@@ -104,7 +104,7 @@ const Navbar = () => {
             <NavigationMenuList className="space-x-2">
               <NavigationMenuItem>
                 <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Beranda
                   </NavigationMenuLink>
                 </Link>
@@ -112,7 +112,7 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <Link to="/destinasi" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/destinasi' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/destinasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Destinasi Wisata
                   </NavigationMenuLink>
                 </Link>
@@ -120,7 +120,7 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <Link to="/agenda" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/agenda' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/agenda' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Agenda Travel
                   </NavigationMenuLink>
                 </Link>
@@ -128,7 +128,7 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <Link to="/umkm" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/umkm' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     UMKM
                   </NavigationMenuLink>
                 </Link>
@@ -136,7 +136,7 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <Link to="/kecamatan" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/kecamatan' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kecamatan' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Kecamatan
                   </NavigationMenuLink>
                 </Link>
@@ -144,7 +144,7 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <Link to="/kontak" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline ${location.pathname === '/kontak' ? 'text-lamsel-blue' : ''}`}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kontak' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Kontak
                   </NavigationMenuLink>
                 </Link>
@@ -154,48 +154,48 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center space-x-4">
             {/* Search Button */}
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-blue-50" onClick={() => setIsSearchOpen(true)}>
-              <Search className="text-lamsel-dark" size={20} />
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-blue-50 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200" onClick={() => setIsSearchOpen(true)}>
+              <Search className="text-gray-700 hover:text-lamsel-blue transition-colors" size={20} />
             </Button>
             
             {/* Admin Login Button */}
             <Link to="/admin/login" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <Button variant="outline" size="sm" className="rounded-full border-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[2px] button-3d">
+              <Button variant="outline" size="sm" className="rounded-full border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[1px] button-3d font-medium">
                 <User className="mr-2" size={16} />
                 Admin Login
               </Button>
             </Link>
           </div>
           
-          <Button variant="ghost" className="md:hidden" onClick={() => setMobileMenuOpen(true)}>
-            <Menu className="text-lamsel-dark" size={24} />
+          <Button variant="ghost" className="md:hidden text-gray-800 hover:bg-gray-100 transition-colors" onClick={() => setMobileMenuOpen(true)}>
+            <Menu size={24} />
           </Button>
         </div>
       </div>
 
-      {/* Mobile Menu - Enhanced with better contrast and colors for Android */}
+      {/* Mobile Menu - Enhanced with better contrast and colors */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div 
-            className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-lg animate-slide-in-right"
+            className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-2xl animate-slide-in-right border-l border-gray-200"
             style={{ animationDuration: '0.3s' }}
           >
-            <div className="flex justify-between items-center p-4 border-b bg-gradient-to-r from-lamsel-blue to-lamsel-purple">
+            <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50">
               <div className="flex items-center space-x-2">
-                <div className="rounded-full bg-white p-2 shadow-md">
-                  <span className="text-xl font-bold text-lamsel-blue">LM</span>
+                <div className="rounded-full bg-lamsel-blue p-2 shadow-md">
+                  <span className="text-xl font-bold text-white">LM</span>
                 </div>
-                <span className="text-xl font-bold text-white">
+                <span className="text-xl font-bold text-gray-900">
                   Lamsel Maju
                 </span>
               </div>
-              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="text-white hover:bg-white/20">
+              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                 <X size={24} />
               </Button>
             </div>
             
-            <div className="p-4 mb-4 bg-gray-50">
-              <Button variant="outline" className="w-full justify-start border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white" onClick={() => setIsSearchOpen(true)}>
+            <div className="p-4 mb-4 bg-gray-50/50 border-b border-gray-100">
+              <Button variant="outline" className="w-full justify-start border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-200 shadow-sm" onClick={() => setIsSearchOpen(true)}>
                 <Search className="mr-2" size={16} />
                 Cari destinasi, UMKM, agenda...
               </Button>
@@ -204,10 +204,10 @@ const Navbar = () => {
             <div className="flex flex-col space-y-1 px-2 animated-section">
               <Link 
                 to="/" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`} 
                 onClick={() => handleNavigation('/')}
               >
@@ -216,10 +216,10 @@ const Navbar = () => {
               
               <Link 
                 to="/destinasi" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/destinasi' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`}
                 onClick={() => handleNavigation('/destinasi')}
               >
@@ -228,10 +228,10 @@ const Navbar = () => {
               
               <Link 
                 to="/agenda" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/agenda' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`}
                 onClick={() => handleNavigation('/agenda')}
               >
@@ -240,10 +240,10 @@ const Navbar = () => {
               
               <Link 
                 to="/umkm" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/umkm' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`}
                 onClick={() => handleNavigation('/umkm')}
               >
@@ -252,10 +252,10 @@ const Navbar = () => {
               
               <Link 
                 to="/kecamatan" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kecamatan' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`}
                 onClick={() => handleNavigation('/kecamatan')}
               >
@@ -264,10 +264,10 @@ const Navbar = () => {
               
               <Link 
                 to="/kontak" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-lg font-medium text-base transition-all duration-300 ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kontak' 
-                    ? 'bg-gradient-to-r from-lamsel-blue to-lamsel-purple text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-gradient-to-r hover:from-lamsel-blue hover:to-lamsel-purple hover:text-white hover:shadow-md'
+                    ? 'bg-lamsel-blue text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-lamsel-blue hover:text-white border border-gray-100 bg-white'
                 }`}
                 onClick={() => handleNavigation('/kontak')}
               >
@@ -275,9 +275,9 @@ const Navbar = () => {
               </Link>
             </div>
             
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-gray-50">
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50/50">
               <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
-                <Button className="w-full button-3d bg-gradient-to-r from-lamsel-blue to-lamsel-purple hover:from-lamsel-purple hover:to-lamsel-blue text-white font-medium shadow-md">
+                <Button className="w-full button-3d bg-lamsel-blue hover:bg-lamsel-blue/90 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300">
                   <User className="mr-2" size={16} />
                   Admin Login
                 </Button>
@@ -287,31 +287,38 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Search Dialog - Fixed by removing invalid className prop */}
+      {/* Search Dialog - Enhanced styling */}
       <CommandDialog 
         open={isSearchOpen} 
         onOpenChange={setIsSearchOpen}
       >
-        <Command>
-          <CommandInput 
-            placeholder="Cari destinasi, UMKM, agenda..." 
-            value={searchQuery} 
-            onValueChange={setSearchQuery}
-            className="border-none focus:ring-0"
-            autoFocus
-          />
-          <CommandList>
-            <CommandEmpty>Pencarian tidak ditemukan</CommandEmpty>
-            <CommandGroup heading="Hasil Pencarian">
+        <Command className="rounded-lg border border-gray-200 shadow-xl">
+          <div className="border-b border-gray-100 bg-gray-50/50">
+            <CommandInput 
+              placeholder="Cari destinasi, UMKM, agenda..." 
+              value={searchQuery} 
+              onValueChange={setSearchQuery}
+              className="border-none focus:ring-0 text-gray-800 placeholder:text-gray-500 bg-transparent h-12"
+              autoFocus
+            />
+          </div>
+          <CommandList className="max-h-80 overflow-y-auto bg-white">
+            <CommandEmpty className="py-8 text-center text-gray-500">
+              <div className="flex flex-col items-center space-y-2">
+                <Search className="w-8 h-8 text-gray-300" />
+                <span>Pencarian tidak ditemukan</span>
+              </div>
+            </CommandEmpty>
+            <CommandGroup heading="Hasil Pencarian" className="p-2">
               {filteredResults.map((result, index) => (
                 <CommandItem 
                   key={result.id} 
                   onSelect={() => handleSearchSelect(result.url)} 
-                  className="flex items-center stagger-item stagger-delay-1"
+                  className="flex items-center p-3 m-1 rounded-lg hover:bg-blue-50 cursor-pointer transition-all duration-200 stagger-item stagger-delay-1 border border-transparent hover:border-blue-100"
                 >
-                  <div className="flex flex-col">
-                    <span>{result.name}</span>
-                    <span className="text-xs text-muted-foreground">{result.category}</span>
+                  <div className="flex flex-col w-full">
+                    <span className="font-medium text-gray-900">{result.name}</span>
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full w-fit mt-1">{result.category}</span>
                   </div>
                 </CommandItem>
               ))}
