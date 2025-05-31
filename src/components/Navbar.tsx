@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -263,11 +262,10 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Search Dialog with smoother animations */}
+      {/* Search Dialog - Fixed by removing invalid className prop */}
       <CommandDialog 
         open={isSearchOpen} 
         onOpenChange={setIsSearchOpen}
-        className="animate-scale-in"
       >
         <Command>
           <CommandInput 
