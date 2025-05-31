@@ -94,7 +94,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center space-x-3 card-3d" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="rounded-full bg-white p-2 card-3d-content transition-all duration-300 shadow-md border border-gray-200">
                 <img 
-                  src="/lovable-uploads/9c7d094a-626c-42f0-ace5-6581d644d83f.png" 
+                  src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
                   alt="Logo Lampung Selatan" 
                   className="w-8 h-8 object-contain"
                 />
@@ -177,48 +177,45 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Enhanced with better visibility and black text */}
+      {/* Mobile Menu - Enhanced with better contrast and colors */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div 
             className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-2xl animate-slide-in-right border-l border-gray-200"
             style={{ animationDuration: '0.3s' }}
           >
-            {/* Header with logo and close button */}
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-white">
+            <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50">
               <div className="flex items-center space-x-3">
                 <div className="rounded-full bg-white p-2 shadow-md border border-gray-200">
                   <img 
-                    src="/lovable-uploads/9c7d094a-626c-42f0-ace5-6581d644d83f.png" 
+                    src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
                     alt="Logo Lampung Selatan" 
                     className="w-8 h-8 object-contain"
                   />
                 </div>
-                <span className="text-xl font-bold text-black">
+                <span className="text-xl font-bold text-gray-900">
                   Lamsel Maju
                 </span>
               </div>
-              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="text-black hover:bg-gray-100 hover:text-black transition-colors">
+              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                 <X size={24} />
               </Button>
             </div>
             
-            {/* Search section */}
-            <div className="p-4 mb-4 bg-white border-b border-gray-100">
-              <Button variant="outline" className="w-full justify-start border-gray-300 text-black hover:bg-gray-100 hover:text-black hover:border-gray-400 transition-all duration-200 shadow-sm" onClick={() => setIsSearchOpen(true)}>
-                <Search className="mr-2 text-black" size={16} />
-                <span className="text-black">Cari destinasi, UMKM, agenda...</span>
+            <div className="p-4 mb-4 bg-gray-50/50 border-b border-gray-100">
+              <Button variant="outline" className="w-full justify-start border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-200 shadow-sm" onClick={() => setIsSearchOpen(true)}>
+                <Search className="mr-2" size={16} />
+                Cari destinasi, UMKM, agenda...
               </Button>
             </div>
             
-            {/* Menu items with black text */}
             <div className="flex flex-col space-y-1 px-2 animated-section">
               <Link 
                 to="/" 
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`} 
                 onClick={() => handleNavigation('/')}
               >
@@ -230,7 +227,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/destinasi' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/destinasi')}
               >
@@ -242,7 +239,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/agenda' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/agenda')}
               >
@@ -254,7 +251,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/umkm' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/umkm')}
               >
@@ -266,7 +263,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kecamatan' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kecamatan')}
               >
@@ -278,7 +275,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kontak' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-gray-100 hover:text-black border border-gray-200 bg-white'
+                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kontak')}
               >
@@ -286,8 +283,7 @@ const Navbar = () => {
               </Link>
             </div>
             
-            {/* Admin Login button at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50/50">
               <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
                 <Button className="w-full button-3d bg-lamsel-blue hover:bg-lamsel-blue/90 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300">
                   <User className="mr-2" size={16} />
