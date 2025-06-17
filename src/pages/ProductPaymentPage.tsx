@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -57,7 +56,7 @@ const ProductPaymentPage = () => {
     productName: searchParams.get('productName') || '',
     productPrice: parseInt(searchParams.get('productPrice') || '0'),
     umkmName: searchParams.get('umkmName') || '',
-    umkmPhone: searchParams.get('umkmPhone') || '',
+    umkmPhone: '62887437525303', // Updated to unified WhatsApp number
     umkmLocation: searchParams.get('umkmLocation') || '',
     orderId: `PRD${Date.now()}`,
     orderDate: new Date().toLocaleDateString('id-ID')
@@ -320,8 +319,7 @@ ${notes ? `Catatan: ${notes}` : ''}
 *Saya telah melakukan pembayaran sesuai dengan jumlah di atas. Mohon konfirmasi pembayaran.*`;
 
     const encodedMessage = encodeURIComponent(message);
-    const phone = productData.umkmPhone.replace(/[^0-9]/g, '');
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/62887437525303?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
 

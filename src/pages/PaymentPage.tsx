@@ -60,7 +60,7 @@ const events = [
     description: "Festival budaya tahunan untuk memperingati letusan Gunung Krakatau dengan berbagai pertunjukan seni dan budaya tradisional Lampung.",
     provider: {
       name: "Lampung Travel",
-      phone: "6287437525303"
+      phone: "62887437525303" // Updated to unified WhatsApp number
     }
   },
   // ... other events would be here
@@ -175,7 +175,7 @@ Metode Pembayaran: ${selectedPayment === 'qris' ? 'QRIS' : `Transfer Bank ${paym
 *Saya telah melakukan pembayaran sesuai dengan jumlah di atas. Mohon konfirmasi pembayaran.*`;
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${event?.provider.phone}?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/62887437525303?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
 
