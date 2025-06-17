@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -177,115 +176,119 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Enhanced with better contrast and colors */}
+      {/* Mobile Menu - Reset and Rebuilt */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div 
-            className="absolute right-0 top-0 h-full w-4/5 bg-white shadow-2xl animate-slide-in-right border-l border-gray-200"
-            style={{ animationDuration: '0.3s' }}
-          >
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50">
+        <div className="fixed inset-0 z-50 bg-black/50 md:hidden">
+          <div className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-white shadow-xl">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center space-x-3">
-                <div className="rounded-full bg-white p-2 shadow-md border border-gray-200">
-                  <img 
-                    src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
-                    alt="Logo Lampung Selatan" 
-                    className="w-8 h-8 object-contain"
-                  />
-                </div>
-                <span className="text-xl font-bold text-black">
-                  Lamsel Maju
-                </span>
+                <img 
+                  src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
+                  alt="Logo Lampung Selatan" 
+                  className="w-8 h-8 object-contain"
+                />
+                <span className="text-lg font-semibold text-gray-900">Lamsel Maju</span>
               </div>
-              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">
-                <X size={24} />
+              <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(false)}>
+                <X size={20} className="text-gray-600" />
               </Button>
             </div>
             
-            <div className="p-4 mb-4 bg-gray-50/50 border-b border-gray-100">
-              <Button variant="outline" className="w-full justify-start border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-200 shadow-sm" onClick={() => setIsSearchOpen(true)}>
+            {/* Search */}
+            <div className="p-4 border-b border-gray-100">
+              <Button 
+                variant="outline" 
+                className="w-full justify-start text-gray-600 border-gray-200"
+                onClick={() => {
+                  setIsSearchOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+              >
                 <Search className="mr-2" size={16} />
                 Cari destinasi, UMKM, agenda...
               </Button>
             </div>
             
-            <div className="flex flex-col space-y-1 px-2 animated-section">
+            {/* Menu Items */}
+            <div className="flex flex-col p-2">
               <Link 
                 to="/" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
-                }`} 
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
+                }`}
                 onClick={() => handleNavigation('/')}
               >
-                <span className="font-semibold">Beranda</span>
+                Beranda
               </Link>
               
               <Link 
                 to="/destinasi" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/destinasi' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
                 }`}
                 onClick={() => handleNavigation('/destinasi')}
               >
-                <span className="font-semibold">Destinasi Wisata</span>
+                Destinasi Wisata
               </Link>
               
               <Link 
                 to="/agenda" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/agenda' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
                 }`}
                 onClick={() => handleNavigation('/agenda')}
               >
-                <span className="font-semibold">Agenda Travel</span>
+                Agenda Travel
               </Link>
               
               <Link 
                 to="/umkm" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/umkm' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
                 }`}
                 onClick={() => handleNavigation('/umkm')}
               >
-                <span className="font-semibold">UMKM</span>
+                UMKM
               </Link>
               
               <Link 
                 to="/kecamatan" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/kecamatan' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
                 }`}
                 onClick={() => handleNavigation('/kecamatan')}
               >
-                <span className="font-semibold">Kecamatan</span>
+                Kecamatan
               </Link>
               
               <Link 
                 to="/kontak" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
                   location.pathname === '/kontak' 
-                    ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
                 }`}
                 onClick={() => handleNavigation('/kontak')}
               >
-                <span className="font-semibold">Kontak</span>
+                Kontak
               </Link>
             </div>
             
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50/50">
+            {/* Admin Login Button */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
               <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
-                <Button className="w-full button-3d bg-lamsel-blue hover:bg-lamsel-blue/90 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                   <User className="mr-2" size={16} />
                   Admin Login
                 </Button>
@@ -295,7 +298,7 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Search Dialog - Enhanced styling */}
+      {/* Search Dialog - Keep existing */}
       <CommandDialog 
         open={isSearchOpen} 
         onOpenChange={setIsSearchOpen}
