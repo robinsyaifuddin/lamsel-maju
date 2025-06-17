@@ -77,7 +77,7 @@ const Navbar = () => {
   const handleSearchSelect = (url: string) => {
     setIsSearchOpen(false);
     navigate(url);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to top when navigating
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Function to handle navigation and scroll to top
@@ -90,7 +90,7 @@ const Navbar = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? "shadow-lg bg-white/98 backdrop-blur-md border-b border-gray-200/50" 
+        ? "shadow-lg bg-white border-b border-gray-200" 
         : "bg-white border-b border-gray-100"
     }`}>
       <div className="container mx-auto px-4">
@@ -190,12 +190,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Reset and Rebuilt */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 md:hidden">
           <div className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-white shadow-xl">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div className="flex items-center space-x-3">
                 <img 
                   src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
@@ -210,10 +210,10 @@ const Navbar = () => {
             </div>
             
             {/* Search */}
-            <div className="p-4 border-b border-gray-100">
+            <div className="p-4 border-b border-gray-100 bg-white">
               <Button 
                 variant="outline" 
-                className="w-full justify-start text-gray-600 border-gray-200"
+                className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50"
                 onClick={() => {
                   setIsSearchOpen(true);
                   setMobileMenuOpen(false);
@@ -225,7 +225,7 @@ const Navbar = () => {
             </div>
             
             {/* Menu Items */}
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-2 bg-white h-full overflow-y-auto">
               <Link 
                 to="/" 
                 className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
@@ -309,22 +309,22 @@ const Navbar = () => {
               >
                 Kontak
               </Link>
-            </div>
-            
-            {/* Admin Login Button */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-              <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  <User className="mr-2" size={16} />
-                  Admin Login
-                </Button>
-              </Link>
+              
+              {/* Admin Login Button */}
+              <div className="mt-auto p-4 border-t border-gray-200 bg-white">
+                <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <User className="mr-2" size={16} />
+                    Admin Login
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Search Dialog - Keep existing */}
+      {/* Search Dialog */}
       <CommandDialog 
         open={isSearchOpen} 
         onOpenChange={setIsSearchOpen}
