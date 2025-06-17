@@ -94,23 +94,24 @@ const Navbar = () => {
         : "bg-white border-b border-gray-100"
     }`}>
       <div className="container mx-auto px-4">
-        <div className="flex h-20 items-center justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-3 card-3d" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="rounded-full bg-white p-2 card-3d-content transition-all duration-300 shadow-md border border-gray-200">
+        <div className="flex h-16 md:h-20 items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center flex-shrink-0">
+            <Link to="/" className="flex items-center space-x-2 md:space-x-3 card-3d" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="rounded-full bg-white p-1.5 md:p-2 card-3d-content transition-all duration-300 shadow-md border border-gray-200">
                 <img 
                   src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
                   alt="Logo Lampung Selatan" 
-                  className="w-8 h-8 object-contain"
+                  className="w-6 h-6 md:w-8 md:h-8 object-contain"
                 />
               </div>
-              <span className="text-xl font-semibold text-gray-900 hidden sm:inline">Lamsel Maju</span>
+              <span className="text-lg md:text-xl font-semibold text-gray-900 hidden sm:inline">Lamsel Maju</span>
             </Link>
           </div>
           
-          {/* Desktop Navigation - Using Navigation Menu from shadcn/ui */}
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList className="space-x-2">
+          {/* Desktop Navigation */}
+          <NavigationMenu className="hidden lg:flex">
+            <NavigationMenuList className="space-x-1">
               <NavigationMenuItem>
                 <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
@@ -169,7 +170,8 @@ const Navbar = () => {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center space-x-3">
             {/* Search Button */}
             <Button variant="ghost" size="icon" className="rounded-full hover:bg-blue-50 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200" onClick={() => setIsSearchOpen(true)}>
               <Search className="text-gray-700 hover:text-lamsel-blue transition-colors" size={20} />
@@ -184,16 +186,54 @@ const Navbar = () => {
             </Link>
           </div>
           
-          <Button variant="ghost" className="md:hidden text-gray-800 hover:bg-gray-100 transition-colors" onClick={() => setMobileMenuOpen(true)}>
-            <Menu size={24} />
-          </Button>
+          {/* Mobile Actions */}
+          <div className="flex lg:hidden items-center space-x-2">
+            {/* Mobile Search Button */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="rounded-full hover:bg-gray-100 transition-colors w-9 h-9" 
+              onClick={() => setIsSearchOpen(true)}
+            >
+              <Search className="text-gray-700" size={18} />
+            </Button>
+            
+            {/* Mobile Admin Login Button */}
+            <Link to="/admin/login" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="rounded-full border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-300 text-xs px-2 py-1 h-8"
+              >
+                <User className="mr-1" size={14} />
+                Login
+              </Button>
+            </Link>
+            
+            {/* Mobile Menu Button */}
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-gray-800 hover:bg-gray-100 transition-colors w-9 h-9" 
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 md:hidden">
-          <div className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-white shadow-xl">
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/50" 
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Menu Panel */}
+          <div className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div className="flex items-center space-x-3">
@@ -204,8 +244,13 @@ const Navbar = () => {
                 />
                 <span className="text-lg font-semibold text-gray-900">Lamsel Maju</span>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(false)}>
-                <X size={20} className="text-gray-600" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-8 h-8"
+              >
+                <X size={18} className="text-gray-600" />
               </Button>
             </div>
             
@@ -213,7 +258,7 @@ const Navbar = () => {
             <div className="p-4 border-b border-gray-100 bg-white">
               <Button 
                 variant="outline" 
-                className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50"
+                className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50 h-10"
                 onClick={() => {
                   setIsSearchOpen(true);
                   setMobileMenuOpen(false);
@@ -225,7 +270,7 @@ const Navbar = () => {
             </div>
             
             {/* Menu Items */}
-            <div className="flex flex-col p-2 bg-white h-full overflow-y-auto">
+            <div className="flex flex-col p-2 bg-white overflow-y-auto" style={{ height: 'calc(100vh - 140px)' }}>
               <Link 
                 to="/" 
                 className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
@@ -310,10 +355,10 @@ const Navbar = () => {
                 Kontak
               </Link>
               
-              {/* Admin Login Button */}
+              {/* Admin Login Button in Mobile Menu */}
               <div className="mt-auto p-4 border-t border-gray-200 bg-white">
                 <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button className="w-full bg-lamsel-blue hover:bg-blue-700 text-white h-11">
                     <User className="mr-2" size={16} />
                     Admin Login
                   </Button>
