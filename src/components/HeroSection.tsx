@@ -23,14 +23,17 @@ export const HeroSection = () => {
     <div className="relative h-screen max-h-[800px] min-h-[600px] w-full overflow-hidden">
       {/* Hero background image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center" 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=2940')",
-          backgroundPosition: "center 30%",
+          backgroundImage: "url('/lovable-uploads/417ca5e8-2fd5-417a-b33b-2acc06d3986d.png')",
+          backgroundPosition: "center center",
+          backgroundSize: "cover"
         }}
       >
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-lamsel-dark/50 via-lamsel-dark/30 to-transparent"></div>
+        {/* White gradient overlay (20% opacity) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/10 to-white/5"></div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-lamsel-dark/30 via-lamsel-dark/20 to-transparent"></div>
       </div>
       
       {/* 3D Animated elements - floating icons */}
