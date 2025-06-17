@@ -15,8 +15,6 @@ import UMKM from "./pages/UMKM";
 import UMKMDetail from "./pages/UMKMDetail";
 import Kecamatan from "./pages/Kecamatan";
 import Kontak from "./pages/Kontak";
-import Informasi from "./pages/Informasi";
-import InformasiDetail from "./pages/InformasiDetail";
 
 // Admin Pages
 import AdminLogin from "./pages/AdminLogin";
@@ -61,8 +59,6 @@ const App = () => (
           <Route path="/agenda/join" element={<AgendaJoin />} />
           <Route path="/umkm" element={<UMKM />} />
           <Route path="/umkm/detail" element={<UMKMDetail />} />
-          <Route path="/informasi" element={<Informasi />} />
-          <Route path="/informasi/detail" element={<InformasiDetail />} />
           <Route path="/kecamatan" element={<Kecamatan />} />
           <Route path="/kontak" element={<Kontak />} />
           
