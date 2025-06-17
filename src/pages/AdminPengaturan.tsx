@@ -38,8 +38,8 @@ import {
 
 const AdminPengaturan = () => {
   const [apiKeys, setApiKeys] = useState({
-    supabaseUrl: process.env.REACT_APP_SUPABASE_URL || '',
-    supabaseKey: process.env.REACT_APP_SUPABASE_KEY || '',
+    supabaseUrl: import.meta.env.VITE_SUPABASE_URL || '',
+    supabaseKey: import.meta.env.VITE_SUPABASE_KEY || '',
     mailApiKey: '',
     paymentApiKey: '',
     storageApiKey: '',
@@ -824,7 +824,7 @@ const AdminPengaturan = () => {
             <CardFooter className="flex justify-end gap-2 border-t pt-5">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant={generalSettings.maintenanceMode ? "destructive" : "default"} onClick={toggleMaintenanceMode}>
+                  <Button variant={generalSettings.maintenanceMode ? "destructive" : "default"}>
                     {generalSettings.maintenanceMode ? 'Nonaktifkan Mode Pemeliharaan' : 'Aktifkan Mode Pemeliharaan'}
                   </Button>
                 </AlertDialogTrigger>
