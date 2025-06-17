@@ -32,7 +32,7 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   }, [location]);
 
-  // Mock search results
+  // Mock search results - updated to include informasi
   const searchResults = [{
     id: 1,
     category: 'Destinasi',
@@ -63,6 +63,16 @@ const Navbar = () => {
     category: 'Agenda',
     name: 'Festival Krakatau',
     url: '/agenda?id=1'
+  }, {
+    id: 7,
+    category: 'Informasi',
+    name: 'Pembangunan Jalan Tol Lampung',
+    url: '/informasi/detail?id=1'
+  }, {
+    id: 8,
+    category: 'Informasi',
+    name: 'Festival Budaya Lamsel 2024',
+    url: '/informasi/detail?id=2'
   }];
 
   // Filter results based on search query
@@ -102,7 +112,7 @@ const Navbar = () => {
             </Link>
           </div>
           
-          {/* Desktop Navigation - Using Navigation Menu from shadcn/ui */}
+          {/* Desktop Navigation - Adding Informasi menu */}
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList className="space-x-2">
               <NavigationMenuItem>
@@ -133,6 +143,14 @@ const Navbar = () => {
                 <Link to="/umkm" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     UMKM
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <Link to="/informasi" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/informasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
+                    Informasi
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -176,7 +194,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Reset and Rebuilt */}
+      {/* Mobile Menu - Adding Informasi */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 md:hidden">
           <div className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-white shadow-xl">
@@ -210,7 +228,7 @@ const Navbar = () => {
               </Button>
             </div>
             
-            {/* Menu Items */}
+            {/* Menu Items - Adding Informasi */}
             <div className="flex flex-col p-2">
               <Link 
                 to="/" 
@@ -258,6 +276,18 @@ const Navbar = () => {
                 onClick={() => handleNavigation('/umkm')}
               >
                 UMKM
+              </Link>
+              
+              <Link 
+                to="/informasi" 
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
+                  location.pathname === '/informasi' 
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
+                }`}
+                onClick={() => handleNavigation('/informasi')}
+              >
+                Informasi
               </Link>
               
               <Link 
