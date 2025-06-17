@@ -24,30 +24,18 @@ import {
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 
-// Sample payment methods data
+// Sample payment methods data - updated to show only one bank
 const paymentMethods = {
   qris: {
     name: "QRIS",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2340",
     code: "00020101021126580014ID.CO.QRIS.WWW0215ID20232923845270303UMI51440014ID.LINKAJA.WWW0215088812345678910303UMI52044899530336054041000540200000000000062210528ID123456789012345678901234634004A01A"
   },
-  bank: [
-    {
-      name: "Bank BCA",
-      accountNumber: "1234567890",
-      accountName: "UMKM Lampung Selatan"
-    },
-    {
-      name: "Bank Mandiri", 
-      accountNumber: "0987654321",
-      accountName: "UMKM Lampung Selatan"
-    },
-    {
-      name: "Bank BRI",
-      accountNumber: "5555666677778888",
-      accountName: "UMKM Lampung Selatan"
-    }
-  ]
+  bank: {
+    name: "Bank BCA",
+    accountNumber: "1234567890",
+    accountName: "UMKM Lampung Selatan"
+  }
 };
 
 const ProductPaymentPage = () => {
@@ -55,7 +43,6 @@ const ProductPaymentPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [selectedPayment, setSelectedPayment] = useState<'qris' | 'bank'>('qris');
-  const [selectedBank, setSelectedBank] = useState(0);
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [customerName, setCustomerName] = useState('');
@@ -244,17 +231,14 @@ const ProductPaymentPage = () => {
     // QRIS
     pdf.text('• QRIS - Scan QR Code', 20, paymentY + 12);
     
-    // Bank Transfer
+    // Bank Transfer - Updated to show only one bank
     pdf.text('• Transfer Bank:', 20, paymentY + 20);
-    paymentMethods.bank.forEach((bank, index) => {
-      const yPos = paymentY + 28 + (index * 8);
-      pdf.text(`  - ${bank.name}: ${bank.accountNumber}`, 25, yPos);
-      pdf.text(`    a.n. ${bank.accountName}`, 25, yPos + 4);
-    });
+    pdf.text(`  - ${paymentMethods.bank.name}: ${paymentMethods.bank.accountNumber}`, 25, paymentY + 28);
+    pdf.text(`    a.n. ${paymentMethods.bank.accountName}`, 25, paymentY + 32);
     
     // Notes Section
     if (notes) {
-      const notesY = paymentY + 70;
+      const notesY = paymentY + 50;
       pdf.setFont('helvetica', 'bold');
       pdf.text('Catatan:', 20, notesY);
       pdf.setFont('helvetica', 'normal');
@@ -329,7 +313,7 @@ Detail Pesanan:
 - Harga per unit: Rp${productData.productPrice.toLocaleString('id-ID')}
 - Total Pembayaran: Rp${totalAmount.toLocaleString('id-ID')}
 
-Metode Pembayaran: ${selectedPayment === 'qris' ? 'QRIS' : `Transfer Bank ${paymentMethods.bank[selectedBank].name}`}
+Metode Pembayaran: ${selectedPayment === 'qris' ? 'QRIS' : `Transfer Bank ${paymentMethods.bank.name}`}
 
 ${notes ? `Catatan: ${notes}` : ''}
 
@@ -540,41 +524,29 @@ ${notes ? `Catatan: ${notes}` : ''}
                   </div>
                 )}
 
-                {/* Bank Transfer Payment */}
+                {/* Bank Transfer Payment - Updated to show only one bank */}
                 {selectedPayment === 'bank' && (
                   <div className="space-y-4">
-                    <h3 className="font-semibold">Pilih Bank untuk Transfer</h3>
-                    <div className="space-y-3">
-                      {paymentMethods.bank.map((bank, index) => (
-                        <div key={index} 
-                             className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                               selectedBank === index ? 'border-lamsel-green bg-lamsel-green/5' : 'border-gray-200'
-                             }`}
-                             onClick={() => setSelectedBank(index)}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium">{bank.name}</h4>
-                              <p className="text-sm text-gray-600">{bank.accountName}</p>
-                              <p className="font-mono text-lg font-bold mt-1">{bank.accountNumber}</p>
-                            </div>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                copyToClipboard(bank.accountNumber, 'Nomor rekening');
-                              }}
-                            >
-                              {copiedAccount === bank.accountNumber ? (
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <Copy className="h-4 w-4" />
-                              )}
-                            </Button>
-                          </div>
+                    <h3 className="font-semibold">Transfer Bank</h3>
+                    <div className="p-4 border border-lamsel-green bg-lamsel-green/5 rounded-lg">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium">{paymentMethods.bank.name}</h4>
+                          <p className="text-sm text-gray-600">{paymentMethods.bank.accountName}</p>
+                          <p className="font-mono text-lg font-bold mt-1">{paymentMethods.bank.accountNumber}</p>
                         </div>
-                      ))}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => copyToClipboard(paymentMethods.bank.accountNumber, 'Nomor rekening')}
+                        >
+                          {copiedAccount === paymentMethods.bank.accountNumber ? (
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                       <p className="text-sm text-yellow-800">
