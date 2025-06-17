@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,11 @@ const Navbar = () => {
     category: 'Agenda',
     name: 'Festival Krakatau',
     url: '/agenda?id=1'
+  }, {
+    id: 7,
+    category: 'Informasi',
+    name: 'Berita Terbaru Lamsel',
+    url: '/informasi/detail?id=1'
   }];
 
   // Filter results based on search query
@@ -133,6 +139,14 @@ const Navbar = () => {
                 <Link to="/umkm" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     UMKM
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <Link to="/informasi" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/informasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
+                    Informasi
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -258,6 +272,18 @@ const Navbar = () => {
                 onClick={() => handleNavigation('/umkm')}
               >
                 UMKM
+              </Link>
+              
+              <Link 
+                to="/informasi" 
+                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
+                  location.pathname === '/informasi' 
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'hover:bg-gray-50'
+                }`}
+                onClick={() => handleNavigation('/informasi')}
+              >
+                Informasi
               </Link>
               
               <Link 
