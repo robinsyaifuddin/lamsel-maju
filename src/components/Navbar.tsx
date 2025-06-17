@@ -212,74 +212,74 @@ const Navbar = () => {
             <div className="flex flex-col space-y-1 px-2 animated-section">
               <Link 
                 to="/" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`} 
                 onClick={() => handleNavigation('/')}
               >
-                <span className="font-semibold">Beranda</span>
+                <span className="font-bold text-black">Beranda</span>
               </Link>
               
               <Link 
                 to="/destinasi" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/destinasi' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/destinasi')}
               >
-                <span className="font-semibold">Destinasi Wisata</span>
+                <span className="font-bold text-black">Destinasi Wisata</span>
               </Link>
               
               <Link 
                 to="/agenda" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/agenda' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/agenda')}
               >
-                <span className="font-semibold">Agenda Travel</span>
+                <span className="font-bold text-black">Agenda Travel</span>
               </Link>
               
               <Link 
                 to="/umkm" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/umkm' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/umkm')}
               >
-                <span className="font-semibold">UMKM</span>
+                <span className="font-bold text-black">UMKM</span>
               </Link>
               
               <Link 
                 to="/kecamatan" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kecamatan' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kecamatan')}
               >
-                <span className="font-semibold">Kecamatan</span>
+                <span className="font-bold text-black">Kecamatan</span>
               </Link>
               
               <Link 
                 to="/kontak" 
-                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
+                className={`flex items-center px-4 py-4 mx-2 rounded-xl font-bold text-lg transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kontak' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
                     : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kontak')}
               >
-                <span className="font-semibold">Kontak</span>
+                <span className="font-bold text-black">Kontak</span>
               </Link>
             </div>
             
