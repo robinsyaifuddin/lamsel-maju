@@ -14,6 +14,7 @@ import AgendaJoin from "./pages/AgendaJoin";
 import PaymentPage from "./pages/PaymentPage";
 import UMKM from "./pages/UMKM";
 import UMKMDetail from "./pages/UMKMDetail";
+import ProductPaymentPage from "./pages/ProductPaymentPage";
 import Kecamatan from "./pages/Kecamatan";
 import Kontak from "./pages/Kontak";
 import Informasi from "./pages/Informasi";
@@ -63,6 +64,7 @@ const App = () => (
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/umkm" element={<UMKM />} />
           <Route path="/umkm/detail" element={<UMKMDetail />} />
+          <Route path="/umkm/product-payment" element={<ProductPaymentPage />} />
           <Route path="/informasi" element={<Informasi />} />
           <Route path="/informasi/detail" element={<InformasiDetail />} />
           <Route path="/kecamatan" element={<Kecamatan />} />

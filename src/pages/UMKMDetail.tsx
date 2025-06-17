@@ -295,13 +295,13 @@ const UMKMDetail = () => {
     });
   };
 
-  const handleOrderNow = () => {
+  const handleContactProducer = () => {
     if (!umkm) return;
     
-    // Format the WhatsApp message
-    const message = `*Pesan Produk UMKM - ${umkm.name}*
+    // Format the WhatsApp message for contacting producer
+    const message = `*Hubungi Produsen UMKM - ${umkm.name}*
     
-Saya tertarik dengan produk dari ${umkm.name}.
+Halo, saya tertarik dengan produk dari ${umkm.name}.
 Saya ingin mendapatkan informasi lebih lanjut tentang produk Anda.
 
 Informasi UMKM:
@@ -314,7 +314,7 @@ Terima kasih.`;
     // Encode the message for WhatsApp URL
     const encodedMessage = encodeURIComponent(message);
     
-    // Create WhatsApp URL (default phone from the first UMKM if not found)
+    // Create WhatsApp URL
     const phone = umkm.phone.replace(/[^0-9]/g, '');
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
     
@@ -322,9 +322,26 @@ Terima kasih.`;
     window.open(whatsappUrl, '_blank');
     
     toast({
-      title: "Menghubungi penjual",
-      description: "Anda akan diarahkan ke WhatsApp untuk menghubungi UMKM",
+      title: "Menghubungi produsen",
+      description: "Anda akan diarahkan ke WhatsApp untuk menghubungi produsen UMKM",
     });
+  };
+
+  const handleOrderProduct = (product: Product) => {
+    if (!umkm || !product.inStock) return;
+    
+    // Navigate to product payment page with product and UMKM data
+    const params = new URLSearchParams({
+      umkmId: umkm.id.toString(),
+      productId: product.id.toString(),
+      productName: product.name,
+      productPrice: product.price.toString(),
+      umkmName: umkm.name,
+      umkmPhone: umkm.phone,
+      umkmLocation: umkm.location
+    });
+    
+    navigate(`/umkm/product-payment?${params.toString()}`);
   };
 
   if (!umkm) {
@@ -392,11 +409,11 @@ Terima kasih.`;
               </div>
               <div className="mt-4">
                 <Button 
-                  onClick={handleOrderNow}
+                  onClick={handleContactProducer}
                   className="w-full bg-lamsel-green hover:bg-lamsel-green/80 text-white flex items-center justify-center gap-2"
                 >
                   <MessageSquare className="h-5 w-5" />
-                  Pesan Sekarang
+                  Hubungi Produsen UMKM
                 </Button>
               </div>
             </div>
@@ -523,11 +540,11 @@ Terima kasih.`;
                       <Button 
                         className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
                         disabled={!product.inStock}
-                        onClick={() => product.inStock ? handleOrderNow() : null}
+                        onClick={() => product.inStock ? handleOrderProduct(product) : null}
                       >
                         {product.inStock ? (
                           <>
-                            <MessageSquare className="mr-2 h-4 w-4" />
+                            <ShoppingBag className="mr-2 h-4 w-4" />
                             Pesan Produk
                           </>
                         ) : (
