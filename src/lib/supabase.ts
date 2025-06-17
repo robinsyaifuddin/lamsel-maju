@@ -1,10 +1,20 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Only create client if we have real credentials
+const hasRealCredentials = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = hasRealCredentials 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
+
+// Helper function to check if Supabase is ready
+export const isSupabaseReady = () => {
+  return hasRealCredentials && supabase !== null
+}
 
 // Database types (will be generated automatically after Supabase integration)
 export type Database = {

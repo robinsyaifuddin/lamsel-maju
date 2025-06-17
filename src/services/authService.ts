@@ -1,5 +1,5 @@
 
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseReady } from '@/lib/supabase'
 import bcrypt from 'bcryptjs'
 
 export interface AdminUser {
@@ -53,38 +53,43 @@ export const authService = {
         return { user, success: true, message: 'Login berhasil!' }
       }
 
-      // Try database authentication (when Supabase is ready)
-      const { data: users, error } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('username', credentials.username)
-        .single()
+      // Try database authentication only if Supabase is ready
+      if (isSupabaseReady() && supabase) {
+        const { data: users, error } = await supabase
+          .from('admin_users')
+          .select('*')
+          .eq('username', credentials.username)
+          .single()
 
-      if (error || !users) {
-        return { user: null as any, success: false, message: 'Username atau password salah!' }
+        if (error || !users) {
+          return { user: null as any, success: false, message: 'Username atau password salah!' }
+        }
+
+        // Verify password
+        const isValidPassword = await bcrypt.compare(credentials.password, users.password_hash)
+        
+        if (!isValidPassword) {
+          return { user: null as any, success: false, message: 'Username atau password salah!' }
+        }
+
+        const user: AdminUser = {
+          id: users.id,
+          username: users.username,
+          email: users.email,
+          role: users.role
+        }
+
+        // Store session
+        sessionStorage.setItem('adminLoggedIn', 'true')
+        sessionStorage.setItem('adminUsername', user.username)
+        sessionStorage.setItem('adminType', user.role)
+        sessionStorage.setItem('adminId', user.id)
+
+        return { user, success: true, message: 'Login berhasil!' }
       }
 
-      // Verify password
-      const isValidPassword = await bcrypt.compare(credentials.password, users.password_hash)
-      
-      if (!isValidPassword) {
-        return { user: null as any, success: false, message: 'Username atau password salah!' }
-      }
-
-      const user: AdminUser = {
-        id: users.id,
-        username: users.username,
-        email: users.email,
-        role: users.role
-      }
-
-      // Store session
-      sessionStorage.setItem('adminLoggedIn', 'true')
-      sessionStorage.setItem('adminUsername', user.username)
-      sessionStorage.setItem('adminType', user.role)
-      sessionStorage.setItem('adminId', user.id)
-
-      return { user, success: true, message: 'Login berhasil!' }
+      // If no hardcoded credentials match and Supabase is not ready
+      return { user: null as any, success: false, message: 'Username atau password salah!' }
     } catch (error) {
       console.error('Login error:', error)
       return { user: null as any, success: false, message: 'Terjadi kesalahan saat login' }
@@ -119,6 +124,11 @@ export const authService = {
 
   // Create default admin users in database (run this after Supabase setup)
   async createDefaultUsers() {
+    if (!isSupabaseReady() || !supabase) {
+      console.log('Supabase not ready, skipping user creation')
+      return
+    }
+
     try {
       const defaultUsers = [
         {
