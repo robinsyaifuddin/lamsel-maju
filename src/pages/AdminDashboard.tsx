@@ -1,49 +1,300 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, Package, MapPin, Calendar, Users, TrendingUp, Eye, ArrowUpRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { 
+  BarChart3, 
+  Users, 
+  MapPin, 
+  Package, 
+  Calendar,
+  MessageSquare,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  Edit,
+  Plus,
+  Settings,
+  Bell,
+  Download,
+  Filter,
+  Search,
+  Grid,
+  List,
+  Map,
+  Image,
+  ChevronRight,
+  Activity,
+  DollarSign,
+  Star,
+  Clock
+} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-// Mock data
-const statsCards = [
-  { title: 'Total Destinasi', value: '24', icon: MapPin, change: '+12%', color: 'bg-blue-500' },
-  { title: 'Total UMKM', value: '48', icon: Package, change: '+18%', color: 'bg-green-500' },
-  { title: 'Agenda', value: '12', icon: Calendar, change: '+5%', color: 'bg-orange-500' },
-  { title: 'Pengunjung', value: '1.2K', icon: Users, change: '+24%', color: 'bg-purple-500' },
+// Mock data for dashboard statistics
+const dashboardStats = {
+  totalVisitors: 12450,
+  visitorsGrowth: 12.5,
+  totalDestinations: 45,
+  destinationsGrowth: 8.3,
+  totalUMKM: 127,
+  umkmGrowth: 15.7,
+  totalKecamatan: 17,
+  kecamatanGrowth: 0,
+  pendingMessages: 8,
+  messagesGrowth: -5.2,
+  totalAgenda: 23,
+  agendaGrowth: 22.1
+};
+
+// Mock data for recent activities
+const recentActivities = [
+  { id: 1, type: 'destination', title: 'Pantai Lampuuk ditambahkan', user: 'Admin Pusat', time: '2 jam yang lalu', status: 'success' },
+  { id: 2, type: 'umkm', title: 'UMKM Kerajinan Tangan diperbarui', user: 'Admin UMKM', time: '4 jam yang lalu', status: 'info' },
+  { id: 3, type: 'message', title: 'Pesan kontak baru diterima', user: 'Pengunjung', time: '6 jam yang lalu', status: 'warning' },
+  { id: 4, type: 'agenda', title: 'Agenda Wisata Budaya dibuat', user: 'Admin Pusat', time: '1 hari yang lalu', status: 'success' },
+  { id: 5, type: 'kecamatan', title: 'Data Kecamatan Kalianda diperbarui', user: 'Admin Pusat', time: '2 hari yang lalu', status: 'info' }
+];
+
+// Mock data for quick stats
+const quickStats = [
+  { id: 1, label: 'Hari Ini', visitors: 342, bookings: 23, revenue: 'Rp 2.4M' },
+  { id: 2, label: 'Minggu Ini', visitors: 2156, bookings: 89, revenue: 'Rp 18.7M' },
+  { id: 3, label: 'Bulan Ini', visitors: 8743, bookings: 234, revenue: 'Rp 67.2M' }
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
+  
+  const adminType = sessionStorage.getItem('adminType');
+  const adminUsername = sessionStorage.getItem('adminUsername') || 'Admin';
+  const isUMKMAdmin = adminType === 'umkm';
+
+  useEffect(() => {
+    // Check if admin is logged in
+    const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      toast.error('Anda harus login terlebih dahulu!');
+      navigate('/admin/login');
+    }
+  }, [navigate]);
+
+  const handleQuickAction = (action: string, path: string) => {
+    toast.success(`Mengarahkan ke ${action}...`);
+    navigate(path);
+  };
+
+  const exportData = () => {
+    toast.success('Data berhasil diekspor!');
+  };
+
+  const refreshData = () => {
+    toast.success('Data berhasil diperbarui!');
+  };
+
+  // Statistics cards data with responsive handling
+  const getStatsCards = () => {
+    const baseCards = [
+      {
+        title: 'Total Pengunjung',
+        value: dashboardStats.totalVisitors.toLocaleString(),
+        change: dashboardStats.visitorsGrowth,
+        icon: Users,
+        color: 'text-blue-600',
+        bgColor: 'bg-blue-50',
+        path: '/admin/statistik'
+      },
+      {
+        title: 'UMKM Terdaftar',
+        value: dashboardStats.totalUMKM.toString(),
+        change: dashboardStats.umkmGrowth,
+        icon: Package,
+        color: 'text-green-600',
+        bgColor: 'bg-green-50',
+        path: '/admin/umkm'
+      }
+    ];
+
+    if (!isUMKMAdmin) {
+      baseCards.splice(1, 0, {
+        title: 'Destinasi Wisata',
+        value: dashboardStats.totalDestinations.toString(),
+        change: dashboardStats.destinationsGrowth,
+        icon: MapPin,
+        color: 'text-purple-600',
+        bgColor: 'bg-purple-50',
+        path: '/admin/destinasi'
+      });
+
+      baseCards.push(
+        {
+          title: 'Pesan Masuk',
+          value: dashboardStats.pendingMessages.toString(),
+          change: dashboardStats.messagesGrowth,
+          icon: MessageSquare,
+          color: 'text-orange-600',
+          bgColor: 'bg-orange-50',
+          path: '/admin/kontak'
+        },
+        {
+          title: 'Agenda Travel',
+          value: dashboardStats.totalAgenda.toString(),
+          change: dashboardStats.agendaGrowth,
+          icon: Calendar,
+          color: 'text-indigo-600',
+          bgColor: 'bg-indigo-50',
+          path: '/admin/agenda'
+        },
+        {
+          title: 'Kecamatan',
+          value: dashboardStats.totalKecamatan.toString(),
+          change: dashboardStats.kecamatanGrowth,
+          icon: Map,
+          color: 'text-red-600',
+          bgColor: 'bg-red-50',
+          path: '/admin/kecamatan'
+        }
+      );
+    }
+
+    return baseCards;
+  };
+
+  // Quick actions based on admin type
+  const getQuickActions = () => {
+    const baseActions = [
+      { label: 'Tambah UMKM', icon: Package, path: '/admin/umkm', color: 'bg-green-500 hover:bg-green-600' }
+    ];
+
+    if (!isUMKMAdmin) {
+      return [
+        { label: 'Tambah Destinasi', icon: MapPin, path: '/admin/destinasi', color: 'bg-blue-500 hover:bg-blue-600' },
+        { label: 'Buat Agenda', icon: Calendar, path: '/admin/agenda', color: 'bg-purple-500 hover:bg-purple-600' },
+        ...baseActions,
+        { label: 'Kelola Kecamatan', icon: Map, path: '/admin/kecamatan', color: 'bg-red-500 hover:bg-red-600' },
+        { label: 'Lihat Pesan', icon: MessageSquare, path: '/admin/kontak', color: 'bg-orange-500 hover:bg-orange-600' },
+        { label: 'Pengaturan', icon: Settings, path: '/admin/pengaturan', color: 'bg-gray-500 hover:bg-gray-600' }
+      ];
+    }
+
+    return [
+      ...baseActions,
+      { label: 'Pengaturan', icon: Settings, path: '/admin/pengaturan', color: 'bg-gray-500 hover:bg-gray-600' }
+    ];
+  };
+
+  const statsCards = getStatsCards();
+  const quickActions = getQuickActions();
+
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Dashboard Admin</h1>
-        <p className="text-sm text-muted-foreground">
-          Terakhir diperbarui: {new Date().toLocaleDateString('id-ID', { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          })}
-        </p>
+    <div className="space-y-4 md:space-y-6 p-2 md:p-0">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+            Dashboard {isUMKMAdmin ? 'UMKM' : 'Admin'}
+          </h1>
+          <p className="text-sm md:text-base text-gray-600">
+            Selamat datang, {adminUsername}! Kelola platform wisata Lampung Selatan dengan mudah.
+          </p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <div className="flex gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size={isMobile ? "sm" : "default"} className="flex-1 sm:flex-none">
+                  <Filter className="w-4 h-4 mr-2" />
+                  {selectedTimeRange === '7d' ? '7 Hari' : selectedTimeRange === '30d' ? '30 Hari' : '90 Hari'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onSelect={() => setSelectedTimeRange('7d')}>7 Hari Terakhir</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setSelectedTimeRange('30d')}>30 Hari Terakhir</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setSelectedTimeRange('90d')}>90 Hari Terakhir</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <Button 
+              variant="outline" 
+              size={isMobile ? "sm" : "default"}
+              onClick={exportData}
+              className="flex-1 sm:flex-none"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              {isMobile ? 'Export' : 'Export Data'}
+            </Button>
+          </div>
+          
+          <Button 
+            onClick={refreshData}
+            size={isMobile ? "sm" : "default"}
+            className="flex-1 sm:flex-none"
+          >
+            <Activity className="w-4 h-4 mr-2" />
+            {isMobile ? 'Refresh' : 'Refresh Data'}
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4">
         {statsCards.map((stat, index) => (
-          <Card key={index} className="shadow-sm hover:shadow-md transition-all">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                  <h3 className="text-2xl font-bold mt-1">{stat.value}</h3>
-                  <p className="flex items-center mt-1 text-sm text-green-600">
-                    <TrendingUp className="mr-1" size={14} />
-                    {stat.change} bulan ini
+          <Card 
+            key={index} 
+            className="cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-1"
+            onClick={() => navigate(stat.path)}
+          >
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1 md:space-y-2 flex-1">
+                  <p className="text-xs md:text-sm font-medium text-gray-600 leading-tight">
+                    {stat.title}
                   </p>
+                  <p className="text-lg md:text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
+                  <div className="flex items-center space-x-1">
+                    {stat.change > 0 ? (
+                      <TrendingUp className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
+                    ) : (
+                      <TrendingDown className="w-3 h-3 md:w-4 md:h-4 text-red-600" />
+                    )}
+                    <span className={`text-xs md:text-sm font-medium ${
+                      stat.change > 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {Math.abs(stat.change)}%
+                    </span>
+                  </div>
                 </div>
-                <div className={`p-3 rounded-full ${stat.color}`}>
-                  <stat.icon className="text-white" size={22} />
+                <div className={`p-2 md:p-3 rounded-lg ${stat.bgColor} flex-shrink-0 ml-2`}>
+                  <stat.icon className={`w-4 h-4 md:w-6 md:h-6 ${stat.color}`} />
                 </div>
               </div>
             </CardContent>
@@ -51,30 +302,121 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      {/* Recent Activity and Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>Aktivitas Terbaru</CardTitle>
-            <CardDescription>Aktivitas terbaru di website Anda</CardDescription>
+      {/* Quick Actions */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div>
+              <CardTitle className="text-lg md:text-xl">Aksi Cepat</CardTitle>
+              <CardDescription className="text-sm">
+                Kelola konten platform dengan mudah
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+              >
+                <Grid className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('list')}
+              >
+                <List className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+              {quickActions.map((action, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className={`h-auto flex-col space-y-2 p-3 md:p-4 ${action.color} text-white border-none hover:scale-105 transition-all duration-200`}
+                  onClick={() => handleQuickAction(action.label, action.path)}
+                >
+                  <action.icon className="w-5 h-5 md:w-6 md:h-6" />
+                  <span className="text-xs md:text-sm font-medium text-center leading-tight">
+                    {action.label}
+                  </span>
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {quickActions.map((action, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => handleQuickAction(action.label, action.path)}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-lg ${action.color} text-white`}>
+                      <action.icon className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium">{action.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        {/* Recent Activities */}
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div>
+                <CardTitle className="text-lg md:text-xl">Aktivitas Terbaru</CardTitle>
+                <CardDescription className="text-sm">
+                  Pantau aktivitas terbaru di platform
+                </CardDescription>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/admin/statistik">
+                  Lihat Semua
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
-              {[
-                { user: 'Admin', action: 'menambahkan destinasi baru', time: '2 jam yang lalu', icon: MapPin },
-                { user: 'Admin', action: 'memperbarui agenda travel', time: '4 jam yang lalu', icon: Calendar },
-                { user: 'Admin', action: 'menambahkan UMKM baru', time: '1 hari yang lalu', icon: Package },
-                { user: 'Admin', action: 'memperbarui informasi kecamatan', time: '2 hari yang lalu', icon: MapPin },
-              ].map((activity, index) => (
-                <div key={index} className="flex items-start space-x-4">
-                  <div className="bg-gray-100 p-2 rounded-full">
-                    <activity.icon size={18} className="text-lamsel-blue" />
+            <div className="space-y-3">
+              {recentActivities.slice(0, isMobile ? 3 : 5).map((activity) => (
+                <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div className={`p-2 rounded-full flex-shrink-0 ${
+                    activity.status === 'success' ? 'bg-green-100 text-green-600' :
+                    activity.status === 'warning' ? 'bg-orange-100 text-orange-600' :
+                    'bg-blue-100 text-blue-600'
+                  }`}>
+                    {activity.type === 'destination' && <MapPin className="w-4 h-4" />}
+                    {activity.type === 'umkm' && <Package className="w-4 h-4" />}
+                    {activity.type === 'message' && <MessageSquare className="w-4 h-4" />}
+                    {activity.type === 'agenda' && <Calendar className="w-4 h-4" />}
+                    {activity.type === 'kecamatan' && <Map className="w-4 h-4" />}
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-sm">
-                      <span className="font-medium">{activity.user}</span> {activity.action}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {activity.title}
                     </p>
-                    <p className="text-xs text-muted-foreground">{activity.time}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                      <p className="text-xs text-gray-500">
+                        oleh {activity.user}
+                      </p>
+                      <p className="text-xs text-gray-400 flex items-center">
+                        <Clock className="w-3 h-3 mr-1" />
+                        {activity.time}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -82,74 +424,94 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>Gambaran Situs</CardTitle>
-            <CardDescription>Statistik pengunjung situs</CardDescription>
+        {/* Quick Stats */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg md:text-xl">Statistik Cepat</CardTitle>
+            <CardDescription className="text-sm">
+              Ringkasan performa platform
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Eye size={18} />
-                    <span className="text-sm font-medium">Halaman Populer</span>
+              {quickStats.map((stat) => (
+                <div key={stat.id} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700">
+                      {stat.label}
+                    </span>
+                    <Badge variant="secondary" className="text-xs">
+                      {stat.visitors} pengunjung
+                    </Badge>
                   </div>
-                  <span className="text-sm text-muted-foreground">Kunjungan</span>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { page: 'Destinasi Wisata', visits: 452, percentage: 35 },
-                    { page: 'UMKM', visits: 321, percentage: 25 },
-                    { page: 'Beranda', visits: 286, percentage: 22 },
-                    { page: 'Agenda Travel', visits: 159, percentage: 12 },
-                  ].map((item, index) => (
-                    <div key={index} className="space-y-1">
-                      <div className="flex items-center justify-between text-sm">
-                        <span>{item.page}</span>
-                        <span className="font-medium">{item.visits}</span>
-                      </div>
-                      <Progress value={item.percentage} className="h-2" />
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="text-center p-2 bg-blue-50 rounded">
+                      <p className="font-semibold text-blue-600">{stat.bookings}</p>
+                      <p className="text-blue-500">Booking</p>
                     </div>
-                  ))}
+                    <div className="text-center p-2 bg-green-50 rounded">
+                      <p className="font-semibold text-green-600">{stat.revenue}</p>
+                      <p className="text-green-500">Revenue</p>
+                    </div>
+                  </div>
+                  {stat.id < quickStats.length && <hr className="border-gray-200" />}
                 </div>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle>Tindakan Cepat</CardTitle>
-          <CardDescription>Akses cepat ke berbagai bagian admin</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { title: 'Tambah Destinasi', description: 'Tambah destinasi wisata baru', icon: MapPin, link: '/admin/destinasi' },
-              { title: 'Tambah UMKM', description: 'Tambah UMKM baru', icon: Package, link: '/admin/umkm' },
-              { title: 'Analisis Pengunjung', description: 'Lihat statistik pengunjung', icon: BarChart3, link: '/admin/statistik' },
-            ].map((action, index) => (
-              <Card key={index} className="hover:shadow-md transition-all cursor-pointer">
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-full bg-blue-50">
-                      <action.icon className="text-lamsel-blue" size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">{action.title}</h4>
-                      <p className="text-sm text-muted-foreground">{action.description}</p>
-                    </div>
-                    <ArrowUpRight className="ml-auto text-muted-foreground" size={16} />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Performance Overview */}
+      {!isUMKMAdmin && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg md:text-xl">Ikhtisar Performa</CardTitle>
+            <CardDescription className="text-sm">
+              Analisis performa platform secara keseluruhan
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Tingkat Kunjungan</span>
+                  <span className="text-sm text-green-600 font-semibold">+12.5%</span>
+                </div>
+                <Progress value={75} className="h-2" />
+                <p className="text-xs text-gray-500">Target: 15,000 pengunjung/bulan</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Engagement Rate</span>
+                  <span className="text-sm text-green-600 font-semibold">+8.3%</span>
+                </div>
+                <Progress value={68} className="h-2" />
+                <p className="text-xs text-gray-500">Target: 70% engagement</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Konversi Booking</span>
+                  <span className="text-sm text-blue-600 font-semibold">+5.7%</span>
+                </div>
+                <Progress value={45} className="h-2" />
+                <p className="text-xs text-gray-500">Target: 50% konversi</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Kepuasan User</span>
+                  <span className="text-sm text-green-600 font-semibold">4.8/5</span>
+                </div>
+                <Progress value={96} className="h-2" />
+                <p className="text-xs text-gray-500">Berdasarkan 234 review</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

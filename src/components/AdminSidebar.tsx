@@ -14,14 +14,17 @@ import {
   User,
   Calendar,
   Image,
+  X,
 } from 'lucide-react';
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SidebarLinkProps {
   icon: React.ElementType;
   href: string;
   label: string;
   active?: boolean;
+  onClick?: () => void;
 }
 
 interface AdminSidebarProps {
@@ -30,12 +33,12 @@ interface AdminSidebarProps {
   isUMKMAdmin?: boolean;
 }
 
-const SidebarLink = ({ icon: Icon, href, label, active }: SidebarLinkProps) => {
+const SidebarLink = ({ icon: Icon, href, label, active, onClick }: SidebarLinkProps) => {
   return (
-    <Link to={href}>
+    <Link to={href} onClick={onClick}>
       <Button
         variant="ghost"
-        className={`w-full justify-start my-1 ${
+        className={`w-full justify-start my-1 text-sm md:text-base ${
           active 
             ? 'bg-lamsel-blue text-white hover:bg-blue-600 hover:text-white' 
             : 'hover:bg-blue-50 text-slate-600 hover:text-lamsel-blue'
@@ -51,6 +54,7 @@ const SidebarLink = ({ icon: Icon, href, label, active }: SidebarLinkProps) => {
 const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminLoggedIn');
@@ -60,37 +64,47 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
     navigate('/admin/login');
   };
 
+  const handleLinkClick = () => {
+    if (isMobile) {
+      toggleSidebar();
+    }
+  };
+
   const adminUsername = sessionStorage.getItem('adminUsername') || 'Admin';
 
   return (
     <aside
-      className={`bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 z-40 border-r ${
+      className={`bg-white h-screen ${
+        isMobile ? 'fixed' : 'fixed'
+      } left-0 top-0 shadow-lg transition-all duration-300 z-40 border-r ${
         isOpen ? 'w-64' : 'w-20'
-      }`}
+      } ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}`}
     >
-      <div className="p-4 flex items-center justify-between border-b h-20">
+      <div className="p-4 flex items-center justify-between border-b h-16 md:h-20">
         <div className={`flex items-center space-x-2 ${!isOpen && 'justify-center w-full'}`}>
-          <div className="rounded-full bg-lamsel-blue p-2 shadow-md">
-            <span className="text-xl font-bold text-white">LM</span>
+          <div className="rounded-full bg-lamsel-blue p-2 shadow-md flex-shrink-0">
+            <span className="text-lg md:text-xl font-bold text-white">LM</span>
           </div>
           {isOpen && (
-            <span className="text-xl font-bold text-lamsel-dark">Admin</span>
+            <span className="text-lg md:text-xl font-bold text-lamsel-dark">Admin</span>
           )}
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-          className={!isOpen ? 'hidden' : ''}
-        >
-          <Menu />
-        </Button>
+        {isOpen && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="flex-shrink-0"
+          >
+            {isMobile ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+        )}
       </div>
 
-      <div className="p-4">
+      <div className="p-4 h-full overflow-y-auto">
         {isOpen && (
           <div className="mb-6 text-center p-2 bg-gray-50 rounded-lg">
-            <User className="mx-auto text-lamsel-blue mb-2" size={32} />
+            <User className="mx-auto text-lamsel-blue mb-2" size={28} />
             <p className="text-sm font-medium">{adminUsername}</p>
             <p className="text-xs text-muted-foreground">
               {isUMKMAdmin ? 'Admin UMKM' : 'Administrator'}
@@ -215,12 +229,14 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 href="/admin/dashboard"
                 label="Dashboard"
                 active={location.pathname === '/admin/dashboard'}
+                onClick={handleLinkClick}
               />
               <SidebarLink
                 icon={Map}
                 href="/admin/destinasi"
                 label="Destinasi Wisata"
                 active={location.pathname === '/admin/destinasi'}
+                onClick={handleLinkClick}
               />
               
               {/* Show/hide menu items based on admin type */}
@@ -230,6 +246,7 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                   href="/admin/agenda"
                   label="Agenda Travel"
                   active={location.pathname === '/admin/agenda'}
+                  onClick={handleLinkClick}
                 />
               )}
               
@@ -238,6 +255,7 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 href="/admin/umkm"
                 label="UMKM"
                 active={location.pathname === '/admin/umkm'}
+                onClick={handleLinkClick}
               />
               
               {!isUMKMAdmin && (
@@ -247,18 +265,21 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                     href="/admin/kecamatan"
                     label="Kecamatan"
                     active={location.pathname === '/admin/kecamatan'}
+                    onClick={handleLinkClick}
                   />
                   <SidebarLink
                     icon={MessageSquare}
                     href="/admin/kontak"
                     label="Pesan Kontak"
                     active={location.pathname === '/admin/kontak'}
+                    onClick={handleLinkClick}
                   />
                   <SidebarLink
                     icon={BarChart3}
                     href="/admin/statistik"
                     label="Statistik"
                     active={location.pathname === '/admin/statistik'}
+                    onClick={handleLinkClick}
                   />
                 </>
               )}
@@ -268,12 +289,13 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 href="/admin/pengaturan"
                 label="Pengaturan"
                 active={location.pathname === '/admin/pengaturan'}
+                onClick={handleLinkClick}
               />
               
               <div className="mt-6 pt-6 border-t">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50 text-sm md:text-base"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2" size={18} />

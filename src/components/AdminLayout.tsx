@@ -22,13 +22,23 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notificationCount, setNotificationCount] = useState(3);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
+  // Auto-close sidebar on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  }, [isMobile]);
+
   // Mock notifications data
   const notificationsData = [
     { id: 1, type: 'info', title: 'Update sistem', message: 'Sistem telah diperbarui ke versi terbaru', time: '10 menit yang lalu', read: false },
@@ -75,25 +85,35 @@ const AdminLayout = () => {
   const isUMKMAdmin = adminType === 'umkm';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex w-full">
+      {/* Overlay for mobile */}
+      {isMobile && sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} isUMKMAdmin={isUMKMAdmin} />
       
       {/* Main content */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${
+        isMobile ? 'ml-0' : sidebarOpen ? 'ml-64' : 'ml-20'
+      }`}>
         {/* Header */}
-        <header className="bg-white h-20 px-6 flex items-center justify-between shadow-sm border-b">
-          <div className="flex items-center">
-            {!sidebarOpen && (
+        <header className="bg-white h-16 md:h-20 px-4 md:px-6 flex items-center justify-between shadow-sm border-b sticky top-0 z-20">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {(isMobile || !sidebarOpen) && (
               <Button 
                 variant="ghost" 
                 size="icon"
                 onClick={toggleSidebar}
-                className="mr-4"
+                className="flex-shrink-0"
               >
                 <Menu size={20} />
               </Button>
             )}
-            <div className="flex items-center md:w-96">
+            <div className="hidden md:flex items-center w-64 lg:w-96">
               <div className="relative w-full">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <Search size={18} className="text-gray-400" />
@@ -106,7 +126,14 @@ const AdminLayout = () => {
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {/* Mobile search */}
+            <div className="md:hidden">
+              <Button variant="ghost" size="icon">
+                <Search size={20} />
+              </Button>
+            </div>
+
             {/* Notifications */}
             <Popover>
               <PopoverTrigger asChild>
@@ -119,24 +146,24 @@ const AdminLayout = () => {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[380px] p-0" align="end">
+              <PopoverContent className="w-[320px] md:w-[380px] p-0" align="end">
                 <Tabs defaultValue="all">
                   <div className="flex items-center justify-between p-3 border-b">
-                    <h4 className="font-medium">Notifikasi</h4>
+                    <h4 className="font-medium text-sm md:text-base">Notifikasi</h4>
                     <TabsList className="bg-transparent p-0">
                       <TabsTrigger value="all" className="text-xs px-2 py-1">Semua</TabsTrigger>
                       <TabsTrigger value="unread" className="text-xs px-2 py-1">Belum Dibaca</TabsTrigger>
                     </TabsList>
                   </div>
                   <TabsContent value="all" className="m-0">
-                    <ScrollArea className="h-[300px]">
+                    <ScrollArea className="h-[250px] md:h-[300px]">
                       {notificationsData.map((notification) => (
                         <div key={notification.id} className={`p-3 border-b hover:bg-gray-50 transition-colors ${!notification.read ? 'bg-blue-50' : ''}`}>
                           <div className="flex items-start gap-3">
-                            <div className={`w-2 h-2 mt-1.5 rounded-full ${notification.type === 'info' ? 'bg-blue-500' : notification.type === 'alert' ? 'bg-orange-500' : 'bg-green-500'}`}></div>
-                            <div className="flex-1">
-                              <h5 className="font-medium text-sm">{notification.title}</h5>
-                              <p className="text-xs text-gray-600 mt-0.5">{notification.message}</p>
+                            <div className={`w-2 h-2 mt-1.5 rounded-full flex-shrink-0 ${notification.type === 'info' ? 'bg-blue-500' : notification.type === 'alert' ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                            <div className="flex-1 min-w-0">
+                              <h5 className="font-medium text-xs md:text-sm">{notification.title}</h5>
+                              <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{notification.message}</p>
                               <span className="text-xs text-gray-400 mt-1 block">{notification.time}</span>
                             </div>
                           </div>
@@ -145,14 +172,14 @@ const AdminLayout = () => {
                     </ScrollArea>
                   </TabsContent>
                   <TabsContent value="unread" className="m-0">
-                    <ScrollArea className="h-[300px]">
+                    <ScrollArea className="h-[250px] md:h-[300px]">
                       {notificationsData.filter(n => !n.read).map((notification) => (
                         <div key={notification.id} className="p-3 border-b hover:bg-gray-50 transition-colors bg-blue-50">
                           <div className="flex items-start gap-3">
-                            <div className={`w-2 h-2 mt-1.5 rounded-full ${notification.type === 'info' ? 'bg-blue-500' : notification.type === 'alert' ? 'bg-orange-500' : 'bg-green-500'}`}></div>
-                            <div className="flex-1">
-                              <h5 className="font-medium text-sm">{notification.title}</h5>
-                              <p className="text-xs text-gray-600 mt-0.5">{notification.message}</p>
+                            <div className={`w-2 h-2 mt-1.5 rounded-full flex-shrink-0 ${notification.type === 'info' ? 'bg-blue-500' : notification.type === 'alert' ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                            <div className="flex-1 min-w-0">
+                              <h5 className="font-medium text-xs md:text-sm">{notification.title}</h5>
+                              <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{notification.message}</p>
                               <span className="text-xs text-gray-400 mt-1 block">{notification.time}</span>
                             </div>
                           </div>
@@ -171,15 +198,15 @@ const AdminLayout = () => {
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-lamsel-blue flex items-center justify-center text-white">
-                    <User size={18} />
+                <Button variant="ghost" className="flex items-center space-x-2 px-2 md:px-3">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-lamsel-blue flex items-center justify-center text-white">
+                    <User size={16} />
                   </div>
-                  <span className="hidden md:inline">{adminUsername}</span>
+                  <span className="hidden sm:inline text-sm md:text-base">{adminUsername}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
+              <DropdownMenuContent align="end" className="w-48 md:w-56">
+                <DropdownMenuLabel className="text-sm">
                   Akun Saya
                   {adminType && (
                     <span className={`ml-2 text-xs px-2 py-0.5 rounded ${adminType === 'central' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
@@ -207,7 +234,7 @@ const AdminLayout = () => {
         </header>
         
         {/* Main content area */}
-        <main className="p-6">
+        <main className="flex-1 p-3 md:p-6 overflow-x-hidden">
           <Outlet />
         </main>
       </div>
