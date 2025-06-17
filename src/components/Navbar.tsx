@@ -90,7 +90,7 @@ const Navbar = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? "shadow-lg bg-white/98 backdrop-blur-md border-b border-gray-200/50" 
+        ? "shadow-lg bg-white border-b border-gray-200/50" 
         : "bg-white border-b border-gray-100"
     }`}>
       <div className="container mx-auto px-4">
@@ -225,7 +225,7 @@ const Navbar = () => {
             </div>
             
             {/* Menu Items */}
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-2 bg-white">
               <Link 
                 to="/" 
                 className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
@@ -312,7 +312,7 @@ const Navbar = () => {
             </div>
             
             {/* Admin Login Button */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
               <Link to="/admin/login" onClick={() => handleNavigation('/admin/login')}>
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                   <User className="mr-2" size={16} />
