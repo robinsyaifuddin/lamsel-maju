@@ -193,7 +193,7 @@ const Navbar = () => {
                     className="w-8 h-8 object-contain"
                   />
                 </div>
-                <span className="text-xl font-bold text-gray-900">
+                <span className="text-xl font-bold text-black">
                   Lamsel Maju
                 </span>
               </div>
@@ -215,7 +215,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`} 
                 onClick={() => handleNavigation('/')}
               >
@@ -227,7 +227,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/destinasi' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/destinasi')}
               >
@@ -239,7 +239,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/agenda' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/agenda')}
               >
@@ -251,7 +251,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/umkm' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/umkm')}
               >
@@ -263,7 +263,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kecamatan' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kecamatan')}
               >
@@ -275,7 +275,7 @@ const Navbar = () => {
                 className={`flex items-center px-4 py-4 mx-2 rounded-xl font-medium text-base transition-all duration-300 shadow-sm hover:shadow-md ${
                   location.pathname === '/kontak' 
                     ? 'bg-lamsel-blue text-white shadow-md' 
-                    : 'text-gray-900 hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
+                    : 'text-black hover:bg-lamsel-blue hover:text-white border border-gray-200 bg-white/80 backdrop-blur-sm'
                 }`}
                 onClick={() => handleNavigation('/kontak')}
               >
