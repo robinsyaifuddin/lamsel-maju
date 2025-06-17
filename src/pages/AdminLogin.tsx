@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { authService } from '@/services/authService';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -26,33 +26,29 @@ const AdminLogin = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Central Admin credentials
-    if (username === 'adminlamsel' && password === 'lamsel123') {
-      // Set admin in session storage with type
-      sessionStorage.setItem('adminLoggedIn', 'true');
-      sessionStorage.setItem('adminUsername', username);
-      sessionStorage.setItem('adminType', 'central');
+    try {
+      const result = await authService.login({ username, password });
       
-      toast.success('Login sebagai Admin Pusat berhasil!');
-      navigate('/admin/dashboard');
-    } 
-    // UMKM Admin credentials
-    else if (username === 'adminumkm' && password === 'umkm123') {
-      // Set admin in session storage with type
-      sessionStorage.setItem('adminLoggedIn', 'true');
-      sessionStorage.setItem('adminUsername', username);
-      sessionStorage.setItem('adminType', 'umkm');
-      
-      toast.success('Login sebagai Admin UMKM berhasil!');
-      navigate('/admin/umkm');
-    } else {
-      toast.error('Username atau password salah!');
+      if (result.success) {
+        toast.success(result.message);
+        // Navigate based on user role
+        if (result.user.role === 'central') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/admin/umkm');
+        }
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat login!');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const handleResetPassword = (e: React.FormEvent) => {
