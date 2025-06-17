@@ -11,6 +11,7 @@ import Destinasi from "./pages/Destinasi";
 import DestinationDetail from "./pages/DestinationDetail";
 import Agenda from "./pages/Agenda";
 import AgendaJoin from "./pages/AgendaJoin";
+import PaymentPage from "./pages/PaymentPage";
 import UMKM from "./pages/UMKM";
 import UMKMDetail from "./pages/UMKMDetail";
 import Kecamatan from "./pages/Kecamatan";
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/destinasi/detail" element={<DestinationDetail />} />
           <Route path="/agenda" element={<Agenda />} />
           <Route path="/agenda/join" element={<AgendaJoin />} />
+          <Route path="/payment" element={<PaymentPage />} />
           <Route path="/umkm" element={<UMKM />} />
           <Route path="/umkm/detail" element={<UMKMDetail />} />
           <Route path="/informasi" element={<Informasi />} />

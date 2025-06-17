@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Calendar, Clock, MapPin, Users, ArrowLeft, Phone, User, Mail } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, ArrowLeft, Phone, User, Mail, CreditCard } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 // Sample data for events (this would ideally come from your database)
@@ -152,6 +152,33 @@ const AgendaJoin = () => {
         participants: value
       });
     }
+  };
+
+  const handleBookingNow = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast({
+        title: "Form tidak lengkap",
+        description: "Harap isi semua kolom yang diperlukan",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Create URL params for payment page
+    const params = new URLSearchParams({
+      eventId: eventId.toString(),
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      participants: formData.participants.toString(),
+      notes: formData.notes,
+    });
+
+    // Navigate to payment page
+    navigate(`/payment?${params.toString()}`);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -300,7 +327,7 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
                 <p className="text-gray-600">Isi data diri untuk bergabung dengan agenda travel</p>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleBookingNow} className="space-y-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-1">Nama Lengkap *</label>
                     <div className="flex">
@@ -394,14 +421,27 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
                   </div>
                 </form>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex flex-col space-y-3">
+                <Button 
+                  type="button" 
+                  onClick={handleBookingNow}
+                  className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80 text-white"
+                  size="lg"
+                >
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Booking Sekarang
+                </Button>
                 <Button 
                   type="button" 
                   onClick={handleSubmit}
-                  className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80"
+                  variant="outline"
+                  className="w-full border-lamsel-purple text-lamsel-purple hover:bg-lamsel-purple hover:text-white"
                 >
                   Hubungi Penyedia Travel
                 </Button>
+                <p className="text-xs text-gray-500 text-center">
+                  Klik "Booking Sekarang" untuk melanjutkan ke halaman pembayaran
+                </p>
               </CardFooter>
             </Card>
           </div>
