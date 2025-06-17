@@ -169,7 +169,7 @@ const Informasi = () => {
         </section>
 
         {/* Filter Section */}
-        <section className="py-6 bg-white sticky top-20 z-40 border-b border-gray-200 shadow-sm">
+        <section className="py-6 bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
             <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
               <div className="flex-1 max-w-md">
