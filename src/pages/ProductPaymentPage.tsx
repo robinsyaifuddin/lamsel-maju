@@ -107,45 +107,195 @@ const ProductPaymentPage = () => {
     }
 
     const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.width;
+    const pageHeight = pdf.internal.pageSize.height;
     
-    // Header
-    pdf.setFontSize(20);
-    pdf.text('INVOICE PRODUK UMKM', 20, 20);
+    // Colors
+    const primaryColor = [41, 128, 185]; // Blue
+    const darkColor = [52, 73, 94]; // Dark gray
+    const lightGray = [236, 240, 241]; // Light gray
     
-    // Invoice details
+    // Header Section with background
+    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    pdf.rect(0, 0, pageWidth, 35, 'F');
+    
+    // Company Info (Left)
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('UMKM LAMPUNG SELATAN', 20, 15);
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Website: www.lampungselatan.com', 20, 22);
+    pdf.text('Email: info@lampungselatan.com', 20, 28);
+    
+    // Invoice Title (Right)
+    pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+    pdf.roundedRect(pageWidth - 80, 5, 70, 25, 3, 3, 'F');
+    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INVOICE', pageWidth - 75, 15);
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`No. ${productData.orderId}`, pageWidth - 75, 25);
+    
+    // Invoice Details Section
+    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
     pdf.setFontSize(12);
-    pdf.text(`No. Invoice: ${productData.orderId}`, 20, 40);
-    pdf.text(`Tanggal: ${productData.orderDate}`, 20, 50);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INVOICE TO:', 20, 50);
     
-    // Customer info
-    pdf.text('DETAIL PEMBELI:', 20, 70);
-    pdf.text(`Nama: ${customerName}`, 20, 80);
-    pdf.text(`Email: ${customerEmail}`, 20, 90);
-    pdf.text(`Telepon: ${customerPhone}`, 20, 100);
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
+    pdf.text(customerName, 20, 60);
+    pdf.text(customerEmail, 20, 68);
+    pdf.text(customerPhone, 20, 76);
+    
+    // Invoice Date & Due Date (Right)
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Invoice Date:', pageWidth - 80, 50);
+    pdf.text('Due Date:', pageWidth - 80, 60);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(productData.orderDate, pageWidth - 40, 50);
+    pdf.text(productData.orderDate, pageWidth - 40, 60);
+    
+    // Total Due Box (Right)
+    pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+    pdf.roundedRect(pageWidth - 80, 70, 70, 20, 3, 3, 'F');
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Total Due:', pageWidth - 75, 78);
+    pdf.setFontSize(14);
+    pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - 75, 88);
+    
+    // Table Header
+    const tableStartY = 105;
+    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    pdf.rect(20, tableStartY, pageWidth - 40, 12, 'F');
+    
+    // Table Header Text
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('NO.', 25, tableStartY + 8);
+    pdf.text('DESKRIPSI', 40, tableStartY + 8);
+    pdf.text('HARGA', pageWidth - 90, tableStartY + 8);
+    pdf.text('QTY', pageWidth - 60, tableStartY + 8);
+    pdf.text('TOTAL', pageWidth - 40, tableStartY + 8);
+    
+    // Table Row
+    const rowY = tableStartY + 12;
+    pdf.setFillColor(249, 249, 249);
+    pdf.rect(20, rowY, pageWidth - 40, 20, 'F');
+    
+    // Table Content
+    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('1.', 25, rowY + 8);
+    
+    // Product name with word wrap
+    const productNameLines = pdf.splitTextToSize(productData.productName, 80);
+    pdf.text(productNameLines, 40, rowY + 6);
     
     // UMKM info
-    pdf.text('DETAIL UMKM:', 20, 120);
-    pdf.text(`Nama UMKM: ${productData.umkmName}`, 20, 130);
-    pdf.text(`Lokasi: ${productData.umkmLocation}`, 20, 140);
+    pdf.setFontSize(8);
+    pdf.setTextColor(128, 128, 128);
+    pdf.text(`UMKM: ${productData.umkmName}`, 40, rowY + 14);
+    pdf.text(`Lokasi: ${productData.umkmLocation}`, 40, rowY + 18);
     
-    // Product info
-    pdf.text('DETAIL PRODUK:', 20, 160);
-    pdf.text(`Produk: ${productData.productName}`, 20, 170);
-    pdf.text(`Harga per unit: Rp${productData.productPrice.toLocaleString('id-ID')}`, 20, 180);
-    pdf.text(`Jumlah: ${quantity}`, 20, 190);
+    // Price, Quantity, Total
+    pdf.setFontSize(10);
+    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+    pdf.text(`Rp${productData.productPrice.toLocaleString('id-ID')}`, pageWidth - 90, rowY + 8);
+    pdf.text(quantity.toString(), pageWidth - 60, rowY + 8);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - 40, rowY + 8);
     
-    // Pricing
-    pdf.text('RINCIAN BIAYA:', 20, 210);
-    pdf.text(`Subtotal: Rp${totalAmount.toLocaleString('id-ID')}`, 20, 220);
-    pdf.text(`TOTAL: Rp${totalAmount.toLocaleString('id-ID')}`, 20, 230);
+    // Calculations Section
+    const calcStartY = rowY + 35;
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('Sub Total:', pageWidth - 80, calcStartY);
+    pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - 40, calcStartY);
     
-    // Notes
+    pdf.text('Pajak (0%):', pageWidth - 80, calcStartY + 8);
+    pdf.text('Rp0', pageWidth - 40, calcStartY + 8);
+    
+    pdf.text('Diskon:', pageWidth - 80, calcStartY + 16);
+    pdf.text('Rp0', pageWidth - 40, calcStartY + 16);
+    
+    // Grand Total
+    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    pdf.rect(pageWidth - 85, calcStartY + 22, 75, 12, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Grand Total:', pageWidth - 80, calcStartY + 30);
+    pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - 40, calcStartY + 30);
+    
+    // Payment Methods Section
+    const paymentY = calcStartY + 45;
+    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text('Metode Pembayaran:', 20, paymentY);
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
+    
+    // QRIS
+    pdf.text('• QRIS - Scan QR Code', 20, paymentY + 12);
+    
+    // Bank Transfer
+    pdf.text('• Transfer Bank:', 20, paymentY + 20);
+    paymentMethods.bank.forEach((bank, index) => {
+      const yPos = paymentY + 28 + (index * 8);
+      pdf.text(`  - ${bank.name}: ${bank.accountNumber}`, 25, yPos);
+      pdf.text(`    a.n. ${bank.accountName}`, 25, yPos + 4);
+    });
+    
+    // Notes Section
     if (notes) {
-      pdf.text(`Catatan: ${notes}`, 20, 250);
+      const notesY = paymentY + 70;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Catatan:', 20, notesY);
+      pdf.setFont('helvetica', 'normal');
+      const notesLines = pdf.splitTextToSize(notes, pageWidth - 40);
+      pdf.text(notesLines, 20, notesY + 8);
     }
     
+    // Terms & Conditions
+    const termsY = pageHeight - 50;
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(10);
+    pdf.text('Syarat & Ketentuan:', 20, termsY);
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(8);
+    const terms = [
+      '• Pembayaran harus dilakukan sesuai dengan jumlah yang tertera',
+      '• Simpan bukti pembayaran untuk konfirmasi',
+      '• Hubungi produsen UMKM untuk konfirmasi setelah pembayaran',
+      '• Produk akan diproses setelah konfirmasi pembayaran diterima'
+    ];
+    
+    terms.forEach((term, index) => {
+      pdf.text(term, 20, termsY + 8 + (index * 6));
+    });
+    
     // Footer
-    pdf.text('Terima kasih atas kepercayaan Anda!', 20, 270);
+    const footerY = pageHeight - 15;
+    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    pdf.rect(0, footerY - 5, pageWidth, 20, 'F');
+    
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text('TERIMA KASIH ATAS KEPERCAYAAN ANDA!', pageWidth / 2, footerY + 3, { align: 'center' });
+    
+    // Contact info in footer
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(8);
+    pdf.text('Hubungi: ' + productData.umkmPhone, 20, footerY + 8);
+    pdf.text('Website: www.lampungselatan.com', pageWidth - 80, footerY + 8);
     
     pdf.save(`Invoice-${productData.orderId}.pdf`);
     
