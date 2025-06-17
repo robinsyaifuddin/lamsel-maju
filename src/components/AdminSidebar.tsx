@@ -38,14 +38,14 @@ const SidebarLink = ({ icon: Icon, href, label, active, onClick }: SidebarLinkPr
     <Link to={href} onClick={onClick}>
       <Button
         variant="ghost"
-        className={`w-full justify-start my-1 text-sm md:text-base ${
+        className={`w-full justify-start my-1 text-xs sm:text-sm px-2 sm:px-3 h-8 sm:h-9 ${
           active 
             ? 'bg-lamsel-blue text-white hover:bg-blue-600 hover:text-white' 
             : 'hover:bg-blue-50 text-slate-600 hover:text-lamsel-blue'
         }`}
       >
-        <Icon className="mr-2" size={18} />
-        {label}
+        <Icon className="mr-1 sm:mr-2 flex-shrink-0" size={16} />
+        <span className="truncate">{label}</span>
       </Button>
     </Link>
   );
@@ -74,19 +74,17 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
 
   return (
     <aside
-      className={`bg-white h-screen ${
-        isMobile ? 'fixed' : 'fixed'
-      } left-0 top-0 shadow-lg transition-all duration-300 z-40 border-r ${
-        isOpen ? 'w-64' : 'w-20'
+      className={`bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 z-40 border-r ${
+        isOpen ? 'w-60 sm:w-64' : 'w-16'
       } ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}`}
     >
-      <div className="p-4 flex items-center justify-between border-b h-16 md:h-20">
+      <div className="p-2 sm:p-4 flex items-center justify-between border-b h-14 sm:h-16">
         <div className={`flex items-center space-x-2 ${!isOpen && 'justify-center w-full'}`}>
-          <div className="rounded-full bg-lamsel-blue p-2 shadow-md flex-shrink-0">
-            <span className="text-lg md:text-xl font-bold text-white">LM</span>
+          <div className="rounded-full bg-lamsel-blue p-1.5 sm:p-2 shadow-md flex-shrink-0">
+            <span className="text-sm sm:text-lg font-bold text-white">LM</span>
           </div>
           {isOpen && (
-            <span className="text-lg md:text-xl font-bold text-lamsel-dark">Admin</span>
+            <span className="text-sm sm:text-lg font-bold text-lamsel-dark truncate">Admin</span>
           )}
         </div>
         {isOpen && (
@@ -94,18 +92,18 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
             variant="ghost"
             size="icon"
             onClick={toggleSidebar}
-            className="flex-shrink-0"
+            className="flex-shrink-0 h-8 w-8"
           >
-            {isMobile ? <X size={20} /> : <Menu size={20} />}
+            {isMobile ? <X size={18} /> : <Menu size={18} />}
           </Button>
         )}
       </div>
 
-      <div className="p-4 h-full overflow-y-auto">
+      <div className="p-2 sm:p-4 h-full overflow-y-auto">
         {isOpen && (
-          <div className="mb-6 text-center p-2 bg-gray-50 rounded-lg">
-            <User className="mx-auto text-lamsel-blue mb-2" size={28} />
-            <p className="text-sm font-medium">{adminUsername}</p>
+          <div className="mb-4 sm:mb-6 text-center p-2 bg-gray-50 rounded-lg">
+            <User className="mx-auto text-lamsel-blue mb-1 sm:mb-2" size={20} />
+            <p className="text-xs sm:text-sm font-medium truncate">{adminUsername}</p>
             <p className="text-xs text-muted-foreground">
               {isUMKMAdmin ? 'Admin UMKM' : 'Administrator'}
             </p>
@@ -120,47 +118,44 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 variant={location.pathname === '/admin/dashboard' ? 'default' : 'ghost'}
                 size="icon"
                 asChild
-                className="my-1"
+                className="my-1 h-8 w-8"
               >
                 <Link to="/admin/dashboard">
-                  <Home size={20} />
+                  <Home size={16} />
                 </Link>
               </Button>
               <Button
                 variant={location.pathname === '/admin/destinasi' ? 'default' : 'ghost'}
                 size="icon"
                 asChild
-                className="my-1"
+                className="my-1 h-8 w-8"
               >
                 <Link to="/admin/destinasi">
-                  <Map size={20} />
+                  <Map size={16} />
                 </Link>
               </Button>
               
-              {/* Show/hide menu items based on admin type */}
               {!isUMKMAdmin && (
-                <>
-                  <Button
-                    variant={location.pathname === '/admin/agenda' ? 'default' : 'ghost'}
-                    size="icon"
-                    asChild
-                    className="my-1"
-                  >
-                    <Link to="/admin/agenda">
-                      <Calendar size={20} />
-                    </Link>
-                  </Button>
-                </>
+                <Button
+                  variant={location.pathname === '/admin/agenda' ? 'default' : 'ghost'}
+                  size="icon"
+                  asChild
+                  className="my-1 h-8 w-8"
+                >
+                  <Link to="/admin/agenda">
+                    <Calendar size={16} />
+                  </Link>
+                </Button>
               )}
               
               <Button
                 variant={location.pathname === '/admin/umkm' ? 'default' : 'ghost'}
                 size="icon"
                 asChild
-                className="my-1"
+                className="my-1 h-8 w-8"
               >
                 <Link to="/admin/umkm">
-                  <Package size={20} />
+                  <Package size={16} />
                 </Link>
               </Button>
               
@@ -170,30 +165,30 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                     variant={location.pathname === '/admin/kecamatan' ? 'default' : 'ghost'}
                     size="icon"
                     asChild
-                    className="my-1"
+                    className="my-1 h-8 w-8"
                   >
                     <Link to="/admin/kecamatan">
-                      <Image size={20} />
+                      <Image size={16} />
                     </Link>
                   </Button>
                   <Button
                     variant={location.pathname === '/admin/kontak' ? 'default' : 'ghost'}
                     size="icon"
                     asChild
-                    className="my-1"
+                    className="my-1 h-8 w-8"
                   >
                     <Link to="/admin/kontak">
-                      <MessageSquare size={20} />
+                      <MessageSquare size={16} />
                     </Link>
                   </Button>
                   <Button
                     variant={location.pathname === '/admin/statistik' ? 'default' : 'ghost'}
                     size="icon"
                     asChild
-                    className="my-1"
+                    className="my-1 h-8 w-8"
                   >
                     <Link to="/admin/statistik">
-                      <BarChart3 size={20} />
+                      <BarChart3 size={16} />
                     </Link>
                   </Button>
                 </>
@@ -203,21 +198,21 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 variant={location.pathname === '/admin/pengaturan' ? 'default' : 'ghost'}
                 size="icon"
                 asChild
-                className="my-1"
+                className="my-1 h-8 w-8"
               >
                 <Link to="/admin/pengaturan">
-                  <Settings size={20} />
+                  <Settings size={16} />
                 </Link>
               </Button>
               
-              <div className="mt-auto pt-6">
+              <div className="mt-auto pt-4">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handleLogout}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 w-8"
                 >
-                  <LogOut size={20} />
+                  <LogOut size={16} />
                 </Button>
               </div>
             </>
@@ -239,7 +234,6 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 onClick={handleLinkClick}
               />
               
-              {/* Show/hide menu items based on admin type */}
               {!isUMKMAdmin && (
                 <SidebarLink
                   icon={Calendar}
@@ -292,14 +286,14 @@ const AdminSidebar = ({ isOpen, toggleSidebar, isUMKMAdmin = false }: AdminSideb
                 onClick={handleLinkClick}
               />
               
-              <div className="mt-6 pt-6 border-t">
+              <div className="mt-4 pt-4 border-t">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50 text-sm md:text-base"
+                  className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
                   onClick={handleLogout}
                 >
-                  <LogOut className="mr-2" size={18} />
-                  Logout
+                  <LogOut className="mr-1 sm:mr-2 flex-shrink-0" size={16} />
+                  <span className="truncate">Logout</span>
                 </Button>
               </div>
             </>

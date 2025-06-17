@@ -7,34 +7,24 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 201 96% 32%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 25 95% 53%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 152 61% 38%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 201 96% 32%;
-
     --radius: 0.5rem;
-
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -48,32 +38,23 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 201 96% 32%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 25 95% 53%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 152 61% 38%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -95,13 +76,11 @@
     overflow-x: hidden;
   }
 
-  /* Smooth scrolling for the entire site */
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Adjust based on your header height */
+    scroll-padding-top: 80px;
   }
 
-  /* Enhanced smooth scrolling */
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;
@@ -110,6 +89,81 @@
     .smooth-scroll {
       scroll-behavior: smooth;
       scroll-padding-top: 80px;
+    }
+  }
+
+  /* Mobile-first responsive adjustments */
+  @media (max-width: 640px) {
+    .table-mobile {
+      font-size: 0.75rem;
+    }
+    
+    .card-mobile {
+      @apply p-3;
+    }
+    
+    .button-mobile {
+      @apply h-8 px-2 text-xs;
+    }
+    
+    .input-mobile {
+      @apply h-8 text-xs;
+    }
+    
+    .sidebar-mobile {
+      @apply w-60;
+    }
+    
+    .header-mobile {
+      @apply h-14 px-2;
+    }
+  }
+
+  /* Enhanced mobile scrolling */
+  @media (max-width: 768px) {
+    body {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .mobile-scroll {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: auto;
+    }
+    
+    .mobile-table {
+      @apply text-xs;
+    }
+    
+    .mobile-table td,
+    .mobile-table th {
+      @apply px-2 py-1;
+    }
+  }
+
+  /* Touch-friendly interactive elements */
+  @media (max-width: 768px) {
+    button, 
+    [role="button"],
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    .touch-target {
+      @apply min-h-11 min-w-11;
+    }
+  }
+
+  /* Improved text readability on mobile */
+  @media (max-width: 640px) {
+    .text-responsive {
+      @apply text-sm leading-relaxed;
+    }
+    
+    .heading-responsive {
+      @apply text-lg leading-tight;
     }
   }
 
@@ -127,6 +181,7 @@
 
   .search-container {
     @apply bg-white/90 backdrop-blur-lg;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   }
 
   .umkm-card {
@@ -137,7 +192,6 @@
     @apply animate-float;
   }
   
-  /* Animation utility classes */
   .animate-on-scroll {
     opacity: 0;
     transform: translateY(20px);
@@ -183,199 +237,77 @@
   .animated-section.is-active > *:nth-child(3) { transition-delay: 0.3s; }
   .animated-section.is-active > *:nth-child(4) { transition-delay: 0.4s; }
   .animated-section.is-active > *:nth-child(5) { transition-delay: 0.5s; }
-}
 
-.search-container {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* 3D card effect */
-.card-3d {
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-.card-3d-content {
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card-3d:hover .card-3d-content {
-  transform: translateZ(20px) rotateX(5deg) rotateY(5deg);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Enhanced 3D button effect */
-.button-3d {
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.button-3d:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.button-3d:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Navigation menu 3D effect */
-.nav-menu-3d {
-  position: relative;
-  transform-style: preserve-3d;
-  perspective: 800px;
-}
-
-.nav-menu-item {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.nav-menu-item:hover {
-  transform: translateZ(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #0EA5E9;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #0284c7;
-}
-
-/* Enhanced Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  /* Custom scrollbar for mobile */
+  ::-webkit-scrollbar {
+    width: 4px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
   }
-}
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
+  ::-webkit-scrollbar-thumb {
+    background: #0EA5E9;
+    border-radius: 4px;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0284c7;
   }
-}
 
-/* Smoother transitions */
-.page-transition-enter {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.page-transition-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.page-transition-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.page-transition-exit-active {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 300ms, transform 300ms;
-}
-
-/* Animation for smooth page loading */
-.fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-.slide-in-right {
-  animation: slideInRight 0.5s ease-out forwards;
-}
-
-/* Animation delays for staggered animations */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-
-/* Smooth transition for all interactive elements */
-a, button, input, select, textarea {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Smooth image loading and hover effects */
-img {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.hover-zoom:hover img {
-  transform: scale(1.05);
-}
-
-/* Card hover effects */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* Animated underlines for links */
-.link-underline {
-  position: relative;
-}
-
-.link-underline:after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background-color: currentColor;
-  transform-origin: bottom right;
-  transition: transform 0.3s ease-out;
-}
-
-.link-underline:hover:after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-/* Mobile optimization */
-@media (max-width: 768px) {
-  .mobile-smooth-scroll {
-    scroll-behavior: auto; /* Better performance on mobile */
+  /* Mobile-optimized animations */
+  @media (max-width: 768px) {
+    .mobile-no-animation {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+    
+    .mobile-reduced-motion {
+      animation-duration: 0.1s !important;
+      transition-duration: 0.1s !important;
+    }
   }
-  
-  .mobile-no-animation {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+
+  /* Enhanced card hover effects for mobile */
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .card-hover:hover {
+      transform: none;
+    }
+  }
+
+  /* Better form styling for mobile */
+  @media (max-width: 640px) {
+    .form-mobile input,
+    .form-mobile textarea,
+    .form-mobile select {
+      @apply text-base;
+    }
+  }
+
+  /* Improved table responsiveness */
+  .table-responsive {
+    @apply block overflow-x-auto whitespace-nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive table {
+      @apply min-w-full;
+    }
+    
+    .table-responsive td,
+    .table-responsive th {
+      @apply px-2 py-1 text-xs;
+    }
   }
 }
