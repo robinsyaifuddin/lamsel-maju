@@ -8,6 +8,7 @@ import { AgendaSection } from '@/components/AgendaSection';
 import { UMKMShowcase } from '@/components/UMKMShowcase';
 import { PromoSection } from '@/components/PromoSection';
 import { KecamatanSection } from '@/components/KecamatanSection';
+import FeaturedArticles from '@/components/FeaturedArticles';
 import ScrollAnimations from '@/components/ScrollAnimations';
 
 const Index = () => {
@@ -21,6 +22,9 @@ const Index = () => {
         </div>
         <div className="animate-on-scroll">
           <PromoSection />
+        </div>
+        <div className="animate-on-scroll">
+          <FeaturedArticles />
         </div>
         <div className="animate-on-scroll">
           <AgendaSection />
