@@ -53,13 +53,59 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Custom color palette based on your specifications
 				lamsel: {
-					blue: '#0EA5E9',
-					orange: '#F97316',
-					green: '#10B981',
-					purple: '#8B5CF6',
-					red: '#EF4444',
-					dark: '#1A1F2C',
+					// Primary green variations
+					'green-dark': '#1a503a',
+					'green-light': '#9cd3bc',
+					'green-50': '#f0f9f5',
+					'green-100': '#d1f0e1',
+					'green-200': '#a8e3c8',
+					'green-300': '#7dd6af',
+					'green-400': '#5ccc9a',
+					'green-500': '#4fb584',
+					'green-600': '#3d9b6d',
+					'green-700': '#2d7a52',
+					'green-800': '#1a503a',
+					'green-900': '#0f3626',
+					
+					// Red accent
+					'red': '#d82329',
+					'red-50': '#fef2f2',
+					'red-100': '#fee2e2',
+					'red-200': '#fecaca',
+					'red-300': '#fca5a5',
+					'red-400': '#f87171',
+					'red-500': '#ef4444',
+					'red-600': '#dc2626',
+					'red-700': '#d82329',
+					'red-800': '#b91c1c',
+					'red-900': '#991b1b',
+					
+					// Yellow accent
+					'yellow': '#f0e814',
+					'yellow-50': '#fefce8',
+					'yellow-100': '#fef3c7',
+					'yellow-200': '#fde68a',
+					'yellow-300': '#fcd34d',
+					'yellow-400': '#fbbf24',
+					'yellow-500': '#f0e814',
+					'yellow-600': '#d69e2e',
+					'yellow-700': '#b7791f',
+					'yellow-800': '#975a16',
+					'yellow-900': '#744210',
+					
+					// Neutral tones for balance
+					'neutral-50': '#fafafa',
+					'neutral-100': '#f5f5f5',
+					'neutral-200': '#e5e5e5',
+					'neutral-300': '#d4d4d4',
+					'neutral-400': '#a3a3a3',
+					'neutral-500': '#737373',
+					'neutral-600': '#525252',
+					'neutral-700': '#404040',
+					'neutral-800': '#262626',
+					'neutral-900': '#171717',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -214,6 +260,9 @@ export default {
 			backgroundImage: {
 				'hero-pattern': "url('/lovable-uploads/52981017-1492-4aa2-8101-27cb3682b072.png')",
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-primary': 'linear-gradient(135deg, #1a503a 0%, #9cd3bc 100%)',
+				'gradient-accent': 'linear-gradient(135deg, #d82329 0%, #f0e814 100%)',
+				'gradient-hero': 'linear-gradient(135deg, #1a503a 0%, #2d7a52 50%, #9cd3bc 100%)',
 			},
 		}
 	},
