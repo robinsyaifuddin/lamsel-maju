@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -151,18 +150,18 @@ const Informasi = () => {
         {/* Stats Section */}
         <section className="py-8 bg-white border-b border-gray-100">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-lamsel-blue mb-2">{articles.length}</div>
-                <div className="text-gray-600">Total Artikel</div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto">
+              <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-lamsel-blue/5 rounded-lg border border-blue-100">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-lamsel-blue mb-1 sm:mb-2">{articles.length}</div>
+                <div className="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Total Artikel</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-lamsel-blue mb-2">{categories.length - 1}</div>
-                <div className="text-gray-600">Kategori</div>
+              <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-green-50 to-green-100/50 rounded-lg border border-green-100">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-lamsel-blue mb-1 sm:mb-2">{categories.length - 1}</div>
+                <div className="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Kategori</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-lamsel-blue mb-2">24/7</div>
-                <div className="text-gray-600">Update</div>
+              <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-lg border border-orange-100">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-lamsel-blue mb-1 sm:mb-2">24/7</div>
+                <div className="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Update</div>
               </div>
             </div>
           </div>
