@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
-// Enhanced sample data for events with detailed information
+// Enhanced sample data for events with simplified itinerary
 const events = [
   {
     id: 1,
@@ -39,36 +40,12 @@ const events = [
       "Pameran sejarah Krakatau"
     ],
     itinerary: [
-      {
-        time: "09:00",
-        activity: "Registrasi peserta",
-        description: "Check-in dan pembagian merchandise"
-      },
-      {
-        time: "10:00",
-        activity: "Pembukaan Festival",
-        description: "Sambutan dan penampilan tari pembuka"
-      },
-      {
-        time: "12:00",
-        activity: "Makan Siang",
-        description: "Kuliner tradisional Lampung"
-      },
-      {
-        time: "14:00",
-        activity: "Workshop Tapis",
-        description: "Belajar membuat kerajinan tradisional"
-      },
-      {
-        time: "17:00",
-        activity: "Pasar Malam",
-        description: "Jajanan dan oleh-oleh khas"
-      },
-      {
-        time: "20:00",
-        activity: "Penutupan",
-        description: "Pertunjukan musik dan kembang api"
-      }
+      "Registrasi peserta dan pembagian merchandise",
+      "Pembukaan festival dengan tari tradisional",
+      "Makan siang dengan kuliner khas Lampung",
+      "Workshop membuat kerajinan tapis",
+      "Pasar malam dan jajanan tradisional",
+      "Penutupan dengan musik dan kembang api"
     ],
     facilities: [
       "Transportasi AC",
@@ -105,36 +82,12 @@ const events = [
       "Spot foto Instagramable"
     ],
     itinerary: [
-      {
-        time: "05:00",
-        activity: "Persiapan dan Sarapan",
-        description: "Briefing dan sarapan ringan"
-      },
-      {
-        time: "07:00",
-        activity: "Perjalanan ke Base Camp",
-        description: "Perjalanan menggunakan jeep"
-      },
-      {
-        time: "08:30",
-        activity: "Mulai Pendakian",
-        description: "Trekking menuju puncak"
-      },
-      {
-        time: "11:00",
-        activity: "Istirahat Pos 1",
-        description: "Break dan makan snack"
-      },
-      {
-        time: "13:00",
-        activity: "Sampai Puncak",
-        description: "Foto dan makan siang"
-      },
-      {
-        time: "15:00",
-        activity: "Turun Gunung",
-        description: "Kembali ke base camp"
-      }
+      "Persiapan dan sarapan ringan",
+      "Perjalanan ke base camp dengan jeep",
+      "Mulai pendakian menuju puncak",
+      "Istirahat dan snack di pos 1",
+      "Sampai puncak, foto dan makan siang",
+      "Turun gunung kembali ke base camp"
     ],
     facilities: [
       "Transportasi jeep",
@@ -171,36 +124,12 @@ const events = [
       "Pantai pasir putih"
     ],
     itinerary: [
-      {
-        time: "06:00",
-        activity: "Berkumpul di Dermaga",
-        description: "Registrasi dan briefing keselamatan"
-      },
-      {
-        time: "08:00",
-        activity: "Berangkat ke Pulau",
-        description: "Perjalanan dengan speedboat"
-      },
-      {
-        time: "09:30",
-        activity: "Snorkeling Spot 1",
-        description: "Eksplorasi terumbu karang"
-      },
-      {
-        time: "12:00",
-        activity: "Makan Siang",
-        description: "Seafood fresh di pulau"
-      },
-      {
-        time: "14:00",
-        activity: "Snorkeling Spot 2",
-        description: "Spot ikan yang berbeda"
-      },
-      {
-        time: "15:30",
-        activity: "Kembali ke Dermaga",
-        description: "Perjalanan pulang"
-      }
+      "Berkumpul di dermaga dan briefing keselamatan",
+      "Berangkat ke pulau dengan speedboat",
+      "Snorkeling di spot terumbu karang pertama",
+      "Makan siang seafood fresh di pulau",
+      "Snorkeling di spot kedua dengan ikan beragam",
+      "Kembali ke dermaga"
     ],
     facilities: [
       "Speedboat",
@@ -237,26 +166,10 @@ const events = [
       "Oleh-oleh kopi premium"
     ],
     itinerary: [
-      {
-        time: "08:00",
-        activity: "Tour Kebun Kopi",
-        description: "Pengenalan tanaman kopi"
-      },
-      {
-        time: "10:00",
-        activity: "Panen Kopi",
-        description: "Praktik memetik kopi"
-      },
-      {
-        time: "12:00",
-        activity: "Proses Pengolahan",
-        description: "Dari cherry ke green bean"
-      },
-      {
-        time: "13:00",
-        activity: "Roasting & Tasting",
-        description: "Sangrai dan cicipi kopi"
-      }
+      "Tour kebun kopi dan pengenalan tanaman",
+      "Praktik panen kopi bersama petani",
+      "Proses pengolahan dari cherry ke green bean",
+      "Roasting dan coffee tasting session"
     ],
     facilities: [
       "Transportasi lokal",
@@ -293,26 +206,10 @@ const events = [
       "Recipe card take home"
     ],
     itinerary: [
-      {
-        time: "16:00",
-        activity: "Warung Pempek",
-        description: "Pempek khas Lampung"
-      },
-      {
-        time: "17:00",
-        activity: "Sate Bandeng",
-        description: "Kuliner legendaris"
-      },
-      {
-        time: "18:00",
-        activity: "Cooking Demo",
-        description: "Belajar masak tempoyak"
-      },
-      {
-        time: "19:30",
-        activity: "Dessert Traditional",
-        description: "Kue tradisional Lampung"
-      }
+      "Kunjungi warung pempek khas Lampung",
+      "Cicipi sate bandeng legendaris",
+      "Cooking demo masak tempoyak",
+      "Dessert dengan kue tradisional Lampung"
     ],
     facilities: [
       "Food guide",
@@ -349,31 +246,11 @@ const events = [
       "Sertifikat keahlian"
     ],
     itinerary: [
-      {
-        time: "09:00",
-        activity: "Sejarah Tapis",
-        description: "Pengenalan budaya Lampung"
-      },
-      {
-        time: "10:00",
-        activity: "Desain Motif",
-        description: "Membuat pola dasar"
-      },
-      {
-        time: "12:00",
-        activity: "Istirahat Makan",
-        description: "Lunch break"
-      },
-      {
-        time: "13:00",
-        activity: "Pewarnaan",
-        description: "Proses pemberian warna"
-      },
-      {
-        time: "14:30",
-        activity: "Finishing",
-        description: "Penyelesaian karya"
-      }
+      "Pengenalan sejarah dan budaya tapis Lampung",
+      "Membuat desain motif dasar",
+      "Istirahat makan siang",
+      "Proses pewarnaan kain",
+      "Finishing dan penyelesaian karya"
     ],
     facilities: [
       "Bahan workshop lengkap",
@@ -547,9 +424,9 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
       
       {/* Tour Details Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Tour Information */}
-          <div className="xl:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             {/* Hero Image and Basic Info */}
             <Card className="overflow-hidden shadow-lg">
               <div className="relative h-64 md:h-80 overflow-hidden">
@@ -647,24 +524,17 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
               </CardContent>
             </Card>
 
-            {/* Itinerary */}
+            {/* Itinerary - Simplified to match highlights style */}
             <Card>
               <CardHeader>
                 <h3 className="text-xl font-bold">Itinerary Lengkap</h3>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {event.itinerary.map((item: any, index: number) => (
-                    <div key={index} className="flex space-x-4 p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-shrink-0">
-                        <div className="w-16 h-16 bg-lamsel-purple text-white rounded-lg flex items-center justify-center font-bold">
-                          {item.time}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-lg">{item.activity}</h4>
-                        <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                      </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {event.itinerary.map((item: string, index: number) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <CheckCircle className="h-5 w-5 text-lamsel-purple flex-shrink-0" />
+                      <span className="text-sm">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -677,7 +547,7 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
                 <h3 className="text-xl font-bold">Fasilitas</h3>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {event.facilities.map((facility: string, index: number) => (
                     <div key={index} className="flex items-center space-x-2 p-3 bg-green-50 rounded-lg">
                       <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
@@ -689,9 +559,9 @@ Total Biaya: Rp${(event?.price * formData.participants).toLocaleString('id-ID')}
             </Card>
           </div>
           
-          {/* Right Column - Booking Form (now properly responsive) */}
-          <div className="xl:col-span-1">
-            <div className="w-full">
+          {/* Right Column - Booking Form (Sticky on desktop) */}
+          <div className="lg:col-span-1">
+            <div className="lg:sticky lg:top-24">
               <Card className="w-full">
                 <CardHeader>
                   <h2 className="text-xl font-bold">Booking Tour</h2>
