@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -78,41 +79,41 @@ export const AgendaSection = () => {
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {upcomingAgendas.map((agenda) => (
-              <CarouselItem key={agenda.id} className="pl-2 md:pl-4 basis-4/5">
-                <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg h-full">
-                  <div className="relative h-48 overflow-hidden">
+              <CarouselItem key={agenda.id} className="pl-2 md:pl-4 basis-[280px]">
+                <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg h-[400px]">
+                  <div className="relative h-32 overflow-hidden">
                     <img 
                       src={agenda.image} 
                       alt={agenda.title}
                       className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
                     />
-                    <Badge className="absolute left-3 top-3 bg-lamsel-purple hover:bg-lamsel-purple/80">
+                    <Badge className="absolute left-2 top-2 bg-lamsel-purple hover:bg-lamsel-purple/80 text-xs px-2 py-1">
                       {agenda.category}
                     </Badge>
                   </div>
-                  <CardHeader>
-                    <h3 className="text-xl font-bold">{agenda.title}</h3>
+                  <CardHeader className="p-3">
+                    <h3 className="text-base font-bold line-clamp-2">{agenda.title}</h3>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center text-sm">
-                      <Calendar className="mr-2 h-4 w-4 text-lamsel-purple" />
+                  <CardContent className="space-y-2 p-3 pt-0">
+                    <div className="flex items-center text-xs">
+                      <Calendar className="mr-1 h-3 w-3 text-lamsel-purple" />
                       <span>{agenda.date}</span>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <Clock className="mr-2 h-4 w-4 text-lamsel-purple" />
+                    <div className="flex items-center text-xs">
+                      <Clock className="mr-1 h-3 w-3 text-lamsel-purple" />
                       <span>{agenda.time}</span>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <MapPin className="mr-2 h-4 w-4 text-lamsel-purple" />
-                      <span>{agenda.location}</span>
+                    <div className="flex items-center text-xs">
+                      <MapPin className="mr-1 h-3 w-3 text-lamsel-purple" />
+                      <span className="line-clamp-1">{agenda.location}</span>
                     </div>
-                    <div className="mt-2 text-sm font-medium">
+                    <div className="mt-2 text-xs font-medium">
                       <span className="text-lamsel-purple">{agenda.spots}</span> spot tersedia
                     </div>
                   </CardContent>
-                  <CardFooter>
+                  <CardFooter className="p-3 pt-0">
                     <Button 
-                      className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80"
+                      className="w-full bg-lamsel-purple hover:bg-lamsel-purple/80 text-xs h-8"
                       onClick={() => handleJoinAgenda(agenda.id)}
                     >
                       Bergabung

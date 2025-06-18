@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DestinationCard } from './DestinationCard';
 import { Button } from "@/components/ui/button";
@@ -93,17 +94,19 @@ export const TopDestinations = () => {
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {topDestinations.map((destination) => (
-              <CarouselItem key={destination.id} className="pl-2 md:pl-4 basis-4/5">
-                <DestinationCard 
-                  id={destination.id}
-                  name={destination.name}
-                  image={destination.image}
-                  location={destination.location}
-                  rating={destination.rating}
-                  category={destination.category}
-                  description={destination.description}
-                  onViewDetails={() => handleViewDestination(destination.id)}
-                />
+              <CarouselItem key={destination.id} className="pl-2 md:pl-4 basis-[280px]">
+                <div className="h-[320px]">
+                  <DestinationCard 
+                    id={destination.id}
+                    name={destination.name}
+                    image={destination.image}
+                    location={destination.location}
+                    rating={destination.rating}
+                    category={destination.category}
+                    description={destination.description}
+                    onViewDetails={() => handleViewDestination(destination.id)}
+                  />
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>

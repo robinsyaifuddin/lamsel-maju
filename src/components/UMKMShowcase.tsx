@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,26 +81,26 @@ export const UMKMShowcase = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {umkmList.map((umkm) => (
-                <CarouselItem key={umkm.id} className="pl-2 md:pl-4 basis-4/5">
-                  <Card className="umkm-card overflow-hidden h-full">
-                    <div className="relative h-64 overflow-hidden">
+                <CarouselItem key={umkm.id} className="pl-2 md:pl-4 basis-[260px]">
+                  <Card className="umkm-card overflow-hidden h-[280px]">
+                    <div className="relative h-40 overflow-hidden">
                       <img 
                         src={umkm.image} 
                         alt={umkm.name}
                         className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                      <div className="absolute bottom-0 left-0 p-4 text-white">
-                        <Badge className="mb-2 bg-lamsel-green">
+                      <div className="absolute bottom-0 left-0 p-3 text-white">
+                        <Badge className="mb-1 bg-lamsel-green text-xs px-2 py-1">
                           {umkm.category}
                         </Badge>
-                        <h3 className="text-xl font-bold">{umkm.name}</h3>
-                        <p className="text-sm opacity-90">{umkm.location}</p>
+                        <h3 className="text-sm font-bold">{umkm.name}</h3>
+                        <p className="text-xs opacity-90">{umkm.location}</p>
                       </div>
                     </div>
-                    <CardContent className="p-4">
+                    <CardContent className="p-3">
                       <Button 
-                        className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
+                        className="w-full bg-lamsel-green hover:bg-lamsel-green/80 text-xs h-8"
                         onClick={() => handleViewProduct(umkm.id)}
                       >
                         Lihat Produk

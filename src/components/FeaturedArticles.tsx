@@ -86,60 +86,56 @@ const FeaturedArticles = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {featuredArticles.map((article, index) => (
-                <CarouselItem key={article.id} className="pl-2 md:pl-4 basis-4/5">
+                <CarouselItem key={article.id} className="pl-2 md:pl-4 basis-[280px]">
                   <Card 
-                    className="group overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-white border-0 shadow-lg animate-fade-in h-full"
+                    className="group overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-white border-0 shadow-lg animate-fade-in h-[380px]"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="relative overflow-hidden">
                       <img 
                         src={article.image} 
                         alt={article.title}
-                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-lamsel-blue text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm">
+                      <div className="absolute top-2 left-2">
+                        <span className="bg-lamsel-blue text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm">
                           {article.category}
                         </span>
                       </div>
                     </div>
                     
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-lamsel-blue transition-colors duration-300 leading-tight">
+                    <CardContent className="p-3">
+                      <h3 className="text-sm font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-lamsel-blue transition-colors duration-300 leading-tight">
                         {article.title}
                       </h3>
                       
-                      <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
+                      <p className="text-gray-600 mb-3 line-clamp-2 leading-relaxed text-xs">
                         {article.excerpt}
                       </p>
                       
-                      <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                        <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                        <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1">
-                            <User size={12} />
-                            <span className="font-medium">{article.author}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar size={12} />
-                            <span>{article.date}</span>
+                            <User size={10} />
+                            <span className="font-medium text-xs">{article.author}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Clock size={12} />
-                          <span>{article.readTime}</span>
+                          <Calendar size={10} />
+                          <span className="text-xs">{article.date}</span>
                         </div>
                       </div>
                       
                       <Button 
                         onClick={() => handleReadMore(article.id)}
                         variant="outline"
-                        className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 group-hover:scale-105 transform"
+                        className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 group-hover:scale-105 transform text-xs h-7"
                       >
                         Baca Selengkapnya
-                        <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                        <span className="ml-1 group-hover:translate-x-1 transition-transform duration-300">→</span>
                       </Button>
                     </CardContent>
                   </Card>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -100,34 +101,34 @@ export const KecamatanSection = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {districts.map((district) => (
-                <CarouselItem key={district.id} className="pl-2 md:pl-4 basis-4/5">
-                  <Card className="card-3d overflow-hidden transition-all duration-300 hover:shadow-lg h-full">
+                <CarouselItem key={district.id} className="pl-2 md:pl-4 basis-[260px]">
+                  <Card className="card-3d overflow-hidden transition-all duration-300 hover:shadow-lg h-[280px]">
                     <div className="card-3d-content">
-                      <div className="relative h-44">
+                      <div className="relative h-32">
                         <img 
                           src={district.image} 
                           alt={district.name}
                           className="h-full w-full object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-                        <div className="absolute bottom-0 left-0 p-4">
-                          <h3 className="text-xl font-bold text-white">{district.name}</h3>
+                        <div className="absolute bottom-0 left-0 p-3">
+                          <h3 className="text-sm font-bold text-white">{district.name}</h3>
                         </div>
                       </div>
-                      <CardContent className="p-4">
-                        <div className="grid grid-cols-2 gap-4">
+                      <CardContent className="p-3">
+                        <div className="grid grid-cols-2 gap-2 mb-3">
                           <div>
-                            <p className="text-sm text-gray-500">Jumlah Desa</p>
-                            <p className="font-semibold">{district.totalVillages}</p>
+                            <p className="text-xs text-gray-500">Jumlah Desa</p>
+                            <p className="font-semibold text-sm">{district.totalVillages}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">Populasi</p>
-                            <p className="font-semibold">{district.population}</p>
+                            <p className="text-xs text-gray-500">Populasi</p>
+                            <p className="font-semibold text-sm">{district.population}</p>
                           </div>
                         </div>
                         <Button 
                           variant="ghost" 
-                          className="mt-4 w-full text-lamsel-red hover:bg-lamsel-red/10"
+                          className="w-full text-lamsel-red hover:bg-lamsel-red/10 text-xs h-7"
                           onClick={() => handleViewKecamatanDetail(district.id)}
                         >
                           Lihat Detail
