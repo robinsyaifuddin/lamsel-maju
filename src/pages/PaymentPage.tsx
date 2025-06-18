@@ -17,7 +17,6 @@ import {
   Smartphone
 } from 'lucide-react';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 // Sample payment methods data
 const paymentMethods = {
@@ -30,16 +29,6 @@ const paymentMethods = {
     {
       name: "Bank BCA",
       accountNumber: "1234567890",
-      accountName: "PT Lampung Travel Sejahtera"
-    },
-    {
-      name: "Bank Mandiri", 
-      accountNumber: "0987654321",
-      accountName: "PT Lampung Travel Sejahtera"
-    },
-    {
-      name: "Bank BRI",
-      accountNumber: "5555666677778888",
       accountName: "PT Lampung Travel Sejahtera"
     }
   ]
@@ -60,10 +49,89 @@ const events = [
     description: "Festival budaya tahunan untuk memperingati letusan Gunung Krakatau dengan berbagai pertunjukan seni dan budaya tradisional Lampung.",
     provider: {
       name: "Lampung Travel",
-      phone: "62887437525303" // Updated to unified WhatsApp number
+      phone: "62887437525303"
     }
   },
-  // ... other events would be here
+  {
+    id: 2,
+    title: "Tour Gunung Rajabasa",
+    image: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?q=80&w=3270",
+    date: "22 Juni 2023",
+    time: "07:00 - 17:00",
+    location: "Rajabasa, Lampung Selatan",
+    category: "Pendakian",
+    spots: 15,
+    price: 350000,
+    description: "Nikmati pengalaman mendaki Gunung Rajabasa dengan pemandu berpengalaman dan lihat keindahan Lampung Selatan dari ketinggian.",
+    provider: {
+      name: "Explore Lampung",
+      phone: "62887437525303"
+    }
+  },
+  {
+    id: 3,
+    title: "Snorkeling Pulau Sebesi",
+    image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=3270",
+    date: "30 Juni 2023",
+    time: "08:00 - 16:00",
+    location: "Rajabasa, Lampung Selatan",
+    category: "Bahari",
+    spots: 20,
+    price: 400000,
+    description: "Jelajahi keindahan bawah laut di sekitar Pulau Sebesi dengan kegiatan snorkeling yang dipandu oleh instruktur profesional.",
+    provider: {
+      name: "Lampung Bahari Tour",
+      phone: "62887437525303"
+    }
+  },
+  {
+    id: 4,
+    title: "Panen Raya Kopi Lamsel",
+    image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?q=80&w=3270",
+    date: "5 Juli 2023",
+    time: "08:00 - 14:00",
+    location: "Jati Agung, Lampung Selatan",
+    category: "Agrowisata",
+    spots: 30,
+    price: 150000,
+    description: "Ikuti kegiatan panen kopi dan belajar tentang proses pembuatan kopi Lampung Selatan dari kebun hingga cangkir.",
+    provider: {
+      name: "Kopi Lamsel Tour",
+      phone: "62887437525303"
+    }
+  },
+  {
+    id: 5,
+    title: "Wisata Kuliner Tradisional",
+    image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=3270",
+    date: "12 Juli 2023",
+    time: "16:00 - 21:00",
+    location: "Kalianda, Lampung Selatan",
+    category: "Kuliner",
+    spots: 25,
+    price: 200000,
+    description: "Nikmati berbagai kuliner tradisional Lampung dalam tur keliling pusat kuliner di Kalianda dengan pemandu lokal.",
+    provider: {
+      name: "Kuliner Lampung Tour",
+      phone: "62887437525303"
+    }
+  },
+  {
+    id: 6,
+    title: "Workshop Batik Tapis",
+    image: "https://images.unsplash.com/photo-1517022812141-23620dba5c23?q=80&w=2880",
+    date: "18 Juli 2023",
+    time: "09:00 - 15:00",
+    location: "Natar, Lampung Selatan",
+    category: "Budaya",
+    spots: 15,
+    price: 300000,
+    description: "Belajar membuat Batik Tapis, kerajinan tradisional Lampung, dengan bimbingan langsung dari pengrajin berpengalaman.",
+    provider: {
+      name: "Tapis Lampung Workshop",
+      phone: "62887437525303"
+    }
+  }
 ];
 
 const PaymentPage = () => {
@@ -108,52 +176,230 @@ const PaymentPage = () => {
   };
 
   const generateInvoicePDF = async () => {
+    if (!event) return;
+
     const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 20;
+    const contentWidth = pageWidth - (margin * 2);
     
-    // Header
-    pdf.setFontSize(20);
-    pdf.text('INVOICE TRAVEL', 20, 20);
+    // Colors matching UMKM invoice
+    const primaryColor = [124, 58, 237]; // Lamsel purple
+    const textColor = [55, 65, 81];
+    const lightGray = [243, 244, 246];
     
-    // Invoice details
-    pdf.setFontSize(12);
-    pdf.text(`No. Invoice: ${bookingData.bookingId}`, 20, 40);
-    pdf.text(`Tanggal: ${bookingData.bookingDate}`, 20, 50);
+    // Generate invoice number and data
+    const invoiceNumber = bookingData.bookingId;
+    const currentDate = bookingData.bookingDate;
     
-    // Customer info
-    pdf.text('DETAIL PEMESAN:', 20, 70);
-    pdf.text(`Nama: ${bookingData.name}`, 20, 80);
-    pdf.text(`Email: ${bookingData.email}`, 20, 90);
-    pdf.text(`Telepon: ${bookingData.phone}`, 20, 100);
-    
-    // Event info
-    pdf.text('DETAIL PESANAN:', 20, 120);
-    pdf.text(`Event: ${event?.title}`, 20, 130);
-    pdf.text(`Tanggal: ${event?.date}`, 20, 140);
-    pdf.text(`Waktu: ${event?.time}`, 20, 150);
-    pdf.text(`Lokasi: ${event?.location}`, 20, 160);
-    pdf.text(`Jumlah Peserta: ${bookingData.participants}`, 20, 170);
-    
-    // Pricing
-    pdf.text('RINCIAN BIAYA:', 20, 190);
-    pdf.text(`Harga per orang: Rp${event?.price.toLocaleString('id-ID')}`, 20, 200);
-    pdf.text(`Jumlah peserta: ${bookingData.participants}`, 20, 210);
-    pdf.text(`TOTAL: Rp${totalAmount.toLocaleString('id-ID')}`, 20, 220);
-    
-    // Notes
-    if (bookingData.notes) {
-      pdf.text(`Catatan: ${bookingData.notes}`, 20, 240);
+    try {
+      // Header with background
+      pdf.setFillColor(...primaryColor);
+      pdf.rect(0, 0, pageWidth, 40, 'F');
+      
+      // Title
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(24);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('INVOICE TRAVEL', margin, 25);
+      
+      // Subtitle
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Lampung Selatan Travel Services', margin, 32);
+
+      // Reset text color
+      pdf.setTextColor(...textColor);
+      
+      // Invoice details section
+      let yPos = 60;
+      
+      // Invoice number and date box
+      pdf.setFillColor(...lightGray);
+      pdf.rect(margin, yPos, contentWidth, 20, 'F');
+      
+      yPos += 15;
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`No. Invoice: ${invoiceNumber}`, margin + 5, yPos);
+      pdf.text(`Tanggal: ${currentDate}`, pageWidth - margin - 60, yPos);
+      
+      yPos += 20;
+      
+      // Customer information section
+      pdf.setFillColor(...lightGray);
+      pdf.rect(margin, yPos, contentWidth, 45, 'F');
+      
+      yPos += 15;
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('INFORMASI PEMESAN', margin + 5, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Nama: ${bookingData.name}`, margin + 5, yPos);
+      pdf.text(`Email: ${bookingData.email}`, margin + 5, yPos + 6);
+      pdf.text(`Telepon: ${bookingData.phone}`, margin + 5, yPos + 12);
+      pdf.text(`Jumlah Peserta: ${bookingData.participants} orang`, margin + 5, yPos + 18);
+      
+      yPos += 35;
+      
+      // Event information section
+      pdf.setFillColor(...lightGray);
+      pdf.rect(margin, yPos, contentWidth, 55, 'F');
+      
+      yPos += 15;
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('DETAIL AGENDA TRAVEL', margin + 5, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Nama Event: ${event.title}`, margin + 5, yPos);
+      pdf.text(`Kategori: ${event.category}`, margin + 5, yPos + 6);
+      pdf.text(`Tanggal: ${event.date}`, margin + 5, yPos + 12);
+      pdf.text(`Waktu: ${event.time}`, margin + 5, yPos + 18);
+      pdf.text(`Lokasi: ${event.location}`, margin + 5, yPos + 24);
+      
+      yPos += 40;
+      
+      // Pricing table header
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('RINCIAN BIAYA', margin, yPos);
+      
+      yPos += 15;
+      
+      // Table header
+      pdf.setFillColor(...primaryColor);
+      pdf.rect(margin, yPos, contentWidth, 12, 'F');
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Deskripsi', margin + 5, yPos + 8);
+      pdf.text('Qty', margin + 100, yPos + 8);
+      pdf.text('Harga Satuan', margin + 125, yPos + 8);
+      pdf.text('Total', pageWidth - margin - 30, yPos + 8);
+      
+      yPos += 12;
+      
+      // Table content
+      pdf.setTextColor(...textColor);
+      pdf.setFillColor(249, 250, 251);
+      pdf.rect(margin, yPos, contentWidth, 12, 'F');
+      
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(event.title, margin + 5, yPos + 8);
+      pdf.text(bookingData.participants.toString(), margin + 100, yPos + 8);
+      pdf.text(`Rp${event.price.toLocaleString('id-ID')}`, margin + 125, yPos + 8);
+      pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - margin - 50, yPos + 8);
+      
+      yPos += 25;
+      
+      // Total section
+      pdf.setFillColor(...primaryColor);
+      pdf.rect(margin + (contentWidth * 0.6), yPos, contentWidth * 0.4, 15, 'F');
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('TOTAL PEMBAYARAN:', margin + (contentWidth * 0.65), yPos + 10);
+      pdf.text(`Rp${totalAmount.toLocaleString('id-ID')}`, pageWidth - margin - 50, yPos + 10);
+      
+      yPos += 30;
+      
+      // Payment information
+      pdf.setTextColor(...textColor);
+      pdf.setFillColor(...lightGray);
+      pdf.rect(margin, yPos, contentWidth, 40, 'F');
+      
+      yPos += 15;
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('INFORMASI PEMBAYARAN', margin + 5, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Transfer Bank BCA:', margin + 5, yPos);
+      pdf.text('No. Rekening: 1234567890', margin + 5, yPos + 6);
+      pdf.text('A.n: PT Lampung Travel Sejahtera', margin + 5, yPos + 12);
+      
+      yPos += 25;
+      
+      // Notes section
+      if (bookingData.notes) {
+        pdf.setFillColor(...lightGray);
+        const notesHeight = 30;
+        pdf.rect(margin, yPos, contentWidth, notesHeight, 'F');
+        
+        yPos += 15;
+        pdf.setFontSize(12);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('CATATAN KHUSUS:', margin + 5, yPos);
+        
+        yPos += 8;
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'normal');
+        
+        // Split long notes into multiple lines
+        const noteLines = pdf.splitTextToSize(bookingData.notes, contentWidth - 20);
+        pdf.text(noteLines, margin + 5, yPos);
+        yPos += noteLines.length * 5 + 15;
+      }
+      
+      // Terms and conditions
+      yPos += 10;
+      pdf.setFillColor(...lightGray);
+      pdf.rect(margin, yPos, contentWidth, 25, 'F');
+      
+      yPos += 12;
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('SYARAT & KETENTUAN:', margin + 5, yPos);
+      
+      yPos += 6;
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('• Pembayaran dilakukan maksimal 24 jam setelah booking', margin + 5, yPos);
+      pdf.text('• Konfirmasi pembayaran melalui WhatsApp dengan melampirkan bukti transfer', margin + 5, yPos + 4);
+      
+      // Footer
+      yPos = pageHeight - 40;
+      pdf.setFillColor(...primaryColor);
+      pdf.rect(0, yPos, pageWidth, 40, 'F');
+      
+      yPos += 15;
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Terima kasih atas kepercayaan Anda!', margin, yPos);
+      
+      yPos += 8;
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Penyedia: ${event.provider.name}`, margin, yPos);
+      pdf.text('Email: info@lampungselatan.travel', margin, yPos + 6);
+      pdf.text('WhatsApp: +62 887 437 525 303', pageWidth - margin - 60, yPos + 6);
+      
+      // Save the PDF
+      pdf.save(`Invoice-Travel-${invoiceNumber}.pdf`);
+      
+      toast({
+        title: "Invoice berhasil dibuat",
+        description: "File PDF telah disimpan ke perangkat Anda",
+      });
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: "Gagal membuat invoice",
+        description: "Terjadi kesalahan saat membuat file PDF",
+        variant: "destructive"
+      });
     }
-    
-    // Footer
-    pdf.text('Terima kasih atas kepercayaan Anda!', 20, 260);
-    pdf.text(`Penyedia: ${event?.provider.name}`, 20, 270);
-    
-    pdf.save(`Invoice-${bookingData.bookingId}.pdf`);
-    
-    toast({
-      title: "Invoice berhasil diunduh",
-      description: "File PDF telah disimpan ke perangkat Anda",
-    });
   };
 
   const handlePaymentConfirmation = () => {
@@ -349,7 +595,7 @@ Metode Pembayaran: ${selectedPayment === 'qris' ? 'QRIS' : `Transfer Bank ${paym
                 {/* Bank Transfer Payment */}
                 {selectedPayment === 'bank' && (
                   <div className="space-y-4">
-                    <h3 className="font-semibold">Pilih Bank untuk Transfer</h3>
+                    <h3 className="font-semibold">Transfer Bank</h3>
                     <div className="space-y-3">
                       {paymentMethods.bank.map((bank, index) => (
                         <div key={index} 
