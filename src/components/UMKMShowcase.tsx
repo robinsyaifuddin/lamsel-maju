@@ -1,10 +1,17 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Sample data for UMKM showcase
 const umkmList = [
@@ -33,6 +40,7 @@ const umkmList = [
 
 export const UMKMShowcase = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleViewAllUMKM = () => {
     navigate('/umkm');
@@ -62,35 +70,79 @@ export const UMKMShowcase = () => {
           </Button>
         </div>
         
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {umkmList.map((umkm) => (
-            <Card key={umkm.id} className="umkm-card overflow-hidden">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={umkm.image} 
-                  alt={umkm.name}
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-4 text-white">
-                  <Badge className="mb-2 bg-lamsel-green">
-                    {umkm.category}
-                  </Badge>
-                  <h3 className="text-xl font-bold">{umkm.name}</h3>
-                  <p className="text-sm opacity-90">{umkm.location}</p>
+        {isMobile ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {umkmList.map((umkm) => (
+                <CarouselItem key={umkm.id} className="pl-2 md:pl-4 basis-4/5">
+                  <Card className="umkm-card overflow-hidden h-full">
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={umkm.image} 
+                        alt={umkm.name}
+                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                      <div className="absolute bottom-0 left-0 p-4 text-white">
+                        <Badge className="mb-2 bg-lamsel-green">
+                          {umkm.category}
+                        </Badge>
+                        <h3 className="text-xl font-bold">{umkm.name}</h3>
+                        <p className="text-sm opacity-90">{umkm.location}</p>
+                      </div>
+                    </div>
+                    <CardContent className="p-4">
+                      <Button 
+                        className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
+                        onClick={() => handleViewProduct(umkm.id)}
+                      >
+                        Lihat Produk
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </Carousel>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {umkmList.map((umkm) => (
+              <Card key={umkm.id} className="umkm-card overflow-hidden">
+                <div className="relative h-64 overflow-hidden">
+                  <img 
+                    src={umkm.image} 
+                    alt={umkm.name}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4 text-white">
+                    <Badge className="mb-2 bg-lamsel-green">
+                      {umkm.category}
+                    </Badge>
+                    <h3 className="text-xl font-bold">{umkm.name}</h3>
+                    <p className="text-sm opacity-90">{umkm.location}</p>
+                  </div>
                 </div>
-              </div>
-              <CardContent className="p-4">
-                <Button 
-                  className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
-                  onClick={() => handleViewProduct(umkm.id)}
-                >
-                  Lihat Produk
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <CardContent className="p-4">
+                  <Button 
+                    className="w-full bg-lamsel-green hover:bg-lamsel-green/80"
+                    onClick={() => handleViewProduct(umkm.id)}
+                  >
+                    Lihat Produk
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,16 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Sample data for districts
 const districts = [
@@ -53,6 +60,7 @@ const districts = [
 
 export const KecamatanSection = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleViewAllKecamatan = () => {
     navigate('/kecamatan');
@@ -82,44 +90,97 @@ export const KecamatanSection = () => {
           </Button>
         </div>
         
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {districts.map((district) => (
-            <Card key={district.id} className="card-3d overflow-hidden transition-all duration-300 hover:shadow-lg">
-              <div className="card-3d-content">
-                <div className="relative h-44">
-                  <img 
-                    src={district.image} 
-                    alt={district.name}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 p-4">
-                    <h3 className="text-xl font-bold text-white">{district.name}</h3>
+        {isMobile ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {districts.map((district) => (
+                <CarouselItem key={district.id} className="pl-2 md:pl-4 basis-4/5">
+                  <Card className="card-3d overflow-hidden transition-all duration-300 hover:shadow-lg h-full">
+                    <div className="card-3d-content">
+                      <div className="relative h-44">
+                        <img 
+                          src={district.image} 
+                          alt={district.name}
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 p-4">
+                          <h3 className="text-xl font-bold text-white">{district.name}</h3>
+                        </div>
+                      </div>
+                      <CardContent className="p-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-sm text-gray-500">Jumlah Desa</p>
+                            <p className="font-semibold">{district.totalVillages}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">Populasi</p>
+                            <p className="font-semibold">{district.population}</p>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          className="mt-4 w-full text-lamsel-red hover:bg-lamsel-red/10"
+                          onClick={() => handleViewKecamatanDetail(district.id)}
+                        >
+                          Lihat Detail
+                        </Button>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </Carousel>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {districts.map((district) => (
+              <Card key={district.id} className="card-3d overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <div className="card-3d-content">
+                  <div className="relative h-44">
+                    <img 
+                      src={district.image} 
+                      alt={district.name}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 p-4">
+                      <h3 className="text-xl font-bold text-white">{district.name}</h3>
+                    </div>
                   </div>
+                  <CardContent className="p-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Jumlah Desa</p>
+                        <p className="font-semibold">{district.totalVillages}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Populasi</p>
+                        <p className="font-semibold">{district.population}</p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      className="mt-4 w-full text-lamsel-red hover:bg-lamsel-red/10"
+                      onClick={() => handleViewKecamatanDetail(district.id)}
+                    >
+                      Lihat Detail
+                    </Button>
+                  </CardContent>
                 </div>
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-gray-500">Jumlah Desa</p>
-                      <p className="font-semibold">{district.totalVillages}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Populasi</p>
-                      <p className="font-semibold">{district.population}</p>
-                    </div>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    className="mt-4 w-full text-lamsel-red hover:bg-lamsel-red/10"
-                    onClick={() => handleViewKecamatanDetail(district.id)}
-                  >
-                    Lihat Detail
-                  </Button>
-                </CardContent>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

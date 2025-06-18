@@ -1,9 +1,16 @@
-
 import React from 'react';
 import { DestinationCard } from './DestinationCard';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Sample data for top destinations
 const topDestinations = [
@@ -47,6 +54,7 @@ const topDestinations = [
 
 export const TopDestinations = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleViewAll = () => {
     navigate('/destinasi');
@@ -75,21 +83,50 @@ export const TopDestinations = () => {
         </Button>
       </div>
       
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {topDestinations.map((destination) => (
-          <DestinationCard 
-            key={destination.id}
-            id={destination.id}
-            name={destination.name}
-            image={destination.image}
-            location={destination.location}
-            rating={destination.rating}
-            category={destination.category}
-            description={destination.description}
-            onViewDetails={() => handleViewDestination(destination.id)}
-          />
-        ))}
-      </div>
+      {isMobile ? (
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {topDestinations.map((destination) => (
+              <CarouselItem key={destination.id} className="pl-2 md:pl-4 basis-4/5">
+                <DestinationCard 
+                  id={destination.id}
+                  name={destination.name}
+                  image={destination.image}
+                  location={destination.location}
+                  rating={destination.rating}
+                  category={destination.category}
+                  description={destination.description}
+                  onViewDetails={() => handleViewDestination(destination.id)}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-2" />
+          <CarouselNext className="right-2" />
+        </Carousel>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {topDestinations.map((destination) => (
+            <DestinationCard 
+              key={destination.id}
+              id={destination.id}
+              name={destination.name}
+              image={destination.image}
+              location={destination.location}
+              rating={destination.rating}
+              category={destination.category}
+              description={destination.description}
+              onViewDetails={() => handleViewDestination(destination.id)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,12 +1,20 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, User, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const FeaturedArticles = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // Featured articles data
   const featuredArticles = [
@@ -68,71 +76,146 @@ const FeaturedArticles = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-          {featuredArticles.map((article, index) => (
-            <Card 
-              key={article.id} 
-              className="group overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-white border-0 shadow-lg animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="relative overflow-hidden">
-                <img 
-                  src={article.image} 
-                  alt={article.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Category badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="bg-lamsel-blue text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm">
-                    {article.category}
-                  </span>
+        {isMobile ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full mb-10"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {featuredArticles.map((article, index) => (
+                <CarouselItem key={article.id} className="pl-2 md:pl-4 basis-4/5">
+                  <Card 
+                    className="group overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-white border-0 shadow-lg animate-fade-in h-full"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="relative overflow-hidden">
+                      <img 
+                        src={article.image} 
+                        alt={article.title}
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-lamsel-blue text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm">
+                          {article.category}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-lamsel-blue transition-colors duration-300 leading-tight">
+                        {article.title}
+                      </h3>
+                      
+                      <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
+                        {article.excerpt}
+                      </p>
+                      
+                      <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1">
+                            <User size={12} />
+                            <span className="font-medium">{article.author}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar size={12} />
+                            <span>{article.date}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock size={12} />
+                          <span>{article.readTime}</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        onClick={() => handleReadMore(article.id)}
+                        variant="outline"
+                        className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 group-hover:scale-105 transform"
+                      >
+                        Baca Selengkapnya
+                        <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </Carousel>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+            {featuredArticles.map((article, index) => (
+              <Card 
+                key={article.id} 
+                className="group overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-white border-0 shadow-lg animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={article.image} 
+                    alt={article.title}
+                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  {/* Category badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-lamsel-blue text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm">
+                      {article.category}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-lamsel-blue transition-colors duration-300 leading-tight">
-                  {article.title}
-                </h3>
                 
-                <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
-                  {article.excerpt}
-                </p>
-                
-                {/* Article meta */}
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <User size={12} />
-                      <span className="font-medium">{article.author}</span>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-lamsel-blue transition-colors duration-300 leading-tight">
+                    {article.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
+                    {article.excerpt}
+                  </p>
+                  
+                  {/* Article meta */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        <User size={12} />
+                        <span className="font-medium">{article.author}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar size={12} />
+                        <span>{article.date}</span>
+                      </div>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Calendar size={12} />
-                      <span>{article.date}</span>
+                      <Clock size={12} />
+                      <span>{article.readTime}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Clock size={12} />
-                    <span>{article.readTime}</span>
-                  </div>
-                </div>
-                
-                {/* Read more button */}
-                <Button 
-                  onClick={() => handleReadMore(article.id)}
-                  variant="outline"
-                  className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 group-hover:scale-105 transform"
-                >
-                  Baca Selengkapnya
-                  <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  
+                  {/* Read more button */}
+                  <Button 
+                    onClick={() => handleReadMore(article.id)}
+                    variant="outline"
+                    className="w-full border-lamsel-blue text-lamsel-blue hover:bg-lamsel-blue hover:text-white transition-all duration-300 group-hover:scale-105 transform"
+                  >
+                    Baca Selengkapnya
+                    <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         <div className="text-center">
           <Button 
