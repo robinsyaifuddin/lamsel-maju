@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,6 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Menu, Search, User, X, ChevronDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -21,7 +19,6 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -73,37 +70,35 @@ const Navbar = () => {
 
   // Filter results based on search query
   const filteredResults = searchResults.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  
   const handleSearchSelect = (url: string) => {
     setIsSearchOpen(false);
     navigate(url);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   // Function to handle navigation and scroll to top
   const handleNavigation = (path: string) => {
     navigate(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
     setMobileMenuOpen(false);
   };
-
-  return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? "shadow-lg bg-white border-b border-gray-200" 
-        : "bg-white border-b border-gray-100"
-    }`}>
+  return <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "shadow-lg bg-white border-b border-gray-200" : "bg-white border-b border-gray-100"}`}>
       <div className="container mx-auto px-4">
         <div className="flex h-16 md:h-20 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <Link to="/" className="flex items-center space-x-2 md:space-x-3 card-3d" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Link to="/" className="flex items-center space-x-2 md:space-x-3 card-3d" onClick={() => window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          })}>
               <div className="rounded-full bg-white p-1.5 md:p-2 card-3d-content transition-all duration-300 shadow-md border border-gray-200">
-                <img 
-                  src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
-                  alt="Logo Lampung Selatan" 
-                  className="w-6 h-6 md:w-8 md:h-8 object-contain"
-                />
+                <img src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" alt="Logo Lampung Selatan" className="w-6 h-6 md:w-8 md:h-8 object-contain" />
               </div>
               <span className="text-lg md:text-xl font-semibold text-gray-900 hidden sm:inline">Lamsel Maju</span>
             </Link>
@@ -113,7 +108,10 @@ const Navbar = () => {
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="space-x-1">
               <NavigationMenuItem>
-                <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Beranda
                   </NavigationMenuLink>
@@ -121,7 +119,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/destinasi" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/destinasi" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/destinasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Destinasi Wisata
                   </NavigationMenuLink>
@@ -129,7 +130,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/agenda" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/agenda" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/agenda' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Agenda Travel
                   </NavigationMenuLink>
@@ -137,7 +141,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/umkm" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/umkm" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     UMKM
                   </NavigationMenuLink>
@@ -145,7 +152,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/informasi" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/informasi" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/informasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Informasi
                   </NavigationMenuLink>
@@ -153,7 +163,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kecamatan" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/kecamatan" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kecamatan' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Kecamatan
                   </NavigationMenuLink>
@@ -161,7 +174,10 @@ const Navbar = () => {
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kontak" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/kontak" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })}>
                   <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kontak' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
                     Kontak
                   </NavigationMenuLink>
@@ -178,7 +194,10 @@ const Navbar = () => {
             </Button>
             
             {/* Admin Login Button */}
-            <Link to="/admin/login" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Link to="/admin/login" onClick={() => window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          })}>
               <Button variant="outline" size="sm" className="rounded-full border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[1px] button-3d font-medium">
                 <User className="mr-2" size={16} />
                 Admin Login
@@ -189,34 +208,20 @@ const Navbar = () => {
           {/* Mobile Actions */}
           <div className="flex lg:hidden items-center space-x-2">
             {/* Mobile Search Button */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="rounded-full hover:bg-gray-100 transition-colors w-9 h-9" 
-              onClick={() => setIsSearchOpen(true)}
-            >
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100 transition-colors w-9 h-9" onClick={() => setIsSearchOpen(true)}>
               <Search className="text-gray-700" size={18} />
             </Button>
             
             {/* Mobile Admin Login Button */}
-            <Link to="/admin/login" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="rounded-full border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-300 text-xs px-2 py-1 h-8"
-              >
-                <User className="mr-1" size={14} />
-                Login
-              </Button>
+            <Link to="/admin/login" onClick={() => window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          })}>
+              
             </Link>
             
             {/* Mobile Menu Button */}
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="text-gray-800 hover:bg-gray-100 transition-colors w-9 h-9" 
-              onClick={() => setMobileMenuOpen(true)}
-            >
+            <Button variant="ghost" size="icon" className="text-gray-800 hover:bg-gray-100 transition-colors w-9 h-9" onClick={() => setMobileMenuOpen(true)}>
               <Menu size={20} />
             </Button>
           </div>
@@ -224,134 +229,63 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {mobileMenuOpen && <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black/50" 
-            onClick={() => setMobileMenuOpen(false)}
-          />
+          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
           
           {/* Menu Panel */}
           <div className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div className="flex items-center space-x-3">
-                <img 
-                  src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" 
-                  alt="Logo Lampung Selatan" 
-                  className="w-8 h-8 object-contain"
-                />
+                <img src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" alt="Logo Lampung Selatan" className="w-8 h-8 object-contain" />
                 <span className="text-lg font-semibold text-gray-900">Lamsel Maju</span>
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8"
-              >
+              <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(false)} className="w-8 h-8">
                 <X size={18} className="text-gray-600" />
               </Button>
             </div>
             
             {/* Search */}
             <div className="p-4 border-b border-gray-100 bg-white">
-              <Button 
-                variant="outline" 
-                className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50 h-10"
-                onClick={() => {
-                  setIsSearchOpen(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
+              <Button variant="outline" className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50 h-10" onClick={() => {
+            setIsSearchOpen(true);
+            setMobileMenuOpen(false);
+          }}>
                 <Search className="mr-2" size={16} />
                 Cari destinasi, UMKM, agenda...
               </Button>
             </div>
             
             {/* Menu Items */}
-            <div className="flex flex-col p-2 bg-white overflow-y-auto" style={{ height: 'calc(100vh - 140px)' }}>
-              <Link 
-                to="/" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/')}
-              >
+            <div className="flex flex-col p-2 bg-white overflow-y-auto" style={{
+          height: 'calc(100vh - 140px)'
+        }}>
+              <Link to="/" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/')}>
                 Beranda
               </Link>
               
-              <Link 
-                to="/destinasi" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/destinasi' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/destinasi')}
-              >
+              <Link to="/destinasi" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/destinasi' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/destinasi')}>
                 Destinasi Wisata
               </Link>
               
-              <Link 
-                to="/agenda" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/agenda' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/agenda')}
-              >
+              <Link to="/agenda" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/agenda' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/agenda')}>
                 Agenda Travel
               </Link>
               
-              <Link 
-                to="/umkm" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/umkm' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/umkm')}
-              >
+              <Link to="/umkm" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/umkm' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/umkm')}>
                 UMKM
               </Link>
               
-              <Link 
-                to="/informasi" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/informasi' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/informasi')}
-              >
+              <Link to="/informasi" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/informasi' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/informasi')}>
                 Informasi
               </Link>
               
-              <Link 
-                to="/kecamatan" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/kecamatan' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/kecamatan')}
-              >
+              <Link to="/kecamatan" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/kecamatan' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/kecamatan')}>
                 Kecamatan
               </Link>
               
-              <Link 
-                to="/kontak" 
-                className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${
-                  location.pathname === '/kontak' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleNavigation('/kontak')}
-              >
+              <Link to="/kontak" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/kontak' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/kontak')}>
                 Kontak
               </Link>
               
@@ -366,23 +300,13 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Search Dialog */}
-      <CommandDialog 
-        open={isSearchOpen} 
-        onOpenChange={setIsSearchOpen}
-      >
+      <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
         <Command className="rounded-lg border border-gray-200 shadow-xl">
           <div className="border-b border-gray-100 bg-gray-50/50">
-            <CommandInput 
-              placeholder="Cari destinasi, UMKM, agenda..." 
-              value={searchQuery} 
-              onValueChange={setSearchQuery}
-              className="border-none focus:ring-0 text-gray-800 placeholder:text-gray-500 bg-transparent h-12"
-              autoFocus
-            />
+            <CommandInput placeholder="Cari destinasi, UMKM, agenda..." value={searchQuery} onValueChange={setSearchQuery} className="border-none focus:ring-0 text-gray-800 placeholder:text-gray-500 bg-transparent h-12" autoFocus />
           </div>
           <CommandList className="max-h-80 overflow-y-auto bg-white">
             <CommandEmpty className="py-8 text-center text-gray-500">
@@ -392,24 +316,16 @@ const Navbar = () => {
               </div>
             </CommandEmpty>
             <CommandGroup heading="Hasil Pencarian" className="p-2">
-              {filteredResults.map((result, index) => (
-                <CommandItem 
-                  key={result.id} 
-                  onSelect={() => handleSearchSelect(result.url)} 
-                  className="flex items-center p-3 m-1 rounded-lg hover:bg-blue-50 cursor-pointer transition-all duration-200 stagger-item stagger-delay-1 border border-transparent hover:border-blue-100"
-                >
+              {filteredResults.map((result, index) => <CommandItem key={result.id} onSelect={() => handleSearchSelect(result.url)} className="flex items-center p-3 m-1 rounded-lg hover:bg-blue-50 cursor-pointer transition-all duration-200 stagger-item stagger-delay-1 border border-transparent hover:border-blue-100">
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-gray-900">{result.name}</span>
                     <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full w-fit mt-1">{result.category}</span>
                   </div>
-                </CommandItem>
-              ))}
+                </CommandItem>)}
             </CommandGroup>
           </CommandList>
         </Command>
       </CommandDialog>
-    </header>
-  );
+    </header>;
 };
-
 export default Navbar;
