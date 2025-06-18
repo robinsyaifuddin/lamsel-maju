@@ -1,24 +1,12 @@
 
-import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { 
-  Search, 
   Map, 
-  Calendar,
-  Users
+  Calendar
 } from 'lucide-react';
-import { DatePicker } from "@/components/DatePicker";
+import { TravelSearchForm } from '@/components/TravelSearchForm';
 
 export const HeroSection = () => {
-  const [location, setLocation] = useState('');
-  const navigate = useNavigate();
-  
-  const handleSearch = () => {
-    navigate('/destinasi');
-  };
-  
   return (
     <div className="relative h-screen max-h-[800px] min-h-[600px] w-full overflow-hidden">
       {/* Hero background image */}
@@ -59,46 +47,9 @@ export const HeroSection = () => {
           Jelajahi keindahan alam, budaya, dan kuliner terbaik di Lampung Selatan
         </p>
         
-        {/* Search box */}
-        <div className="animate-scale-in mt-10 w-full max-w-5xl">
-          <div className="search-container overflow-hidden rounded-xl shadow-xl">
-            <div className="flex flex-col md:flex-row">
-              <div className="flex flex-1 items-center border-b p-4 md:border-b-0 md:border-r">
-                <Search className="mr-2 text-lamsel-blue" size={24} />
-                <Input 
-                  type="text"
-                  placeholder="Ke mana Anda akan pergi?"
-                  className="border-none text-lg shadow-none focus-visible:ring-0" 
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-              </div>
-              
-              <div className="flex flex-1 items-center border-b p-4 md:border-b-0 md:border-r">
-                <Calendar className="mr-2 text-lamsel-blue" size={24} />
-                <DatePicker />
-              </div>
-              
-              <div className="flex flex-1 items-center p-4 md:border-r">
-                <Users className="mr-2 text-lamsel-blue" size={24} />
-                <select className="w-full border-none bg-transparent text-lg focus:outline-none">
-                  <option value="1">1 Tamu</option>
-                  <option value="2">2 Tamu</option>
-                  <option value="3">3 Tamu</option>
-                  <option value="4">4+ Tamu</option>
-                </select>
-              </div>
-              
-              <Button
-                size="lg"
-                className="m-4 bg-lamsel-blue hover:bg-lamsel-blue/80 px-8 py-6 text-lg"
-                onClick={handleSearch}
-              >
-                <Search className="mr-2" size={20} />
-                Cari
-              </Button>
-            </div>
-          </div>
+        {/* Search form */}
+        <div className="animate-scale-in mt-10">
+          <TravelSearchForm />
         </div>
       </div>
     </div>
