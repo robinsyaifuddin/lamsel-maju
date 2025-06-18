@@ -185,9 +185,9 @@ const PaymentPage = () => {
     const contentWidth = pageWidth - (margin * 2);
     
     // Colors matching UMKM invoice
-    const primaryColor = [124, 58, 237]; // Lamsel purple
-    const textColor = [55, 65, 81];
-    const lightGray = [243, 244, 246];
+    const primaryColor = { r: 124, g: 58, b: 237 }; // Lamsel purple
+    const textColor = { r: 55, g: 65, b: 81 };
+    const lightGray = { r: 243, g: 244, b: 246 };
     
     // Generate invoice number and data
     const invoiceNumber = bookingData.bookingId;
@@ -195,7 +195,7 @@ const PaymentPage = () => {
     
     try {
       // Header with background
-      pdf.setFillColor(...primaryColor);
+      pdf.setFillColor(primaryColor.r, primaryColor.g, primaryColor.b);
       pdf.rect(0, 0, pageWidth, 40, 'F');
       
       // Title
@@ -210,13 +210,13 @@ const PaymentPage = () => {
       pdf.text('Lampung Selatan Travel Services', margin, 32);
 
       // Reset text color
-      pdf.setTextColor(...textColor);
+      pdf.setTextColor(textColor.r, textColor.g, textColor.b);
       
       // Invoice details section
       let yPos = 60;
       
       // Invoice number and date box
-      pdf.setFillColor(...lightGray);
+      pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
       pdf.rect(margin, yPos, contentWidth, 20, 'F');
       
       yPos += 15;
@@ -228,7 +228,7 @@ const PaymentPage = () => {
       yPos += 20;
       
       // Customer information section
-      pdf.setFillColor(...lightGray);
+      pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
       pdf.rect(margin, yPos, contentWidth, 45, 'F');
       
       yPos += 15;
@@ -247,7 +247,7 @@ const PaymentPage = () => {
       yPos += 35;
       
       // Event information section
-      pdf.setFillColor(...lightGray);
+      pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
       pdf.rect(margin, yPos, contentWidth, 55, 'F');
       
       yPos += 15;
@@ -274,7 +274,7 @@ const PaymentPage = () => {
       yPos += 15;
       
       // Table header
-      pdf.setFillColor(...primaryColor);
+      pdf.setFillColor(primaryColor.r, primaryColor.g, primaryColor.b);
       pdf.rect(margin, yPos, contentWidth, 12, 'F');
       
       pdf.setTextColor(255, 255, 255);
@@ -288,7 +288,7 @@ const PaymentPage = () => {
       yPos += 12;
       
       // Table content
-      pdf.setTextColor(...textColor);
+      pdf.setTextColor(textColor.r, textColor.g, textColor.b);
       pdf.setFillColor(249, 250, 251);
       pdf.rect(margin, yPos, contentWidth, 12, 'F');
       
@@ -301,7 +301,7 @@ const PaymentPage = () => {
       yPos += 25;
       
       // Total section
-      pdf.setFillColor(...primaryColor);
+      pdf.setFillColor(primaryColor.r, primaryColor.g, primaryColor.b);
       pdf.rect(margin + (contentWidth * 0.6), yPos, contentWidth * 0.4, 15, 'F');
       
       pdf.setTextColor(255, 255, 255);
@@ -313,8 +313,8 @@ const PaymentPage = () => {
       yPos += 30;
       
       // Payment information
-      pdf.setTextColor(...textColor);
-      pdf.setFillColor(...lightGray);
+      pdf.setTextColor(textColor.r, textColor.g, textColor.b);
+      pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
       pdf.rect(margin, yPos, contentWidth, 40, 'F');
       
       yPos += 15;
@@ -333,7 +333,7 @@ const PaymentPage = () => {
       
       // Notes section
       if (bookingData.notes) {
-        pdf.setFillColor(...lightGray);
+        pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
         const notesHeight = 30;
         pdf.rect(margin, yPos, contentWidth, notesHeight, 'F');
         
@@ -354,7 +354,7 @@ const PaymentPage = () => {
       
       // Terms and conditions
       yPos += 10;
-      pdf.setFillColor(...lightGray);
+      pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
       pdf.rect(margin, yPos, contentWidth, 25, 'F');
       
       yPos += 12;
@@ -369,7 +369,7 @@ const PaymentPage = () => {
       
       // Footer
       yPos = pageHeight - 40;
-      pdf.setFillColor(...primaryColor);
+      pdf.setFillColor(primaryColor.r, primaryColor.g, primaryColor.b);
       pdf.rect(0, yPos, pageWidth, 40, 'F');
       
       yPos += 15;
