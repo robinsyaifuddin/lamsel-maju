@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Menu, Search, User, X, ChevronDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -70,6 +72,7 @@ const Navbar = () => {
 
   // Filter results based on search query
   const filteredResults = searchResults.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  
   const handleSearchSelect = (url: string) => {
     setIsSearchOpen(false);
     navigate(url);
@@ -88,15 +91,26 @@ const Navbar = () => {
     });
     setMobileMenuOpen(false);
   };
-  return <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "shadow-lg bg-white border-b border-gray-200" : "bg-white border-b border-gray-100"}`}>
+
+  // Navigation handler for menu items
+  const handleMenuNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "shadow-lg bg-white border-b border-gray-200" : "bg-white border-b border-gray-100"}`}>
       <div className="container mx-auto px-4">
         <div className="flex h-16 md:h-20 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2 md:space-x-3 card-3d" onClick={() => window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          })}>
+              top: 0,
+              behavior: 'smooth'
+            })}>
               <div className="rounded-full bg-white p-1.5 md:p-2 card-3d-content transition-all duration-300 shadow-md border border-gray-200">
                 <img src="/lovable-uploads/a5067f5c-96bf-49cc-a948-8415e3f53e19.png" alt="Logo Lampung Selatan" className="w-6 h-6 md:w-8 md:h-8 object-contain" />
               </div>
@@ -108,80 +122,66 @@ const Navbar = () => {
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="space-x-1">
               <NavigationMenuItem>
-                <Link to="/" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Beranda
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/')}
+                >
+                  Beranda
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/destinasi" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/destinasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Destinasi Wisata
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/destinasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/destinasi')}
+                >
+                  Destinasi Wisata
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/agenda" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/agenda' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Agenda Travel
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/agenda' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/agenda')}
+                >
+                  Agenda Travel
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/umkm" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    UMKM
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/umkm' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/umkm')}
+                >
+                  UMKM
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/informasi" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/informasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Informasi
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/informasi' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/informasi')}
+                >
+                  Informasi
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kecamatan" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kecamatan' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Kecamatan
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/kecamatan' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/kecamatan')}
+                >
+                  Kecamatan
+                </NavigationMenuLink>
               </NavigationMenuItem>
               
               <NavigationMenuItem>
-                <Link to="/kontak" onClick={() => window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })}>
-                  <NavigationMenuLink className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 ${location.pathname === '/kontak' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}>
-                    Kontak
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink 
+                  className={`${navigationMenuTriggerStyle()} link-underline text-gray-800 hover:text-lamsel-blue hover:bg-blue-50/80 font-medium transition-all duration-200 cursor-pointer ${location.pathname === '/kontak' ? 'text-lamsel-blue bg-blue-50/50' : ''}`}
+                  onClick={() => handleMenuNavigation('/kontak')}
+                >
+                  Kontak
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -195,9 +195,9 @@ const Navbar = () => {
             
             {/* Admin Login Button */}
             <Link to="/admin/login" onClick={() => window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          })}>
+              top: 0,
+              behavior: 'smooth'
+            })}>
               <Button variant="outline" size="sm" className="rounded-full border-gray-300 text-gray-800 hover:bg-lamsel-blue hover:text-white hover:border-lamsel-blue transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[1px] button-3d font-medium">
                 <User className="mr-2" size={16} />
                 Admin Login
@@ -214,9 +214,9 @@ const Navbar = () => {
             
             {/* Mobile Admin Login Button */}
             <Link to="/admin/login" onClick={() => window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          })}>
+              top: 0,
+              behavior: 'smooth'
+            })}>
               
             </Link>
             
@@ -229,7 +229,8 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && <div className="fixed inset-0 z-50 lg:hidden">
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
           
@@ -249,9 +250,9 @@ const Navbar = () => {
             {/* Search */}
             <div className="p-4 border-b border-gray-100 bg-white">
               <Button variant="outline" className="w-full justify-start text-gray-600 border-gray-200 bg-white hover:bg-gray-50 h-10" onClick={() => {
-            setIsSearchOpen(true);
-            setMobileMenuOpen(false);
-          }}>
+                setIsSearchOpen(true);
+                setMobileMenuOpen(false);
+              }}>
                 <Search className="mr-2" size={16} />
                 Cari destinasi, UMKM, agenda...
               </Button>
@@ -259,8 +260,8 @@ const Navbar = () => {
             
             {/* Menu Items */}
             <div className="flex flex-col p-2 bg-white overflow-y-auto" style={{
-          height: 'calc(100vh - 140px)'
-        }}>
+              height: 'calc(100vh - 140px)'
+            }}>
               <Link to="/" className={`flex items-center px-4 py-3 mx-2 my-1 rounded-lg text-gray-900 font-medium transition-colors ${location.pathname === '/' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'}`} onClick={() => handleNavigation('/')}>
                 Beranda
               </Link>
@@ -300,7 +301,8 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-        </div>}
+        </div>
+      )}
 
       {/* Search Dialog */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
@@ -316,16 +318,20 @@ const Navbar = () => {
               </div>
             </CommandEmpty>
             <CommandGroup heading="Hasil Pencarian" className="p-2">
-              {filteredResults.map((result, index) => <CommandItem key={result.id} onSelect={() => handleSearchSelect(result.url)} className="flex items-center p-3 m-1 rounded-lg hover:bg-blue-50 cursor-pointer transition-all duration-200 stagger-item stagger-delay-1 border border-transparent hover:border-blue-100">
+              {filteredResults.map((result, index) => (
+                <CommandItem key={result.id} onSelect={() => handleSearchSelect(result.url)} className="flex items-center p-3 m-1 rounded-lg hover:bg-blue-50 cursor-pointer transition-all duration-200 stagger-item stagger-delay-1 border border-transparent hover:border-blue-100">
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-gray-900">{result.name}</span>
                     <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full w-fit mt-1">{result.category}</span>
                   </div>
-                </CommandItem>)}
+                </CommandItem>
+              ))}
             </CommandGroup>
           </CommandList>
         </Command>
       </CommandDialog>
-    </header>;
+    </header>
+  );
 };
+
 export default Navbar;

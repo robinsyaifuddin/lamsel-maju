@@ -36,6 +36,15 @@ import AdminProfil from "./pages/AdminProfil";
 
 const queryClient = new QueryClient();
 
+// Get base path for GitHub Pages
+const getBasePath = () => {
+  if (process.env.NODE_ENV === 'production') {
+    // For GitHub Pages, use the repository name as base path
+    return '/lamsel-maju';
+  }
+  return '';
+};
+
 // ScrollToTop component to ensure page starts at the top on navigation
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -52,7 +61,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={getBasePath()}>
         <ScrollToTop />
         <Routes>
           {/* Public Routes */}
