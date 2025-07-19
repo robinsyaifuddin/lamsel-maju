@@ -40,7 +40,7 @@ const queryClient = new QueryClient();
 const getBasePath = () => {
   if (process.env.NODE_ENV === 'production') {
     // For GitHub Pages, use the repository name as base path
-    return '/lamsel-maju';
+    return '/lamsel-maju-00';
   }
   return '';
 };

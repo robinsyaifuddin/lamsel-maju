@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   // GitHub Pages configuration
-  base: process.env.NODE_ENV === 'production' ? '/lamsel-maju/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/lamsel-maju-00/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
